@@ -25,47 +25,44 @@
 #include "internal/libspdm_common_lib.h"
 #include "internal/libspdm_secured_message_lib.h"
 
-extern uint8_t m_use_measurement_spec;
-extern uint32_t m_use_measurement_hash_algo;
-extern uint32_t m_use_hash_algo;
-extern uint32_t m_use_asym_algo;
-extern uint16_t m_use_req_asym_algo;
-extern uint16_t m_use_dhe_algo;
-extern uint16_t m_use_aead_algo;
-extern uint16_t m_use_key_schedule_algo;
+extern uint8_t m_libspdm_use_measurement_spec;
+extern uint32_t m_libspdm_use_measurement_hash_algo;
+extern uint32_t m_libspdm_use_hash_algo;
+extern uint32_t m_libspdm_use_asym_algo;
+extern uint16_t m_libspdm_use_req_asym_algo;
+extern uint16_t m_libspdm_use_dhe_algo;
+extern uint16_t m_libspdm_use_aead_algo;
+extern uint16_t m_libspdm_use_key_schedule_algo;
 
-#define SPDM_TEST_CONTEXT_SIGNATURE SIGNATURE_32('S', 'T', 'C', 'S')
+#define LIBSPDM_TEST_CONTEXT_SIGNATURE SIGNATURE_32('S', 'T', 'C', 'S')
 
 typedef struct {
     uint32_t signature;
-    boolean is_requester;
+    bool is_requester;
     libspdm_device_send_message_func send_message;
     libspdm_device_receive_message_func receive_message;
     void *spdm_context;
-    void *test_buffer;
-    uintn test_buffer_size;
-} spdm_test_context_t;
+    void *scratch_buffer;
+    size_t scratch_buffer_size;
+    const void *test_buffer;
+    size_t test_buffer_size;
+} libspdm_test_context_t;
 
-#define SPDM_TEST_CONTEXT_FROM_SPDM_PROTOCOL(a)                                \
-    BASE_CR(a, spdm_test_context_t, SpdmProtocol)
-#define SPDM_TEST_CONTEXT_FROM_SPDM_CONTEXT(a)                                 \
-    BASE_CR(a, spdm_test_context_t, spdm_context)
+size_t libspdm_unit_test_group_setup(void **State);
 
-uintn spdm_unit_test_group_setup(void **State);
+size_t libspdm_unit_test_group_teardown(void **State);
 
-uintn spdm_unit_test_group_teardown(void **State);
+void libspdm_setup_test_context(libspdm_test_context_t *spdm_test_context);
 
-void setup_spdm_test_context(IN spdm_test_context_t *spdm_test_context);
+libspdm_test_context_t *libspdm_get_test_context(void);
 
-spdm_test_context_t *get_spdm_test_context(void);
+bool libspdm_read_input_file(const char *file_name, void **file_data,
+                             size_t *file_size);
 
-boolean read_input_file(IN char *file_name, OUT void **file_data,
-                        OUT uintn *file_size);
+void libspdm_dump_hex_str(const uint8_t *buffer, size_t buffer_size);
 
-void dump_hex_str(IN uint8_t *buffer, IN uintn buffer_size);
+void libspdm_dump_data(const uint8_t *buffer, size_t buffer_size);
 
-void dump_data(IN uint8_t *buffer, IN uintn buffer_size);
-
-void dump_hex(IN uint8_t *buffer, IN uintn buffer_size);
+void libspdm_dump_hex(const uint8_t *buffer, size_t buffer_size);
 
 #endif

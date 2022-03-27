@@ -14,60 +14,61 @@
 
 #include "library/spdm_device_secret_lib.h"
 
-#define MEASUREMENT_BLOCK_HASH_NUMBER 4
-#define MEASUREMENT_BLOCK_NUMBER (MEASUREMENT_BLOCK_HASH_NUMBER /*Index - 1~4*/ + 1 /*SVN - 0x10*/ + \
-                                  1 /*Manifest - 0xFD*/ + 1 /*DEVICE_MODE - 0xFE*/)
-#define MEASUREMENT_RAW_DATA_SIZE 72
-#define MEASUREMENT_MANIFEST_SIZE 128
-#define MEASUREMENT_INDEX_SVN 0x10
+#define LIBSPDM_MEASUREMENT_BLOCK_HASH_NUMBER 4
+#define LIBSPDM_MEASUREMENT_BLOCK_NUMBER (LIBSPDM_MEASUREMENT_BLOCK_HASH_NUMBER /*Index - 1~4*/ + \
+                                          1 /*SVN - 0x10*/ + \
+                                          1 /*Manifest - 0xFD*/ + 1 /*DEVICE_MODE - 0xFE*/)
+#define LIBSPDM_MEASUREMENT_RAW_DATA_SIZE 72
+#define LIBSPDM_MEASUREMENT_MANIFEST_SIZE 128
+#define LIBSPDM_MEASUREMENT_INDEX_SVN 0x10
 
-#define TEST_PSK_DATA_STRING "TestPskData"
-#define TEST_PSK_HINT_STRING "TestPskHint"
+#define LIBSPDM_TEST_PSK_DATA_STRING "TestPskData"
+#define LIBSPDM_TEST_PSK_HINT_STRING "TestPskHint"
 
-#define TEST_CERT_MAXINT16 1
-#define TEST_CERT_MAXUINT16 2
-#define TEST_CERT_MAXUINT16_LARGER 3
-#define TEST_CERT_SMALL 4
+#define LIBSPDM_TEST_CERT_MAXINT16 1
+#define LIBSPDM_TEST_CERT_MAXUINT16 2
+#define LIBSPDM_LIBSPDM_TEST_CERT_MAXUINT16_LARGER 3
+#define LIBSPDM_TEST_CERT_SMALL 4
 
 
 /* public cert*/
 
-boolean read_responder_public_certificate_chain(
-    IN uint32_t base_hash_algo, IN uint32_t base_asym_algo, OUT void **data,
-    OUT uintn *size, OUT void **hash, OUT uintn *hash_size);
+bool libspdm_read_responder_public_certificate_chain(
+    uint32_t base_hash_algo, uint32_t base_asym_algo, void **data,
+    size_t *size, void **hash, size_t *hash_size);
 
-boolean read_requester_public_certificate_chain(
-    IN uint32_t base_hash_algo, IN uint16_t req_base_asym_alg, OUT void **data,
-    OUT uintn *size, OUT void **hash, OUT uintn *hash_size);
+bool libspdm_read_requester_public_certificate_chain(
+    uint32_t base_hash_algo, uint16_t req_base_asym_alg, void **data,
+    size_t *size, void **hash, size_t *hash_size);
 
-boolean read_responder_root_public_certificate(IN uint32_t base_hash_algo,
-                                               IN uint32_t base_asym_algo,
-                                               OUT void **data, OUT uintn *size,
-                                               OUT void **hash,
-                                               OUT uintn *hash_size);
+bool libspdm_read_responder_root_public_certificate(uint32_t base_hash_algo,
+                                                    uint32_t base_asym_algo,
+                                                    void **data, size_t *size,
+                                                    void **hash,
+                                                    size_t *hash_size);
 
-boolean read_requester_root_public_certificate(IN uint32_t base_hash_algo,
-                                               IN uint16_t req_base_asym_alg,
-                                               OUT void **data, OUT uintn *size,
-                                               OUT void **hash,
-                                               OUT uintn *hash_size);
+bool libspdm_read_requester_root_public_certificate(uint32_t base_hash_algo,
+                                                    uint16_t req_base_asym_alg,
+                                                    void **data, size_t *size,
+                                                    void **hash,
+                                                    size_t *hash_size);
 
-boolean read_responder_public_certificate_chain_by_size(
-    IN uint32_t base_hash_algo, IN uint32_t base_asym_algo, IN uint16_t CertId,
-    OUT void **data, OUT uintn *size, OUT void **hash,
-    OUT uintn *hash_size);
+bool libspdm_read_responder_public_certificate_chain_by_size(
+    uint32_t base_hash_algo, uint32_t base_asym_algo, uint16_t CertId,
+    void **data, size_t *size, void **hash,
+    size_t *hash_size);
 
-boolean read_responder_root_public_certificate_by_size(
-    IN uint32_t base_hash_algo, IN uint32_t base_asym_algo, IN uint16_t CertId,
-    OUT void **data, OUT uintn *size, OUT void **hash,
-    OUT uintn *hash_size);
+bool libspdm_read_responder_root_public_certificate_by_size(
+    uint32_t base_hash_algo, uint32_t base_asym_algo, uint16_t CertId,
+    void **data, size_t *size, void **hash,
+    size_t *hash_size);
 
 
 /* External*/
 
-boolean read_input_file(IN char *file_name, OUT void **file_data,
-                        OUT uintn *file_size);
+bool libspdm_read_input_file(const char *file_name, void **file_data,
+                             size_t *file_size);
 
-void dump_hex_str(IN uint8_t *buffer, IN uintn buffer_size);
+void libspdm_dump_hex_str(const uint8_t *buffer, size_t buffer_size);
 
 #endif

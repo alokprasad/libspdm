@@ -25,9 +25,13 @@
 #include LIBSPDM_STDINT_ALT
 #endif
 
+#ifndef LIBSPDM_STDBOOL_ALT
+#include <stdbool.h>
+#else
+#include LIBSPDM_STDBOOL_ALT
+#endif
 
-typedef unsigned char boolean;
-
+#include <stddef.h>
 
 /* Processor specific defines*/
 
@@ -45,6 +49,6 @@ typedef unsigned char boolean;
 
 /* Maximum legal arc intn values.*/
 
-#define MAX_INTN ((intn)0x7FFFFFFF)
+#define MAX_INTN 0x7FFFFFFF
 
 #endif

@@ -14,141 +14,141 @@
 #ifndef __BASE_CRYPT_LIB_H__
 #define __BASE_CRYPT_LIB_H__
 
-#define CRYPTO_NID_NULL 0x0000
+#define LIBSPDM_CRYPTO_NID_NULL 0x0000
 
 /* hash*/
-#define CRYPTO_NID_SHA256 0x0001
-#define CRYPTO_NID_SHA384 0x0002
-#define CRYPTO_NID_SHA512 0x0003
-#define CRYPTO_NID_SHA3_256 0x0004
-#define CRYPTO_NID_SHA3_384 0x0005
-#define CRYPTO_NID_SHA3_512 0x0006
-#define CRYPTO_NID_SM3_256 0x0007
+#define LIBSPDM_CRYPTO_NID_SHA256 0x0001
+#define LIBSPDM_CRYPTO_NID_SHA384 0x0002
+#define LIBSPDM_CRYPTO_NID_SHA512 0x0003
+#define LIBSPDM_CRYPTO_NID_SHA3_256 0x0004
+#define LIBSPDM_CRYPTO_NID_SHA3_384 0x0005
+#define LIBSPDM_CRYPTO_NID_SHA3_512 0x0006
+#define LIBSPDM_CRYPTO_NID_SM3_256 0x0007
 
 /* Signing*/
-#define CRYPTO_NID_RSASSA2048 0x0101
-#define CRYPTO_NID_RSASSA3072 0x0102
-#define CRYPTO_NID_RSASSA4096 0x0103
-#define CRYPTO_NID_RSAPSS2048 0x0104
-#define CRYPTO_NID_RSAPSS3072 0x0105
-#define CRYPTO_NID_RSAPSS4096 0x0106
-#define CRYPTO_NID_ECDSA_NIST_P256 0x0106
-#define CRYPTO_NID_ECDSA_NIST_P384 0x0107
-#define CRYPTO_NID_ECDSA_NIST_P521 0x0108
-#define CRYPTO_NID_SM2_DSA_P256 0x0109
-#define CRYPTO_NID_EDDSA_ED25519 0x010A
-#define CRYPTO_NID_EDDSA_ED448 0x010B
+#define LIBSPDM_CRYPTO_NID_RSASSA2048 0x0101
+#define LIBSPDM_CRYPTO_NID_RSASSA3072 0x0102
+#define LIBSPDM_CRYPTO_NID_RSASSA4096 0x0103
+#define LIBSPDM_CRYPTO_NID_RSAPSS2048 0x0104
+#define LIBSPDM_CRYPTO_NID_RSAPSS3072 0x0105
+#define LIBSPDM_CRYPTO_NID_RSAPSS4096 0x0106
+#define LIBSPDM_CRYPTO_NID_ECDSA_NIST_P256 0x0106
+#define LIBSPDM_CRYPTO_NID_ECDSA_NIST_P384 0x0107
+#define LIBSPDM_CRYPTO_NID_ECDSA_NIST_P521 0x0108
+#define LIBSPDM_CRYPTO_NID_SM2_DSA_P256 0x0109
+#define LIBSPDM_CRYPTO_NID_EDDSA_ED25519 0x010A
+#define LIBSPDM_CRYPTO_NID_EDDSA_ED448 0x010B
 
 /* key Exchange*/
-#define CRYPTO_NID_FFDHE2048 0x0201
-#define CRYPTO_NID_FFDHE3072 0x0202
-#define CRYPTO_NID_FFDHE4096 0x0203
-#define CRYPTO_NID_SECP256R1 0x0204
-#define CRYPTO_NID_SECP384R1 0x0205
-#define CRYPTO_NID_SECP521R1 0x0206
-#define CRYPTO_NID_SM2_KEY_EXCHANGE_P256 0x0207
-#define CRYPTO_NID_CURVE_X25519 0x0208
-#define CRYPTO_NID_CURVE_X448 0x0209
+#define LIBSPDM_CRYPTO_NID_FFDHE2048 0x0201
+#define LIBSPDM_CRYPTO_NID_FFDHE3072 0x0202
+#define LIBSPDM_CRYPTO_NID_FFDHE4096 0x0203
+#define LIBSPDM_CRYPTO_NID_SECP256R1 0x0204
+#define LIBSPDM_CRYPTO_NID_SECP384R1 0x0205
+#define LIBSPDM_CRYPTO_NID_SECP521R1 0x0206
+#define LIBSPDM_CRYPTO_NID_SM2_KEY_EXCHANGE_P256 0x0207
+#define LIBSPDM_CRYPTO_NID_CURVE_X25519 0x0208
+#define LIBSPDM_CRYPTO_NID_CURVE_X448 0x0209
 
 /* AEAD*/
-#define CRYPTO_NID_AES_128_GCM 0x0301
-#define CRYPTO_NID_AES_256_GCM 0x0302
-#define CRYPTO_NID_CHACHA20_POLY1305 0x0303
-#define CRYPTO_NID_SM4_128_GCM 0x0304
+#define LIBSPDM_CRYPTO_NID_AES_128_GCM 0x0301
+#define LIBSPDM_CRYPTO_NID_AES_256_GCM 0x0302
+#define LIBSPDM_CRYPTO_NID_CHACHA20_POLY1305 0x0303
+#define LIBSPDM_CRYPTO_NID_SM4_128_GCM 0x0304
 
 
 /* X.509 v3 key usage Extension flags*/
 
-#define CRYPTO_X509_KU_DIGITAL_SIGNATURE (0x80) /* bit 0*/
-#define CRYPTO_X509_KU_NON_REPUDIATION (0x40) /* bit 1*/
-#define CRYPTO_X509_KU_KEY_ENCIPHERMENT (0x20) /* bit 2*/
-#define CRYPTO_X509_KU_DATA_ENCIPHERMENT (0x10) /* bit 3*/
-#define CRYPTO_X509_KU_KEY_AGREEMENT (0x08) /* bit 4*/
-#define CRYPTO_X509_KU_KEY_CERT_SIGN (0x04) /* bit 5*/
-#define CRYPTO_X509_KU_CRL_SIGN (0x02) /* bit 6*/
-#define CRYPTO_X509_KU_ENCIPHER_ONLY (0x01) /* bit 7*/
-#define CRYPTO_X509_KU_DECIPHER_ONLY (0x8000) /* bit 8*/
+#define LIBSPDM_CRYPTO_X509_KU_DIGITAL_SIGNATURE (0x80) /* bit 0*/
+#define LIBSPDM_CRYPTO_X509_KU_NON_REPUDIATION (0x40) /* bit 1*/
+#define LIBSPDM_CRYPTO_X509_KU_KEY_ENCIPHERMENT (0x20) /* bit 2*/
+#define LIBSPDM_CRYPTO_X509_KU_DATA_ENCIPHERMENT (0x10) /* bit 3*/
+#define LIBSPDM_CRYPTO_X509_KU_KEY_AGREEMENT (0x08) /* bit 4*/
+#define LIBSPDM_CRYPTO_X509_KU_KEY_CERT_SIGN (0x04) /* bit 5*/
+#define LIBSPDM_CRYPTO_X509_KU_CRL_SIGN (0x02) /* bit 6*/
+#define LIBSPDM_CRYPTO_X509_KU_ENCIPHER_ONLY (0x01) /* bit 7*/
+#define LIBSPDM_CRYPTO_X509_KU_DECIPHER_ONLY (0x8000) /* bit 8*/
 
 
 /* These constants comply with the DER encoded ASN.1 type tags.*/
 
-#define CRYPTO_ASN1_BOOLEAN 0x01
-#define CRYPTO_ASN1_INTEGER 0x02
-#define CRYPTO_ASN1_BIT_STRING 0x03
-#define CRYPTO_ASN1_OCTET_STRING 0x04
-#define CRYPTO_ASN1_NULL 0x05
-#define CRYPTO_ASN1_OID 0x06
-#define CRYPTO_ASN1_UTF8_STRING 0x0C
-#define CRYPTO_ASN1_SEQUENCE 0x10
-#define CRYPTO_ASN1_SET 0x11
-#define CRYPTO_ASN1_PRINTABLE_STRING 0x13
-#define CRYPTO_ASN1_T61_STRING 0x14
-#define CRYPTO_ASN1_IA5_STRING 0x16
-#define CRYPTO_ASN1_UTC_TIME 0x17
-#define CRYPTO_ASN1_GENERALIZED_TIME 0x18
-#define CRYPTO_ASN1_UNIVERSAL_STRING 0x1C
-#define CRYPTO_ASN1_BMP_STRING 0x1E
-#define CRYPTO_ASN1_PRIMITIVE 0x00
-#define CRYPTO_ASN1_CONSTRUCTED 0x20
-#define CRYPTO_ASN1_CONTEXT_SPECIFIC 0x80
+#define LIBSPDM_CRYPTO_ASN1_BOOLEAN 0x01
+#define LIBSPDM_CRYPTO_ASN1_INTEGER 0x02
+#define LIBSPDM_CRYPTO_ASN1_BIT_STRING 0x03
+#define LIBSPDM_CRYPTO_ASN1_OCTET_STRING 0x04
+#define LIBSPDM_CRYPTO_ASN1_NULL 0x05
+#define LIBSPDM_CRYPTO_ASN1_OID 0x06
+#define LIBSPDM_CRYPTO_ASN1_UTF8_STRING 0x0C
+#define LIBSPDM_CRYPTO_ASN1_SEQUENCE 0x10
+#define LIBSPDM_CRYPTO_ASN1_SET 0x11
+#define LIBSPDM_CRYPTO_ASN1_PRINTABLE_STRING 0x13
+#define LIBSPDM_CRYPTO_ASN1_T61_STRING 0x14
+#define LIBSPDM_CRYPTO_ASN1_IA5_STRING 0x16
+#define LIBSPDM_CRYPTO_ASN1_UTC_TIME 0x17
+#define LIBSPDM_CRYPTO_ASN1_GENERALIZED_TIME 0x18
+#define LIBSPDM_CRYPTO_ASN1_UNIVERSAL_STRING 0x1C
+#define LIBSPDM_CRYPTO_ASN1_BMP_STRING 0x1E
+#define LIBSPDM_CRYPTO_ASN1_PRIMITIVE 0x00
+#define LIBSPDM_CRYPTO_ASN1_CONSTRUCTED 0x20
+#define LIBSPDM_CRYPTO_ASN1_CONTEXT_SPECIFIC 0x80
 
-#define CRYPTO_ASN1_TAG_CLASS_MASK 0xC0
-#define CRYPTO_ASN1_TAG_PC_MASK 0x20
-#define CRYPTO_ASN1_TAG_VALUE_MASK 0x1F
+#define LIBSPDM_CRYPTO_ASN1_TAG_CLASS_MASK 0xC0
+#define LIBSPDM_CRYPTO_ASN1_TAG_PC_MASK 0x20
+#define LIBSPDM_CRYPTO_ASN1_TAG_VALUE_MASK 0x1F
 
 
 /* SHA-256 digest size in bytes*/
 
-#define SHA256_DIGEST_SIZE 32
+#define LIBSPDM_SHA256_DIGEST_SIZE 32
 
 
 /* SHA-384 digest size in bytes*/
 
-#define SHA384_DIGEST_SIZE 48
+#define LIBSPDM_SHA384_DIGEST_SIZE 48
 
 
 /* SHA-512 digest size in bytes*/
 
-#define SHA512_DIGEST_SIZE 64
+#define LIBSPDM_SHA512_DIGEST_SIZE 64
 
 
 /* SHA3-256 digest size in bytes*/
 
-#define SHA3_256_DIGEST_SIZE 32
+#define LIBSPDM_SHA3_256_DIGEST_SIZE 32
 
 
 /* SHA3-384 digest size in bytes*/
 
-#define SHA3_384_DIGEST_SIZE 48
+#define LIBSPDM_SHA3_384_DIGEST_SIZE 48
 
 
 /* SHA3-512 digest size in bytes*/
 
-#define SHA3_512_DIGEST_SIZE 64
+#define LIBSPDM_SHA3_512_DIGEST_SIZE 64
 
 
 /* SM3_256 digest size in bytes*/
 
-#define SM3_256_DIGEST_SIZE 32
+#define LIBSPDM_SM3_256_DIGEST_SIZE 32
 
 
 /* AES block size in bytes*/
 
-#define AES_BLOCK_SIZE 16
+#define LIBSPDM_AES_BLOCK_SIZE 16
 
 
-/* RSA key Tags Definition used in rsa_set_key() function for key component identification.*/
+/* RSA key Tags Definition used in libspdm_rsa_set_key() function for key component identification.*/
 
 typedef enum {
-    RSA_KEY_N, /*< RSA public Modulus (N)*/
-    RSA_KEY_E, /*< RSA public exponent (e)*/
-    RSA_KEY_D, /*< RSA Private exponent (d)*/
-    RSA_KEY_P, /*< RSA secret prime factor of Modulus (p)*/
-    RSA_KEY_Q, /*< RSA secret prime factor of Modules (q)*/
-    RSA_KEY_DP, /*< p's CRT exponent (== d mod (p - 1))*/
-    RSA_KEY_DQ, /*< q's CRT exponent (== d mod (q - 1))*/
-    RSA_KEY_Q_INV /*< The CRT coefficient (== 1/q mod p)*/
-} rsa_key_tag_t;
+    LIBSPDM_RSA_KEY_N, /*< RSA public Modulus (N)*/
+    LIBSPDM_RSA_KEY_E, /*< RSA public exponent (e)*/
+    LIBSPDM_RSA_KEY_D, /*< RSA Private exponent (d)*/
+    LIBSPDM_RSA_KEY_P, /*< RSA secret prime factor of Modulus (p)*/
+    LIBSPDM_RSA_KEY_Q, /*< RSA secret prime factor of Modules (q)*/
+    LIBSPDM_RSA_KEY_DP, /*< p's CRT exponent (== d mod (p - 1))*/
+    LIBSPDM_RSA_KEY_DQ, /*< q's CRT exponent (== d mod (q - 1))*/
+    LIBSPDM_RSA_KEY_Q_INV /*< The CRT coefficient (== 1/q mod p)*/
+} libspdm_rsa_key_tag_t;
 
 /*=====================================================================================
  *    One-Way Cryptographic hash SHA Primitives
@@ -161,7 +161,7 @@ typedef enum {
  *         If the allocations fails, sha256_new() returns NULL.
  *
  **/
-void *sha256_new(void);
+void *libspdm_sha256_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -169,60 +169,60 @@ void *sha256_new(void);
  * @param[in]  sha256_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha256_free(IN void *sha256_ctx);
+void libspdm_sha256_free(void *sha256_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha256_context as SHA-256 hash context for
  * subsequent use.
  *
- * If sha256_context is NULL, then return FALSE.
+ * If sha256_context is NULL, then return false.
  *
  * @param[out]  sha256_context  Pointer to SHA-256 context being initialized.
  *
- * @retval TRUE   SHA-256 context initialization succeeded.
- * @retval FALSE  SHA-256 context initialization failed.
+ * @retval true   SHA-256 context initialization succeeded.
+ * @retval false  SHA-256 context initialization failed.
  *
  **/
-boolean sha256_init(OUT void *sha256_context);
+bool libspdm_sha256_init(void *sha256_context);
 
 /**
  * Makes a copy of an existing SHA-256 context.
  *
- * If sha256_context is NULL, then return FALSE.
- * If new_sha256_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha256_context is NULL, then return false.
+ * If new_sha256_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha256_context     Pointer to SHA-256 context being copied.
  * @param[out] new_sha256_context  Pointer to new SHA-256 context.
  *
- * @retval TRUE   SHA-256 context copy succeeded.
- * @retval FALSE  SHA-256 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-256 context copy succeeded.
+ * @retval false  SHA-256 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha256_duplicate(IN const void *sha256_context,
-                         OUT void *new_sha256_context);
+bool libspdm_sha256_duplicate(const void *sha256_context,
+                              void *new_sha256_context);
 
 /**
  * Digests the input data and updates SHA-256 context.
  *
  * This function performs SHA-256 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA-256 context should be already correctly initialized by sha256_init(), and should not be finalized
- * by sha256_final(). Behavior with invalid context is undefined.
+ * SHA-256 context should be already correctly initialized by libspdm_sha256_init(), and should not be finalized
+ * by libspdm_sha256_final(). Behavior with invalid context is undefined.
  *
- * If sha256_context is NULL, then return FALSE.
+ * If sha256_context is NULL, then return false.
  *
  * @param[in, out]  sha256_context  Pointer to the SHA-256 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA-256 data digest succeeded.
- * @retval FALSE  SHA-256 data digest failed.
+ * @retval true   SHA-256 data digest succeeded.
+ * @retval false  SHA-256 data digest failed.
  *
  **/
-boolean sha256_update(IN OUT void *sha256_context, IN const void *data,
-                      IN uintn data_size);
+bool libspdm_sha256_update(void *sha256_context, const void *data,
+                           size_t data_size);
 
 /**
  * Completes computation of the SHA-256 digest value.
@@ -230,21 +230,21 @@ boolean sha256_update(IN OUT void *sha256_context, IN const void *data,
  * This function completes SHA-256 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA-256 context cannot
  * be used again.
- * SHA-256 context should be already correctly initialized by sha256_init(), and should not be
- * finalized by sha256_final(). Behavior with invalid SHA-256 context is undefined.
+ * SHA-256 context should be already correctly initialized by libspdm_sha256_init(), and should not be
+ * finalized by libspdm_sha256_final(). Behavior with invalid SHA-256 context is undefined.
  *
- * If sha256_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha256_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha256_context  Pointer to the SHA-256 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA-256 digest
  *                                value (32 bytes).
  *
- * @retval TRUE   SHA-256 digest computation succeeded.
- * @retval FALSE  SHA-256 digest computation failed.
+ * @retval true   SHA-256 digest computation succeeded.
+ * @retval false  SHA-256 digest computation failed.
  *
  **/
-boolean sha256_final(IN OUT void *sha256_context, OUT uint8_t *hash_value);
+bool libspdm_sha256_final(void *sha256_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA-256 message digest of a input data buffer.
@@ -252,29 +252,29 @@ boolean sha256_final(IN OUT void *sha256_context, OUT uint8_t *hash_value);
  * This function performs the SHA-256 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA-256 digest
  *                         value (32 bytes).
  *
- * @retval TRUE   SHA-256 digest computation succeeded.
- * @retval FALSE  SHA-256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-256 digest computation succeeded.
+ * @retval false  SHA-256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha256_hash_all(IN const void *data, IN uintn data_size,
-                        OUT uint8_t *hash_value);
+bool libspdm_sha256_hash_all(const void *data, size_t data_size,
+                             uint8_t *hash_value);
 
 /**
  * Allocates and initializes one HASH_CTX context for subsequent SHA384 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sha384_new() returns NULL.
+ *         If the allocations fails, libspdm_sha384_new() returns NULL.
  *
  **/
-void *sha384_new(void);
+void *libspdm_sha384_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -282,60 +282,60 @@ void *sha384_new(void);
  * @param[in]  sha384_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha384_free(IN void *sha384_ctx);
+void libspdm_sha384_free(void *sha384_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha384_context as SHA-384 hash context for
  * subsequent use.
  *
- * If sha384_context is NULL, then return FALSE.
+ * If sha384_context is NULL, then return false.
  *
  * @param[out]  sha384_context  Pointer to SHA-384 context being initialized.
  *
- * @retval TRUE   SHA-384 context initialization succeeded.
- * @retval FALSE  SHA-384 context initialization failed.
+ * @retval true   SHA-384 context initialization succeeded.
+ * @retval false  SHA-384 context initialization failed.
  *
  **/
-boolean sha384_init(OUT void *sha384_context);
+bool libspdm_sha384_init(void *sha384_context);
 
 /**
  * Makes a copy of an existing SHA-384 context.
  *
- * If sha384_context is NULL, then return FALSE.
- * If new_sha384_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha384_context is NULL, then return false.
+ * If new_sha384_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha384_context     Pointer to SHA-384 context being copied.
  * @param[out] new_sha384_context  Pointer to new SHA-384 context.
  *
- * @retval TRUE   SHA-384 context copy succeeded.
- * @retval FALSE  SHA-384 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-384 context copy succeeded.
+ * @retval false  SHA-384 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha384_duplicate(IN const void *sha384_context,
-                         OUT void *new_sha384_context);
+bool libspdm_sha384_duplicate(const void *sha384_context,
+                              void *new_sha384_context);
 
 /**
  * Digests the input data and updates SHA-384 context.
  *
  * This function performs SHA-384 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA-384 context should be already correctly initialized by sha384_init(), and should not be finalized
- * by sha384_final(). Behavior with invalid context is undefined.
+ * SHA-384 context should be already correctly initialized by libspdm_sha384_init(), and should not be finalized
+ * by libspdm_sha384_final(). Behavior with invalid context is undefined.
  *
- * If sha384_context is NULL, then return FALSE.
+ * If sha384_context is NULL, then return false.
  *
  * @param[in, out]  sha384_context  Pointer to the SHA-384 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA-384 data digest succeeded.
- * @retval FALSE  SHA-384 data digest failed.
+ * @retval true   SHA-384 data digest succeeded.
+ * @retval false  SHA-384 data digest failed.
  *
  **/
-boolean sha384_update(IN OUT void *sha384_context, IN const void *data,
-                      IN uintn data_size);
+bool libspdm_sha384_update(void *sha384_context, const void *data,
+                           size_t data_size);
 
 /**
  * Completes computation of the SHA-384 digest value.
@@ -343,21 +343,21 @@ boolean sha384_update(IN OUT void *sha384_context, IN const void *data,
  * This function completes SHA-384 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA-384 context cannot
  * be used again.
- * SHA-384 context should be already correctly initialized by sha384_init(), and should not be
- * finalized by sha384_final(). Behavior with invalid SHA-384 context is undefined.
+ * SHA-384 context should be already correctly initialized by libspdm_sha384_init(), and should not be
+ * finalized by libspdm_sha384_final(). Behavior with invalid SHA-384 context is undefined.
  *
- * If sha384_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha384_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha384_context  Pointer to the SHA-384 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA-384 digest
  *                                value (48 bytes).
  *
- * @retval TRUE   SHA-384 digest computation succeeded.
- * @retval FALSE  SHA-384 digest computation failed.
+ * @retval true   SHA-384 digest computation succeeded.
+ * @retval false  SHA-384 digest computation failed.
  *
  **/
-boolean sha384_final(IN OUT void *sha384_context, OUT uint8_t *hash_value);
+bool libspdm_sha384_final(void *sha384_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA-384 message digest of a input data buffer.
@@ -365,29 +365,29 @@ boolean sha384_final(IN OUT void *sha384_context, OUT uint8_t *hash_value);
  * This function performs the SHA-384 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA-384 digest
  *                         value (48 bytes).
  *
- * @retval TRUE   SHA-384 digest computation succeeded.
- * @retval FALSE  SHA-384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-384 digest computation succeeded.
+ * @retval false  SHA-384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha384_hash_all(IN const void *data, IN uintn data_size,
-                        OUT uint8_t *hash_value);
+bool libspdm_sha384_hash_all(const void *data, size_t data_size,
+                             uint8_t *hash_value);
 
 /**
  * Allocates and initializes one HASH_CTX context for subsequent SHA512 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sha512_new() returns NULL.
+ *         If the allocations fails, libspdm_sha512_new() returns NULL.
  *
  **/
-void *sha512_new(void);
+void *libspdm_sha512_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -395,60 +395,60 @@ void *sha512_new(void);
  * @param[in]  sha512_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha512_free(IN void *sha512_ctx);
+void libspdm_sha512_free(void *sha512_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha512_context as SHA-512 hash context for
  * subsequent use.
  *
- * If sha512_context is NULL, then return FALSE.
+ * If sha512_context is NULL, then return false.
  *
  * @param[out]  sha512_context  Pointer to SHA-512 context being initialized.
  *
- * @retval TRUE   SHA-512 context initialization succeeded.
- * @retval FALSE  SHA-512 context initialization failed.
+ * @retval true   SHA-512 context initialization succeeded.
+ * @retval false  SHA-512 context initialization failed.
  *
  **/
-boolean sha512_init(OUT void *sha512_context);
+bool libspdm_sha512_init(void *sha512_context);
 
 /**
  * Makes a copy of an existing SHA-512 context.
  *
- * If sha512_context is NULL, then return FALSE.
- * If new_sha512_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha512_context is NULL, then return false.
+ * If new_sha512_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha512_context     Pointer to SHA-512 context being copied.
  * @param[out] new_sha512_context  Pointer to new SHA-512 context.
  *
- * @retval TRUE   SHA-512 context copy succeeded.
- * @retval FALSE  SHA-512 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-512 context copy succeeded.
+ * @retval false  SHA-512 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha512_duplicate(IN const void *sha512_context,
-                         OUT void *new_sha512_context);
+bool libspdm_sha512_duplicate(const void *sha512_context,
+                              void *new_sha512_context);
 
 /**
  * Digests the input data and updates SHA-512 context.
  *
  * This function performs SHA-512 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA-512 context should be already correctly initialized by sha512_init(), and should not be finalized
- * by sha512_final(). Behavior with invalid context is undefined.
+ * SHA-512 context should be already correctly initialized by libspdm_sha512_init(), and should not be finalized
+ * by libspdm_sha512_final(). Behavior with invalid context is undefined.
  *
- * If sha512_context is NULL, then return FALSE.
+ * If sha512_context is NULL, then return false.
  *
  * @param[in, out]  sha512_context  Pointer to the SHA-512 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA-512 data digest succeeded.
- * @retval FALSE  SHA-512 data digest failed.
+ * @retval true   SHA-512 data digest succeeded.
+ * @retval false  SHA-512 data digest failed.
  *
  **/
-boolean sha512_update(IN OUT void *sha512_context, IN const void *data,
-                      IN uintn data_size);
+bool libspdm_sha512_update(void *sha512_context, const void *data,
+                           size_t data_size);
 
 /**
  * Completes computation of the SHA-512 digest value.
@@ -456,21 +456,21 @@ boolean sha512_update(IN OUT void *sha512_context, IN const void *data,
  * This function completes SHA-512 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA-512 context cannot
  * be used again.
- * SHA-512 context should be already correctly initialized by sha512_init(), and should not be
- * finalized by sha512_final(). Behavior with invalid SHA-512 context is undefined.
+ * SHA-512 context should be already correctly initialized by libspdm_sha512_init(), and should not be
+ * finalized by libspdm_sha512_final(). Behavior with invalid SHA-512 context is undefined.
  *
- * If sha512_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha512_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha512_context  Pointer to the SHA-512 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA-512 digest
  *                                value (64 bytes).
  *
- * @retval TRUE   SHA-512 digest computation succeeded.
- * @retval FALSE  SHA-512 digest computation failed.
+ * @retval true   SHA-512 digest computation succeeded.
+ * @retval false  SHA-512 digest computation failed.
  *
  **/
-boolean sha512_final(IN OUT void *sha512_context, OUT uint8_t *hash_value);
+bool libspdm_sha512_final(void *sha512_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA-512 message digest of a input data buffer.
@@ -478,20 +478,20 @@ boolean sha512_final(IN OUT void *sha512_context, OUT uint8_t *hash_value);
  * This function performs the SHA-512 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA-512 digest
  *                         value (64 bytes).
  *
- * @retval TRUE   SHA-512 digest computation succeeded.
- * @retval FALSE  SHA-512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA-512 digest computation succeeded.
+ * @retval false  SHA-512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha512_hash_all(IN const void *data, IN uintn data_size,
-                        OUT uint8_t *hash_value);
+bool libspdm_sha512_hash_all(const void *data, size_t data_size,
+                             uint8_t *hash_value);
 
 /*=====================================================================================
  *    One-Way Cryptographic hash SHA3 Primitives
@@ -501,10 +501,10 @@ boolean sha512_hash_all(IN const void *data, IN uintn data_size,
  * Allocates and initializes one HASH_CTX context for subsequent SHA3-256 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sha3_256_new() returns NULL.
+ *         If the allocations fails, libspdm_sha3_256_new() returns NULL.
  *
  **/
-void *sha3_256_new(void);
+void *libspdm_sha3_256_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -512,60 +512,60 @@ void *sha3_256_new(void);
  * @param[in]  sha3_256_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha3_256_free(IN void *sha3_256_ctx);
+void libspdm_sha3_256_free(void *sha3_256_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha3_256_context as SHA3-256 hash context for
  * subsequent use.
  *
- * If sha3_256_context is NULL, then return FALSE.
+ * If sha3_256_context is NULL, then return false.
  *
  * @param[out]  sha3_256_context  Pointer to SHA3-256 context being initialized.
  *
- * @retval TRUE   SHA3-256 context initialization succeeded.
- * @retval FALSE  SHA3-256 context initialization failed.
+ * @retval true   SHA3-256 context initialization succeeded.
+ * @retval false  SHA3-256 context initialization failed.
  *
  **/
-boolean sha3_256_init(OUT void *sha3_256_context);
+bool libspdm_sha3_256_init(void *sha3_256_context);
 
 /**
  * Makes a copy of an existing SHA3-256 context.
  *
- * If sha3_256_context is NULL, then return FALSE.
- * If new_sha3_256_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha3_256_context is NULL, then return false.
+ * If new_sha3_256_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha3_256_context     Pointer to SHA3-256 context being copied.
  * @param[out] new_sha3_256_context  Pointer to new SHA3-256 context.
  *
- * @retval TRUE   SHA3-256 context copy succeeded.
- * @retval FALSE  SHA3-256 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-256 context copy succeeded.
+ * @retval false  SHA3-256 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_256_duplicate(IN const void *sha3_256_context,
-                           OUT void *new_sha3_256_context);
+bool libspdm_sha3_256_duplicate(const void *sha3_256_context,
+                                void *new_sha3_256_context);
 
 /**
  * Digests the input data and updates SHA3-256 context.
  *
  * This function performs SHA3-256 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA3-256 context should be already correctly initialized by sha3_256_init(), and should not be finalized
- * by sha3_256_final(). Behavior with invalid context is undefined.
+ * SHA3-256 context should be already correctly initialized by libspdm_sha3_256_init(), and should not be finalized
+ * by libspdm_sha3_256_final(). Behavior with invalid context is undefined.
  *
- * If sha3_256_context is NULL, then return FALSE.
+ * If sha3_256_context is NULL, then return false.
  *
  * @param[in, out]  sha3_256_context  Pointer to the SHA3-256 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA3-256 data digest succeeded.
- * @retval FALSE  SHA3-256 data digest failed.
+ * @retval true   SHA3-256 data digest succeeded.
+ * @retval false  SHA3-256 data digest failed.
  *
  **/
-boolean sha3_256_update(IN OUT void *sha3_256_context, IN const void *data,
-                        IN uintn data_size);
+bool libspdm_sha3_256_update(void *sha3_256_context, const void *data,
+                             size_t data_size);
 
 /**
  * Completes computation of the SHA3-256 digest value.
@@ -573,21 +573,21 @@ boolean sha3_256_update(IN OUT void *sha3_256_context, IN const void *data,
  * This function completes SHA3-256 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA3-256 context cannot
  * be used again.
- * SHA3-256 context should be already correctly initialized by sha3_256_init(), and should not be
- * finalized by sha3_256_final(). Behavior with invalid SHA3-256 context is undefined.
+ * SHA3-256 context should be already correctly initialized by libspdm_sha3_256_init(), and should not be
+ * finalized by libspdm_sha3_256_final(). Behavior with invalid SHA3-256 context is undefined.
  *
- * If sha3_256_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha3_256_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha3_256_context  Pointer to the SHA3-256 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA3-256 digest
  *                                value (256 / 8 bytes).
  *
- * @retval TRUE   SHA3-256 digest computation succeeded.
- * @retval FALSE  SHA3-256 digest computation failed.
+ * @retval true   SHA3-256 digest computation succeeded.
+ * @retval false  SHA3-256 digest computation failed.
  *
  **/
-boolean sha3_256_final(IN OUT void *sha3_256_context, OUT uint8_t *hash_value);
+bool libspdm_sha3_256_final(void *sha3_256_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA3-256 message digest of a input data buffer.
@@ -595,29 +595,29 @@ boolean sha3_256_final(IN OUT void *sha3_256_context, OUT uint8_t *hash_value);
  * This function performs the SHA3-256 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA3-256 digest
  *                         value (256 / 8 bytes).
  *
- * @retval TRUE   SHA3-256 digest computation succeeded.
- * @retval FALSE  SHA3-256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-256 digest computation succeeded.
+ * @retval false  SHA3-256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_256_hash_all(IN const void *data, IN uintn data_size,
-                          OUT uint8_t *hash_value);
+bool libspdm_sha3_256_hash_all(const void *data, size_t data_size,
+                               uint8_t *hash_value);
 
 /**
  * Allocates and initializes one HASH_CTX context for subsequent SHA3-384 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sha3_384_new() returns NULL.
+ *         If the allocations fails, libspdm_sha3_384_new() returns NULL.
  *
  **/
-void *sha3_384_new(void);
+void *libspdm_sha3_384_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -625,60 +625,60 @@ void *sha3_384_new(void);
  * @param[in]  sha3_384_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha3_384_free(IN void *sha3_384_ctx);
+void libspdm_sha3_384_free(void *sha3_384_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha3_384_context as SHA3-384 hash context for
  * subsequent use.
  *
- * If sha3_384_context is NULL, then return FALSE.
+ * If sha3_384_context is NULL, then return false.
  *
  * @param[out]  sha3_384_context  Pointer to SHA3-384 context being initialized.
  *
- * @retval TRUE   SHA3-384 context initialization succeeded.
- * @retval FALSE  SHA3-384 context initialization failed.
+ * @retval true   SHA3-384 context initialization succeeded.
+ * @retval false  SHA3-384 context initialization failed.
  *
  **/
-boolean sha3_384_init(OUT void *sha3_384_context);
+bool libspdm_sha3_384_init(void *sha3_384_context);
 
 /**
  * Makes a copy of an existing SHA3-384 context.
  *
- * If sha3_384_context is NULL, then return FALSE.
- * If new_sha3_384_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha3_384_context is NULL, then return false.
+ * If new_sha3_384_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha3_384_context     Pointer to SHA3-384 context being copied.
  * @param[out] new_sha3_384_context  Pointer to new SHA3-384 context.
  *
- * @retval TRUE   SHA3-384 context copy succeeded.
- * @retval FALSE  SHA3-384 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-384 context copy succeeded.
+ * @retval false  SHA3-384 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_384_duplicate(IN const void *sha3_384_context,
-                           OUT void *new_sha3_384_context);
+bool libspdm_sha3_384_duplicate(const void *sha3_384_context,
+                                void *new_sha3_384_context);
 
 /**
  * Digests the input data and updates SHA3-384 context.
  *
  * This function performs SHA3-384 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA3-384 context should be already correctly initialized by sha3_384_init(), and should not be finalized
- * by sha3_384_final(). Behavior with invalid context is undefined.
+ * SHA3-384 context should be already correctly initialized by libspdm_sha3_384_init(), and should not be finalized
+ * by libspdm_sha3_384_final(). Behavior with invalid context is undefined.
  *
- * If sha3_384_context is NULL, then return FALSE.
+ * If sha3_384_context is NULL, then return false.
  *
  * @param[in, out]  sha3_384_context  Pointer to the SHA3-384 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA3-384 data digest succeeded.
- * @retval FALSE  SHA3-384 data digest failed.
+ * @retval true   SHA3-384 data digest succeeded.
+ * @retval false  SHA3-384 data digest failed.
  *
  **/
-boolean sha3_384_update(IN OUT void *sha3_384_context, IN const void *data,
-                        IN uintn data_size);
+bool libspdm_sha3_384_update(void *sha3_384_context, const void *data,
+                             size_t data_size);
 
 /**
  * Completes computation of the SHA3-384 digest value.
@@ -686,21 +686,21 @@ boolean sha3_384_update(IN OUT void *sha3_384_context, IN const void *data,
  * This function completes SHA3-384 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA3-384 context cannot
  * be used again.
- * SHA3-384 context should be already correctly initialized by sha3_384_init(), and should not be
- * finalized by sha3_384_final(). Behavior with invalid SHA3-384 context is undefined.
+ * SHA3-384 context should be already correctly initialized by libspdm_sha3_384_init(), and should not be
+ * finalized by libspdm_sha3_384_final(). Behavior with invalid SHA3-384 context is undefined.
  *
- * If sha3_384_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha3_384_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha3_384_context  Pointer to the SHA3-384 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA3-384 digest
  *                                value (384 / 8 bytes).
  *
- * @retval TRUE   SHA3-384 digest computation succeeded.
- * @retval FALSE  SHA3-384 digest computation failed.
+ * @retval true   SHA3-384 digest computation succeeded.
+ * @retval false  SHA3-384 digest computation failed.
  *
  **/
-boolean sha3_384_final(IN OUT void *sha3_384_context, OUT uint8_t *hash_value);
+bool libspdm_sha3_384_final(void *sha3_384_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA3-384 message digest of a input data buffer.
@@ -708,29 +708,29 @@ boolean sha3_384_final(IN OUT void *sha3_384_context, OUT uint8_t *hash_value);
  * This function performs the SHA3-384 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA3-384 digest
  *                         value (384 / 8 bytes).
  *
- * @retval TRUE   SHA3-384 digest computation succeeded.
- * @retval FALSE  SHA3-384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-384 digest computation succeeded.
+ * @retval false  SHA3-384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_384_hash_all(IN const void *data, IN uintn data_size,
-                          OUT uint8_t *hash_value);
+bool libspdm_sha3_384_hash_all(const void *data, size_t data_size,
+                               uint8_t *hash_value);
 
 /**
  * Allocates and initializes one HASH_CTX context for subsequent SHA3-512 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sha3_512_new() returns NULL.
+ *         If the allocations fails, libspdm_sha3_512_new() returns NULL.
  *
  **/
-void *sha3_512_new(void);
+void *libspdm_sha3_512_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -738,60 +738,60 @@ void *sha3_512_new(void);
  * @param[in]  sha3_512_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sha3_512_free(IN void *sha3_512_ctx);
+void libspdm_sha3_512_free(void *sha3_512_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sha3_512_context as SHA3-512 hash context for
  * subsequent use.
  *
- * If sha3_512_context is NULL, then return FALSE.
+ * If sha3_512_context is NULL, then return false.
  *
  * @param[out]  sha3_512_context  Pointer to SHA3-512 context being initialized.
  *
- * @retval TRUE   SHA3-512 context initialization succeeded.
- * @retval FALSE  SHA3-512 context initialization failed.
+ * @retval true   SHA3-512 context initialization succeeded.
+ * @retval false  SHA3-512 context initialization failed.
  *
  **/
-boolean sha3_512_init(OUT void *sha3_512_context);
+bool libspdm_sha3_512_init(void *sha3_512_context);
 
 /**
  * Makes a copy of an existing SHA3-512 context.
  *
- * If sha3_512_context is NULL, then return FALSE.
- * If new_sha3_512_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sha3_512_context is NULL, then return false.
+ * If new_sha3_512_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sha3_512_context     Pointer to SHA3-512 context being copied.
  * @param[out] new_sha3_512_context  Pointer to new SHA3-512 context.
  *
- * @retval TRUE   SHA3-512 context copy succeeded.
- * @retval FALSE  SHA3-512 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-512 context copy succeeded.
+ * @retval false  SHA3-512 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_512_duplicate(IN const void *sha3_512_context,
-                           OUT void *new_sha3_512_context);
+bool libspdm_sha3_512_duplicate(const void *sha3_512_context,
+                                void *new_sha3_512_context);
 
 /**
  * Digests the input data and updates SHA3-512 context.
  *
  * This function performs SHA3-512 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * SHA3-512 context should be already correctly initialized by sha3_512_init(), and should not be finalized
- * by sha3_512_final(). Behavior with invalid context is undefined.
+ * SHA3-512 context should be already correctly initialized by libspdm_sha3_512_init(), and should not be finalized
+ * by libspdm_sha3_512_final(). Behavior with invalid context is undefined.
  *
- * If sha3_512_context is NULL, then return FALSE.
+ * If sha3_512_context is NULL, then return false.
  *
  * @param[in, out]  sha3_512_context  Pointer to the SHA3-512 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SHA3-512 data digest succeeded.
- * @retval FALSE  SHA3-512 data digest failed.
+ * @retval true   SHA3-512 data digest succeeded.
+ * @retval false  SHA3-512 data digest failed.
  *
  **/
-boolean sha3_512_update(IN OUT void *sha3_512_context, IN const void *data,
-                        IN uintn data_size);
+bool libspdm_sha3_512_update(void *sha3_512_context, const void *data,
+                             size_t data_size);
 
 /**
  * Completes computation of the SHA3-512 digest value.
@@ -799,21 +799,21 @@ boolean sha3_512_update(IN OUT void *sha3_512_context, IN const void *data,
  * This function completes SHA3-512 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the SHA3-512 context cannot
  * be used again.
- * SHA3-512 context should be already correctly initialized by sha3_512_init(), and should not be
- * finalized by sha3_512_final(). Behavior with invalid SHA3-512 context is undefined.
+ * SHA3-512 context should be already correctly initialized by libspdm_sha3_512_init(), and should not be
+ * finalized by libspdm_sha3_512_final(). Behavior with invalid SHA3-512 context is undefined.
  *
- * If sha3_512_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sha3_512_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sha3_512_context  Pointer to the SHA3-512 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SHA3-512 digest
  *                                value (512 / 8 bytes).
  *
- * @retval TRUE   SHA3-512 digest computation succeeded.
- * @retval FALSE  SHA3-512 digest computation failed.
+ * @retval true   SHA3-512 digest computation succeeded.
+ * @retval false  SHA3-512 digest computation failed.
  *
  **/
-boolean sha3_512_final(IN OUT void *sha3_512_context, OUT uint8_t *hash_value);
+bool libspdm_sha3_512_final(void *sha3_512_context, uint8_t *hash_value);
 
 /**
  * Computes the SHA3-512 message digest of a input data buffer.
@@ -821,20 +821,20 @@ boolean sha3_512_final(IN OUT void *sha3_512_context, OUT uint8_t *hash_value);
  * This function performs the SHA3-512 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SHA3-512 digest
  *                         value (512 / 8 bytes).
  *
- * @retval TRUE   SHA3-512 digest computation succeeded.
- * @retval FALSE  SHA3-512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SHA3-512 digest computation succeeded.
+ * @retval false  SHA3-512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sha3_512_hash_all(IN const void *data, IN uintn data_size,
-                          OUT uint8_t *hash_value);
+bool libspdm_sha3_512_hash_all(const void *data, size_t data_size,
+                               uint8_t *hash_value);
 
 /*=====================================================================================
  *    One-Way Cryptographic hash SM3 Primitives
@@ -844,10 +844,10 @@ boolean sha3_512_hash_all(IN const void *data, IN uintn data_size,
  * Allocates and initializes one HASH_CTX context for subsequent SM3-256 use.
  *
  * @return  Pointer to the HASH_CTX context that has been initialized.
- *         If the allocations fails, sm3_256_new() returns NULL.
+ *         If the allocations fails, libspdm_sm3_256_new() returns NULL.
  *
  **/
-void *sm3_256_new(void);
+void *libspdm_sm3_256_new(void);
 
 /**
  * Release the specified HASH_CTX context.
@@ -855,39 +855,39 @@ void *sm3_256_new(void);
  * @param[in]  sm3_256_ctx  Pointer to the HASH_CTX context to be released.
  *
  **/
-void sm3_256_free(IN void *sm3_256_ctx);
+void libspdm_sm3_256_free(void *sm3_256_ctx);
 
 /**
  * Initializes user-supplied memory pointed by sm3_context as SM3 hash context for
  * subsequent use.
  *
- * If sm3_context is NULL, then return FALSE.
+ * If sm3_context is NULL, then return false.
  *
  * @param[out]  sm3_context  Pointer to SM3 context being initialized.
  *
- * @retval TRUE   SM3 context initialization succeeded.
- * @retval FALSE  SM3 context initialization failed.
+ * @retval true   SM3 context initialization succeeded.
+ * @retval false  SM3 context initialization failed.
  *
  **/
-boolean sm3_256_init(OUT void *sm3_context);
+bool libspdm_sm3_256_init(void *sm3_context);
 
 /**
  * Makes a copy of an existing SM3 context.
  *
- * If sm3_context is NULL, then return FALSE.
- * If new_sm3_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sm3_context is NULL, then return false.
+ * If new_sm3_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  sm3_context     Pointer to SM3 context being copied.
  * @param[out] new_sm3_context  Pointer to new SM3 context.
  *
- * @retval TRUE   SM3 context copy succeeded.
- * @retval FALSE  SM3 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SM3 context copy succeeded.
+ * @retval false  SM3 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sm3_256_duplicate(IN const void *sm3_context,
-                          OUT void *new_sm3_context);
+bool libspdm_sm3_256_duplicate(const void *sm3_context,
+                               void *new_sm3_context);
 
 /**
  * Digests the input data and updates SM3 context.
@@ -897,18 +897,18 @@ boolean sm3_256_duplicate(IN const void *sm3_context,
  * SM3 context should be already correctly initialized by sm3_init(), and should not be finalized
  * by sm3_final(). Behavior with invalid context is undefined.
  *
- * If sm3_context is NULL, then return FALSE.
+ * If sm3_context is NULL, then return false.
  *
  * @param[in, out]  sm3_context     Pointer to the SM3 context.
  * @param[in]       data           Pointer to the buffer containing the data to be hashed.
  * @param[in]       data_size       size of data buffer in bytes.
  *
- * @retval TRUE   SM3 data digest succeeded.
- * @retval FALSE  SM3 data digest failed.
+ * @retval true   SM3 data digest succeeded.
+ * @retval false  SM3 data digest failed.
  *
  **/
-boolean sm3_256_update(IN OUT void *sm3_context, IN const void *data,
-                       IN uintn data_size);
+bool libspdm_sm3_256_update(void *sm3_context, const void *data,
+                            size_t data_size);
 
 /**
  * Completes computation of the SM3 digest value.
@@ -919,18 +919,18 @@ boolean sm3_256_update(IN OUT void *sm3_context, IN const void *data,
  * SM3 context should be already correctly initialized by sm3_init(), and should not be
  * finalized by sm3_final(). Behavior with invalid SM3 context is undefined.
  *
- * If sm3_context is NULL, then return FALSE.
- * If hash_value is NULL, then return FALSE.
+ * If sm3_context is NULL, then return false.
+ * If hash_value is NULL, then return false.
  *
  * @param[in, out]  sm3_context     Pointer to the SM3 context.
  * @param[out]      hash_value      Pointer to a buffer that receives the SM3 digest
  *                                value (32 bytes).
  *
- * @retval TRUE   SM3 digest computation succeeded.
- * @retval FALSE  SM3 digest computation failed.
+ * @retval true   SM3 digest computation succeeded.
+ * @retval false  SM3 digest computation failed.
  *
  **/
-boolean sm3_256_final(IN OUT void *sm3_context, OUT uint8_t *hash_value);
+bool libspdm_sm3_256_final(void *sm3_context, uint8_t *hash_value);
 
 /**
  * Computes the SM3 message digest of a input data buffer.
@@ -938,20 +938,20 @@ boolean sm3_256_final(IN OUT void *sm3_context, OUT uint8_t *hash_value);
  * This function performs the SM3 message digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be hashed.
  * @param[in]   data_size    size of data buffer in bytes.
  * @param[out]  hash_value   Pointer to a buffer that receives the SM3 digest
  *                         value (32 bytes).
  *
- * @retval TRUE   SM3 digest computation succeeded.
- * @retval FALSE  SM3 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   SM3 digest computation succeeded.
+ * @retval false  SM3 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean sm3_256_hash_all(IN const void *data, IN uintn data_size,
-                         OUT uint8_t *hash_value);
+bool libspdm_sm3_256_hash_all(const void *data, size_t data_size,
+                              uint8_t *hash_value);
 
 /*=====================================================================================
  *    MAC (message Authentication Code) Primitive
@@ -961,10 +961,10 @@ boolean sm3_256_hash_all(IN const void *data, IN uintn data_size,
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA256 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha256_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha256_new() returns NULL.
  *
  **/
-void *hmac_sha256_new(void);
+void *libspdm_hmac_sha256_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -972,67 +972,67 @@ void *hmac_sha256_new(void);
  * @param[in]  hmac_sha256_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha256_free(IN void *hmac_sha256_ctx);
+void libspdm_hmac_sha256_free(void *hmac_sha256_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha256_update().
+ * calling to libspdm_hmac_sha256_update().
  *
- * If hmac_sha256_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha256_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  hmac_sha256_ctx  Pointer to HMAC-SHA256 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
- * @retval FALSE  This interface is not supported.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha256_set_key(OUT void *hmac_sha256_ctx, IN const uint8_t *key,
-                            IN uintn key_size);
+bool libspdm_hmac_sha256_set_key(void *hmac_sha256_ctx, const uint8_t *key,
+                                 size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA256 context.
  *
- * If hmac_sha256_ctx is NULL, then return FALSE.
- * If new_hmac_sha256_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha256_ctx is NULL, then return false.
+ * If new_hmac_sha256_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  hmac_sha256_ctx     Pointer to HMAC-SHA256 context being copied.
  * @param[out] new_hmac_sha256_ctx  Pointer to new HMAC-SHA256 context.
  *
- * @retval TRUE   HMAC-SHA256 context copy succeeded.
- * @retval FALSE  HMAC-SHA256 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA256 context copy succeeded.
+ * @retval false  HMAC-SHA256 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha256_duplicate(IN const void *hmac_sha256_ctx,
-                              OUT void *new_hmac_sha256_ctx);
+bool libspdm_hmac_sha256_duplicate(const void *hmac_sha256_ctx,
+                                   void *new_hmac_sha256_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA256 context.
  *
  * This function performs HMAC-SHA256 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA256 context should be initialized by hmac_sha256_new(), and should not be finalized
- * by hmac_sha256_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA256 context should be initialized by libspdm_hmac_sha256_new(), and should not be finalized
+ * by libspdm_hmac_sha256_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha256_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha256_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha256_ctx Pointer to the HMAC-SHA256 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA256 data digest succeeded.
- * @retval FALSE  HMAC-SHA256 data digest failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA256 data digest succeeded.
+ * @retval false  HMAC-SHA256 data digest failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha256_update(IN OUT void *hmac_sha256_ctx, IN const void *data,
-                           IN uintn data_size);
+bool libspdm_hmac_sha256_update(void *hmac_sha256_ctx, const void *data,
+                                size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA256 digest value.
@@ -1040,23 +1040,23 @@ boolean hmac_sha256_update(IN OUT void *hmac_sha256_ctx, IN const void *data,
  * This function completes HMAC-SHA256 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA256 context cannot
  * be used again.
- * HMAC-SHA256 context should be initialized by hmac_sha256_new(), and should not be finalized
- * by hmac_sha256_final(). Behavior with invalid HMAC-SHA256 context is undefined.
+ * HMAC-SHA256 context should be initialized by libspdm_hmac_sha256_new(), and should not be finalized
+ * by libspdm_hmac_sha256_final(). Behavior with invalid HMAC-SHA256 context is undefined.
  *
- * If hmac_sha256_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha256_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha256_ctx  Pointer to the HMAC-SHA256 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA256 digest
  *                                    value (32 bytes).
  *
- * @retval TRUE   HMAC-SHA256 digest computation succeeded.
- * @retval FALSE  HMAC-SHA256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA256 digest computation succeeded.
+ * @retval false  HMAC-SHA256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha256_final(IN OUT void *hmac_sha256_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha256_final(void *hmac_sha256_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA256 digest of a input data buffer.
@@ -1064,7 +1064,7 @@ boolean hmac_sha256_final(IN OUT void *hmac_sha256_ctx, OUT uint8_t *hmac_value)
  * This function performs the HMAC-SHA256 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1073,23 +1073,23 @@ boolean hmac_sha256_final(IN OUT void *hmac_sha256_ctx, OUT uint8_t *hmac_value)
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA256 digest
  *                         value (32 bytes).
  *
- * @retval TRUE   HMAC-SHA256 digest computation succeeded.
- * @retval FALSE  HMAC-SHA256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA256 digest computation succeeded.
+ * @retval false  HMAC-SHA256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha256_all(IN const void *data, IN uintn data_size,
-                        IN const uint8_t *key, IN uintn key_size,
-                        OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha256_all(const void *data, size_t data_size,
+                             const uint8_t *key, size_t key_size,
+                             uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA384 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha384_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha384_new() returns NULL.
  *
  **/
-void *hmac_sha384_new(void);
+void *libspdm_hmac_sha384_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1097,67 +1097,67 @@ void *hmac_sha384_new(void);
  * @param[in]  hmac_sha384_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha384_free(IN void *hmac_sha384_ctx);
+void libspdm_hmac_sha384_free(void *hmac_sha384_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha384_update().
+ * calling to libspdm_hmac_sha384_update().
  *
- * If hmac_sha384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  hmac_sha384_ctx  Pointer to HMAC-SHA384 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
- * @retval FALSE  This interface is not supported.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha384_set_key(OUT void *hmac_sha384_ctx, IN const uint8_t *key,
-                            IN uintn key_size);
+bool libspdm_hmac_sha384_set_key(void *hmac_sha384_ctx, const uint8_t *key,
+                                 size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA384 context.
  *
- * If hmac_sha384_ctx is NULL, then return FALSE.
- * If new_hmac_sha384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha384_ctx is NULL, then return false.
+ * If new_hmac_sha384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  hmac_sha384_ctx     Pointer to HMAC-SHA384 context being copied.
  * @param[out] new_hmac_sha384_ctx  Pointer to new HMAC-SHA384 context.
  *
- * @retval TRUE   HMAC-SHA384 context copy succeeded.
- * @retval FALSE  HMAC-SHA384 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA384 context copy succeeded.
+ * @retval false  HMAC-SHA384 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha384_duplicate(IN const void *hmac_sha384_ctx,
-                              OUT void *new_hmac_sha384_ctx);
+bool libspdm_hmac_sha384_duplicate(const void *hmac_sha384_ctx,
+                                   void *new_hmac_sha384_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA384 context.
  *
  * This function performs HMAC-SHA384 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA384 context should be initialized by hmac_sha384_new(), and should not be finalized
- * by hmac_sha384_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA384 context should be initialized by libspdm_hmac_sha384_new(), and should not be finalized
+ * by libspdm_hmac_sha384_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha384_ctx Pointer to the HMAC-SHA384 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA384 data digest succeeded.
- * @retval FALSE  HMAC-SHA384 data digest failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA384 data digest succeeded.
+ * @retval false  HMAC-SHA384 data digest failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha384_update(IN OUT void *hmac_sha384_ctx, IN const void *data,
-                           IN uintn data_size);
+bool libspdm_hmac_sha384_update(void *hmac_sha384_ctx, const void *data,
+                                size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA384 digest value.
@@ -1165,23 +1165,23 @@ boolean hmac_sha384_update(IN OUT void *hmac_sha384_ctx, IN const void *data,
  * This function completes HMAC-SHA384 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA384 context cannot
  * be used again.
- * HMAC-SHA384 context should be initialized by hmac_sha384_new(), and should not be finalized
- * by hmac_sha384_final(). Behavior with invalid HMAC-SHA384 context is undefined.
+ * HMAC-SHA384 context should be initialized by libspdm_hmac_sha384_new(), and should not be finalized
+ * by libspdm_hmac_sha384_final(). Behavior with invalid HMAC-SHA384 context is undefined.
  *
- * If hmac_sha384_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha384_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha384_ctx  Pointer to the HMAC-SHA384 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA384 digest
  *                                    value (48 bytes).
  *
- * @retval TRUE   HMAC-SHA384 digest computation succeeded.
- * @retval FALSE  HMAC-SHA384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA384 digest computation succeeded.
+ * @retval false  HMAC-SHA384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha384_final(IN OUT void *hmac_sha384_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha384_final(void *hmac_sha384_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA384 digest of a input data buffer.
@@ -1189,7 +1189,7 @@ boolean hmac_sha384_final(IN OUT void *hmac_sha384_ctx, OUT uint8_t *hmac_value)
  * This function performs the HMAC-SHA384 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1198,23 +1198,23 @@ boolean hmac_sha384_final(IN OUT void *hmac_sha384_ctx, OUT uint8_t *hmac_value)
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA384 digest
  *                         value (48 bytes).
  *
- * @retval TRUE   HMAC-SHA384 digest computation succeeded.
- * @retval FALSE  HMAC-SHA384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA384 digest computation succeeded.
+ * @retval false  HMAC-SHA384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha384_all(IN const void *data, IN uintn data_size,
-                        IN const uint8_t *key, IN uintn key_size,
-                        OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha384_all(const void *data, size_t data_size,
+                             const uint8_t *key, size_t key_size,
+                             uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA512 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha512_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha512_new() returns NULL.
  *
  **/
-void *hmac_sha512_new(void);
+void *libspdm_hmac_sha512_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1222,67 +1222,67 @@ void *hmac_sha512_new(void);
  * @param[in]  hmac_sha512_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha512_free(IN void *hmac_sha512_ctx);
+void libspdm_hmac_sha512_free(void *hmac_sha512_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha512_update().
+ * calling to libspdm_hmac_sha512_update().
  *
- * If hmac_sha512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  hmac_sha512_ctx  Pointer to HMAC-SHA512 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
- * @retval FALSE  This interface is not supported.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha512_set_key(OUT void *hmac_sha512_ctx, IN const uint8_t *key,
-                            IN uintn key_size);
+bool libspdm_hmac_sha512_set_key(void *hmac_sha512_ctx, const uint8_t *key,
+                                 size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA512 context.
  *
- * If hmac_sha512_ctx is NULL, then return FALSE.
- * If new_hmac_sha512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha512_ctx is NULL, then return false.
+ * If new_hmac_sha512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  hmac_sha512_ctx     Pointer to HMAC-SHA512 context being copied.
  * @param[out] new_hmac_sha512_ctx  Pointer to new HMAC-SHA512 context.
  *
- * @retval TRUE   HMAC-SHA512 context copy succeeded.
- * @retval FALSE  HMAC-SHA512 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA512 context copy succeeded.
+ * @retval false  HMAC-SHA512 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha512_duplicate(IN const void *hmac_sha512_ctx,
-                              OUT void *new_hmac_sha512_ctx);
+bool libspdm_hmac_sha512_duplicate(const void *hmac_sha512_ctx,
+                                   void *new_hmac_sha512_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA512 context.
  *
  * This function performs HMAC-SHA512 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA512 context should be initialized by hmac_sha512_new(), and should not be finalized
- * by hmac_sha512_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA512 context should be initialized by libspdm_hmac_sha512_new(), and should not be finalized
+ * by libspdm_hmac_sha512_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha512_ctx Pointer to the HMAC-SHA512 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA512 data digest succeeded.
- * @retval FALSE  HMAC-SHA512 data digest failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA512 data digest succeeded.
+ * @retval false  HMAC-SHA512 data digest failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha512_update(IN OUT void *hmac_sha512_ctx, IN const void *data,
-                           IN uintn data_size);
+bool libspdm_hmac_sha512_update(void *hmac_sha512_ctx, const void *data,
+                                size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA512 digest value.
@@ -1290,23 +1290,23 @@ boolean hmac_sha512_update(IN OUT void *hmac_sha512_ctx, IN const void *data,
  * This function completes HMAC-SHA512 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA512 context cannot
  * be used again.
- * HMAC-SHA512 context should be initialized by hmac_sha512_new(), and should not be finalized
- * by hmac_sha512_final(). Behavior with invalid HMAC-SHA512 context is undefined.
+ * HMAC-SHA512 context should be initialized by libspdm_hmac_sha512_new(), and should not be finalized
+ * by libspdm_hmac_sha512_final(). Behavior with invalid HMAC-SHA512 context is undefined.
  *
- * If hmac_sha512_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha512_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha512_ctx  Pointer to the HMAC-SHA512 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA512 digest
  *                                    value (64 bytes).
  *
- * @retval TRUE   HMAC-SHA512 digest computation succeeded.
- * @retval FALSE  HMAC-SHA512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA512 digest computation succeeded.
+ * @retval false  HMAC-SHA512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha512_final(IN OUT void *hmac_sha512_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha512_final(void *hmac_sha512_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA512 digest of a input data buffer.
@@ -1314,7 +1314,7 @@ boolean hmac_sha512_final(IN OUT void *hmac_sha512_ctx, OUT uint8_t *hmac_value)
  * This function performs the HMAC-SHA512 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1323,23 +1323,23 @@ boolean hmac_sha512_final(IN OUT void *hmac_sha512_ctx, OUT uint8_t *hmac_value)
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA512 digest
  *                         value (64 bytes).
  *
- * @retval TRUE   HMAC-SHA512 digest computation succeeded.
- * @retval FALSE  HMAC-SHA512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA512 digest computation succeeded.
+ * @retval false  HMAC-SHA512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha512_all(IN const void *data, IN uintn data_size,
-                        IN const uint8_t *key, IN uintn key_size,
-                        OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha512_all(const void *data, size_t data_size,
+                             const uint8_t *key, size_t key_size,
+                             uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA3_256 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha3_256_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha3_256_new() returns NULL.
  *
  **/
-void *hmac_sha3_256_new(void);
+void *libspdm_hmac_sha3_256_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1347,61 +1347,61 @@ void *hmac_sha3_256_new(void);
  * @param[in]  hmac_sha3_256_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha3_256_free(IN void *hmac_sha3_256_ctx);
+void libspdm_hmac_sha3_256_free(void *hmac_sha3_256_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha3_256_update().
+ * calling to libspdm_hmac_sha3_256_update().
  *
- * If hmac_sha3_256_ctx is NULL, then return FALSE.
+ * If hmac_sha3_256_ctx is NULL, then return false.
  *
  * @param[out]  hmac_sha3_256_ctx  Pointer to HMAC-SHA3_256 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
  *
  **/
-boolean hmac_sha3_256_set_key(OUT void *hmac_sha3_256_ctx, IN const uint8_t *key,
-                              IN uintn key_size);
+bool libspdm_hmac_sha3_256_set_key(void *hmac_sha3_256_ctx, const uint8_t *key,
+                                   size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA3_256 context.
  *
- * If hmac_sha3_256_ctx is NULL, then return FALSE.
- * If new_hmac_sha3_256_ctx is NULL, then return FALSE.
+ * If hmac_sha3_256_ctx is NULL, then return false.
+ * If new_hmac_sha3_256_ctx is NULL, then return false.
  *
  * @param[in]  hmac_sha3_256_ctx     Pointer to HMAC-SHA3_256 context being copied.
  * @param[out] new_hmac_sha3_256_ctx  Pointer to new HMAC-SHA3_256 context.
  *
- * @retval TRUE   HMAC-SHA3_256 context copy succeeded.
- * @retval FALSE  HMAC-SHA3_256 context copy failed.
+ * @retval true   HMAC-SHA3_256 context copy succeeded.
+ * @retval false  HMAC-SHA3_256 context copy failed.
  *
  **/
-boolean hmac_sha3_256_duplicate(IN const void *hmac_sha3_256_ctx,
-                                OUT void *new_hmac_sha3_256_ctx);
+bool libspdm_hmac_sha3_256_duplicate(const void *hmac_sha3_256_ctx,
+                                     void *new_hmac_sha3_256_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA3_256 context.
  *
  * This function performs HMAC-SHA3_256 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA3_256 context should be initialized by hmac_sha3_256_new(), and should not be finalized
- * by hmac_sha3_256_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA3_256 context should be initialized by libspdm_hmac_sha3_256_new(), and should not be finalized
+ * by libspdm_hmac_sha3_256_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha3_256_ctx is NULL, then return FALSE.
+ * If hmac_sha3_256_ctx is NULL, then return false.
  *
  * @param[in, out]  hmac_sha3_256_ctx Pointer to the HMAC-SHA3_256 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA3_256 data digest succeeded.
- * @retval FALSE  HMAC-SHA3_256 data digest failed.
+ * @retval true   HMAC-SHA3_256 data digest succeeded.
+ * @retval false  HMAC-SHA3_256 data digest failed.
  *
  **/
-boolean hmac_sha3_256_update(IN OUT void *hmac_sha3_256_ctx, IN const void *data,
-                             IN uintn data_size);
+bool libspdm_hmac_sha3_256_update(void *hmac_sha3_256_ctx, const void *data,
+                                  size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA3_256 digest value.
@@ -1409,21 +1409,21 @@ boolean hmac_sha3_256_update(IN OUT void *hmac_sha3_256_ctx, IN const void *data
  * This function completes HMAC-SHA3_256 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA3_256 context cannot
  * be used again.
- * HMAC-SHA3_256 context should be initialized by hmac_sha3_256_new(), and should not be finalized
- * by hmac_sha3_256_final(). Behavior with invalid HMAC-SHA3_256 context is undefined.
+ * HMAC-SHA3_256 context should be initialized by libspdm_hmac_sha3_256_new(), and should not be finalized
+ * by libspdm_hmac_sha3_256_final(). Behavior with invalid HMAC-SHA3_256 context is undefined.
  *
- * If hmac_sha3_256_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
+ * If hmac_sha3_256_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
  *
  * @param[in, out]  hmac_sha3_256_ctx  Pointer to the HMAC-SHA3_256 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA3_256 digest
  *                                    value (32 bytes).
  *
- * @retval TRUE   HMAC-SHA3_256 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_256 digest computation failed.
+ * @retval true   HMAC-SHA3_256 digest computation succeeded.
+ * @retval false  HMAC-SHA3_256 digest computation failed.
  *
  **/
-boolean hmac_sha3_256_final(IN OUT void *hmac_sha3_256_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_256_final(void *hmac_sha3_256_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA3_256 digest of a input data buffer.
@@ -1431,7 +1431,7 @@ boolean hmac_sha3_256_final(IN OUT void *hmac_sha3_256_ctx, OUT uint8_t *hmac_va
  * This function performs the HMAC-SHA3_256 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1440,23 +1440,23 @@ boolean hmac_sha3_256_final(IN OUT void *hmac_sha3_256_ctx, OUT uint8_t *hmac_va
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA3_256 digest
  *                         value (32 bytes).
  *
- * @retval TRUE   HMAC-SHA3_256 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_256 digest computation succeeded.
+ * @retval false  HMAC-SHA3_256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_256_all(IN const void *data, IN uintn data_size,
-                          IN const uint8_t *key, IN uintn key_size,
-                          OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_256_all(const void *data, size_t data_size,
+                               const uint8_t *key, size_t key_size,
+                               uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA3_384 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha3_384_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha3_384_new() returns NULL.
  *
  **/
-void *hmac_sha3_384_new(void);
+void *libspdm_hmac_sha3_384_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1464,67 +1464,67 @@ void *hmac_sha3_384_new(void);
  * @param[in]  hmac_sha3_384_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha3_384_free(IN void *hmac_sha3_384_ctx);
+void libspdm_hmac_sha3_384_free(void *hmac_sha3_384_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha3_384_update().
+ * calling to libspdm_hmac_sha3_384_update().
  *
- * If hmac_sha3_384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  hmac_sha3_384_ctx  Pointer to HMAC-SHA3_384 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
- * @retval FALSE  This interface is not supported.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_384_set_key(OUT void *hmac_sha3_384_ctx, IN const uint8_t *key,
-                              IN uintn key_size);
+bool libspdm_hmac_sha3_384_set_key(void *hmac_sha3_384_ctx, const uint8_t *key,
+                                   size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA3_384 context.
  *
- * If hmac_sha3_384_ctx is NULL, then return FALSE.
- * If new_hmac_sha3_384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_384_ctx is NULL, then return false.
+ * If new_hmac_sha3_384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  hmac_sha3_384_ctx     Pointer to HMAC-SHA3_384 context being copied.
  * @param[out] new_hmac_sha3_384_ctx  Pointer to new HMAC-SHA3_384 context.
  *
- * @retval TRUE   HMAC-SHA3_384 context copy succeeded.
- * @retval FALSE  HMAC-SHA3_384 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_384 context copy succeeded.
+ * @retval false  HMAC-SHA3_384 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_384_duplicate(IN const void *hmac_sha3_384_ctx,
-                                OUT void *new_hmac_sha3_384_ctx);
+bool libspdm_hmac_sha3_384_duplicate(const void *hmac_sha3_384_ctx,
+                                     void *new_hmac_sha3_384_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA3_384 context.
  *
  * This function performs HMAC-SHA3_384 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA3_384 context should be initialized by hmac_sha3_384_new(), and should not be finalized
- * by hmac_sha3_384_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA3_384 context should be initialized by libspdm_hmac_sha3_384_new(), and should not be finalized
+ * by libspdm_hmac_sha3_384_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha3_384_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_384_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha3_384_ctx Pointer to the HMAC-SHA3_384 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA3_384 data digest succeeded.
- * @retval FALSE  HMAC-SHA3_384 data digest failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_384 data digest succeeded.
+ * @retval false  HMAC-SHA3_384 data digest failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_384_update(IN OUT void *hmac_sha3_384_ctx, IN const void *data,
-                             IN uintn data_size);
+bool libspdm_hmac_sha3_384_update(void *hmac_sha3_384_ctx, const void *data,
+                                  size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA3_384 digest value.
@@ -1532,23 +1532,23 @@ boolean hmac_sha3_384_update(IN OUT void *hmac_sha3_384_ctx, IN const void *data
  * This function completes HMAC-SHA3_384 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA3_384 context cannot
  * be used again.
- * HMAC-SHA3_384 context should be initialized by hmac_sha3_384_new(), and should not be finalized
- * by hmac_sha3_384_final(). Behavior with invalid HMAC-SHA3_384 context is undefined.
+ * HMAC-SHA3_384 context should be initialized by libspdm_hmac_sha3_384_new(), and should not be finalized
+ * by libspdm_hmac_sha3_384_final(). Behavior with invalid HMAC-SHA3_384 context is undefined.
  *
- * If hmac_sha3_384_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_384_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha3_384_ctx  Pointer to the HMAC-SHA3_384 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA3_384 digest
  *                                    value (48 bytes).
  *
- * @retval TRUE   HMAC-SHA3_384 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_384 digest computation succeeded.
+ * @retval false  HMAC-SHA3_384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_384_final(IN OUT void *hmac_sha3_384_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_384_final(void *hmac_sha3_384_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA3_384 digest of a input data buffer.
@@ -1556,7 +1556,7 @@ boolean hmac_sha3_384_final(IN OUT void *hmac_sha3_384_ctx, OUT uint8_t *hmac_va
  * This function performs the HMAC-SHA3_384 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1565,23 +1565,23 @@ boolean hmac_sha3_384_final(IN OUT void *hmac_sha3_384_ctx, OUT uint8_t *hmac_va
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA3_384 digest
  *                         value (48 bytes).
  *
- * @retval TRUE   HMAC-SHA3_384 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_384 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_384 digest computation succeeded.
+ * @retval false  HMAC-SHA3_384 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_384_all(IN const void *data, IN uintn data_size,
-                          IN const uint8_t *key, IN uintn key_size,
-                          OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_384_all(const void *data, size_t data_size,
+                               const uint8_t *key, size_t key_size,
+                               uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SHA3_512 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sha3_512_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sha3_512_new() returns NULL.
  *
  **/
-void *hmac_sha3_512_new(void);
+void *libspdm_hmac_sha3_512_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1589,67 +1589,67 @@ void *hmac_sha3_512_new(void);
  * @param[in]  hmac_sha3_512_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sha3_512_free(IN void *hmac_sha3_512_ctx);
+void libspdm_hmac_sha3_512_free(void *hmac_sha3_512_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sha3_512_update().
+ * calling to libspdm_hmac_sha3_512_update().
  *
- * If hmac_sha3_512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  hmac_sha3_512_ctx  Pointer to HMAC-SHA3_512 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
- * @retval FALSE  This interface is not supported.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_512_set_key(OUT void *hmac_sha3_512_ctx, IN const uint8_t *key,
-                              IN uintn key_size);
+bool libspdm_hmac_sha3_512_set_key(void *hmac_sha3_512_ctx, const uint8_t *key,
+                                   size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SHA3_512 context.
  *
- * If hmac_sha3_512_ctx is NULL, then return FALSE.
- * If new_hmac_sha3_512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_512_ctx is NULL, then return false.
+ * If new_hmac_sha3_512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  hmac_sha3_512_ctx     Pointer to HMAC-SHA3_512 context being copied.
  * @param[out] new_hmac_sha3_512_ctx  Pointer to new HMAC-SHA3_512 context.
  *
- * @retval TRUE   HMAC-SHA3_512 context copy succeeded.
- * @retval FALSE  HMAC-SHA3_512 context copy failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_512 context copy succeeded.
+ * @retval false  HMAC-SHA3_512 context copy failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_512_duplicate(IN const void *hmac_sha3_512_ctx,
-                                OUT void *new_hmac_sha3_512_ctx);
+bool libspdm_hmac_sha3_512_duplicate(const void *hmac_sha3_512_ctx,
+                                     void *new_hmac_sha3_512_ctx);
 
 /**
  * Digests the input data and updates HMAC-SHA3_512 context.
  *
  * This function performs HMAC-SHA3_512 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SHA3_512 context should be initialized by hmac_sha3_512_new(), and should not be finalized
- * by hmac_sha3_512_final(). Behavior with invalid context is undefined.
+ * HMAC-SHA3_512 context should be initialized by libspdm_hmac_sha3_512_new(), and should not be finalized
+ * by libspdm_hmac_sha3_512_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sha3_512_ctx is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_512_ctx is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha3_512_ctx Pointer to the HMAC-SHA3_512 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SHA3_512 data digest succeeded.
- * @retval FALSE  HMAC-SHA3_512 data digest failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_512 data digest succeeded.
+ * @retval false  HMAC-SHA3_512 data digest failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_512_update(IN OUT void *hmac_sha3_512_ctx, IN const void *data,
-                             IN uintn data_size);
+bool libspdm_hmac_sha3_512_update(void *hmac_sha3_512_ctx, const void *data,
+                                  size_t data_size);
 
 /**
  * Completes computation of the HMAC-SHA3_512 digest value.
@@ -1657,23 +1657,23 @@ boolean hmac_sha3_512_update(IN OUT void *hmac_sha3_512_ctx, IN const void *data
  * This function completes HMAC-SHA3_512 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SHA3_512 context cannot
  * be used again.
- * HMAC-SHA3_512 context should be initialized by hmac_sha3_512_new(), and should not be finalized
- * by hmac_sha3_512_final(). Behavior with invalid HMAC-SHA3_512 context is undefined.
+ * HMAC-SHA3_512 context should be initialized by libspdm_hmac_sha3_512_new(), and should not be finalized
+ * by libspdm_hmac_sha3_512_final(). Behavior with invalid HMAC-SHA3_512 context is undefined.
  *
- * If hmac_sha3_512_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If hmac_sha3_512_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  hmac_sha3_512_ctx  Pointer to the HMAC-SHA3_512 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SHA3_512 digest
  *                                    value (64 bytes).
  *
- * @retval TRUE   HMAC-SHA3_512 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_512 digest computation succeeded.
+ * @retval false  HMAC-SHA3_512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_512_final(IN OUT void *hmac_sha3_512_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_512_final(void *hmac_sha3_512_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SHA3_512 digest of a input data buffer.
@@ -1681,7 +1681,7 @@ boolean hmac_sha3_512_final(IN OUT void *hmac_sha3_512_ctx, OUT uint8_t *hmac_va
  * This function performs the HMAC-SHA3_512 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1690,23 +1690,23 @@ boolean hmac_sha3_512_final(IN OUT void *hmac_sha3_512_ctx, OUT uint8_t *hmac_va
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SHA3_512 digest
  *                         value (64 bytes).
  *
- * @retval TRUE   HMAC-SHA3_512 digest computation succeeded.
- * @retval FALSE  HMAC-SHA3_512 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SHA3_512 digest computation succeeded.
+ * @retval false  HMAC-SHA3_512 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sha3_512_all(IN const void *data, IN uintn data_size,
-                          IN const uint8_t *key, IN uintn key_size,
-                          OUT uint8_t *hmac_value);
+bool libspdm_hmac_sha3_512_all(const void *data, size_t data_size,
+                               const uint8_t *key, size_t key_size,
+                               uint8_t *hmac_value);
 
 /**
  * Allocates and initializes one HMAC_CTX context for subsequent HMAC-SM3_256 use.
  *
  * @return  Pointer to the HMAC_CTX context that has been initialized.
- *         If the allocations fails, hmac_sm3_256_new() returns NULL.
+ *         If the allocations fails, libspdm_hmac_sm3_256_new() returns NULL.
  *
  **/
-void *hmac_sm3_256_new(void);
+void *libspdm_hmac_sm3_256_new(void);
 
 /**
  * Release the specified HMAC_CTX context.
@@ -1714,61 +1714,61 @@ void *hmac_sm3_256_new(void);
  * @param[in]  hmac_sm3_256_ctx  Pointer to the HMAC_CTX context to be released.
  *
  **/
-void hmac_sm3_256_free(IN void *hmac_sm3_256_ctx);
+void libspdm_hmac_sm3_256_free(void *hmac_sm3_256_ctx);
 
 /**
  * Set user-supplied key for subsequent use. It must be done before any
- * calling to hmac_sm3_256_update().
+ * calling to libspdm_hmac_sm3_256_update().
  *
- * If hmac_sm3_256_ctx is NULL, then return FALSE.
+ * If hmac_sm3_256_ctx is NULL, then return false.
  *
  * @param[out]  hmac_sm3_256_ctx  Pointer to HMAC-SM3_256 context.
  * @param[in]   key                Pointer to the user-supplied key.
  * @param[in]   key_size            key size in bytes.
  *
- * @retval TRUE   The key is set successfully.
- * @retval FALSE  The key is set unsuccessfully.
+ * @retval true   The key is set successfully.
+ * @retval false  The key is set unsuccessfully.
  *
  **/
-boolean hmac_sm3_256_set_key(OUT void *hmac_sm3_256_ctx, IN const uint8_t *key,
-                             IN uintn key_size);
+bool libspdm_hmac_sm3_256_set_key(void *hmac_sm3_256_ctx, const uint8_t *key,
+                                  size_t key_size);
 
 /**
  * Makes a copy of an existing HMAC-SM3_256 context.
  *
- * If hmac_sm3_256_ctx is NULL, then return FALSE.
- * If new_hmac_sm3_256_ctx is NULL, then return FALSE.
+ * If hmac_sm3_256_ctx is NULL, then return false.
+ * If new_hmac_sm3_256_ctx is NULL, then return false.
  *
  * @param[in]  hmac_sm3_256_ctx     Pointer to HMAC-SM3_256 context being copied.
  * @param[out] new_hmac_sm3_256_ctx  Pointer to new HMAC-SM3_256 context.
  *
- * @retval TRUE   HMAC-SM3_256 context copy succeeded.
- * @retval FALSE  HMAC-SM3_256 context copy failed.
+ * @retval true   HMAC-SM3_256 context copy succeeded.
+ * @retval false  HMAC-SM3_256 context copy failed.
  *
  **/
-boolean hmac_sm3_256_duplicate(IN const void *hmac_sm3_256_ctx,
-                               OUT void *new_hmac_sm3_256_ctx);
+bool libspdm_hmac_sm3_256_duplicate(const void *hmac_sm3_256_ctx,
+                                    void *new_hmac_sm3_256_ctx);
 
 /**
  * Digests the input data and updates HMAC-SM3_256 context.
  *
  * This function performs HMAC-SM3_256 digest on a data buffer of the specified size.
  * It can be called multiple times to compute the digest of long or discontinuous data streams.
- * HMAC-SM3_256 context should be initialized by hmac_sm3_256_new(), and should not be finalized
- * by hmac_sm3_256_final(). Behavior with invalid context is undefined.
+ * HMAC-SM3_256 context should be initialized by libspdm_hmac_sm3_256_new(), and should not be finalized
+ * by libspdm_hmac_sm3_256_final(). Behavior with invalid context is undefined.
  *
- * If hmac_sm3_256_ctx is NULL, then return FALSE.
+ * If hmac_sm3_256_ctx is NULL, then return false.
  *
  * @param[in, out]  hmac_sm3_256_ctx Pointer to the HMAC-SM3_256 context.
  * @param[in]       data              Pointer to the buffer containing the data to be digested.
  * @param[in]       data_size          size of data buffer in bytes.
  *
- * @retval TRUE   HMAC-SM3_256 data digest succeeded.
- * @retval FALSE  HMAC-SM3_256 data digest failed.
+ * @retval true   HMAC-SM3_256 data digest succeeded.
+ * @retval false  HMAC-SM3_256 data digest failed.
  *
  **/
-boolean hmac_sm3_256_update(IN OUT void *hmac_sm3_256_ctx, IN const void *data,
-                            IN uintn data_size);
+bool libspdm_hmac_sm3_256_update(void *hmac_sm3_256_ctx, const void *data,
+                                 size_t data_size);
 
 /**
  * Completes computation of the HMAC-SM3_256 digest value.
@@ -1776,21 +1776,21 @@ boolean hmac_sm3_256_update(IN OUT void *hmac_sm3_256_ctx, IN const void *data,
  * This function completes HMAC-SM3_256 hash computation and retrieves the digest value into
  * the specified memory. After this function has been called, the HMAC-SM3_256 context cannot
  * be used again.
- * HMAC-SM3_256 context should be initialized by hmac_sm3_256_new(), and should not be finalized
- * by hmac_sm3_256_final(). Behavior with invalid HMAC-SM3_256 context is undefined.
+ * HMAC-SM3_256 context should be initialized by libspdm_hmac_sm3_256_new(), and should not be finalized
+ * by libspdm_hmac_sm3_256_final(). Behavior with invalid HMAC-SM3_256 context is undefined.
  *
- * If hmac_sm3_256_ctx is NULL, then return FALSE.
- * If hmac_value is NULL, then return FALSE.
+ * If hmac_sm3_256_ctx is NULL, then return false.
+ * If hmac_value is NULL, then return false.
  *
  * @param[in, out]  hmac_sm3_256_ctx  Pointer to the HMAC-SM3_256 context.
  * @param[out]      hmac_value          Pointer to a buffer that receives the HMAC-SM3_256 digest
  *                                    value (32 bytes).
  *
- * @retval TRUE   HMAC-SM3_256 digest computation succeeded.
- * @retval FALSE  HMAC-SM3_256 digest computation failed.
+ * @retval true   HMAC-SM3_256 digest computation succeeded.
+ * @retval false  HMAC-SM3_256 digest computation failed.
  *
  **/
-boolean hmac_sm3_256_final(IN OUT void *hmac_sm3_256_ctx, OUT uint8_t *hmac_value);
+bool libspdm_hmac_sm3_256_final(void *hmac_sm3_256_ctx, uint8_t *hmac_value);
 
 /**
  * Computes the HMAC-SM3_256 digest of a input data buffer.
@@ -1798,7 +1798,7 @@ boolean hmac_sm3_256_final(IN OUT void *hmac_sm3_256_ctx, OUT uint8_t *hmac_valu
  * This function performs the HMAC-SM3_256 digest of a given data buffer, and places
  * the digest value into the specified memory.
  *
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]   data        Pointer to the buffer containing the data to be digested.
  * @param[in]   data_size    size of data buffer in bytes.
@@ -1807,14 +1807,14 @@ boolean hmac_sm3_256_final(IN OUT void *hmac_sm3_256_ctx, OUT uint8_t *hmac_valu
  * @param[out]  hash_value   Pointer to a buffer that receives the HMAC-SM3_256 digest
  *                         value (32 bytes).
  *
- * @retval TRUE   HMAC-SM3_256 digest computation succeeded.
- * @retval FALSE  HMAC-SM3_256 digest computation failed.
- * @retval FALSE  This interface is not supported.
+ * @retval true   HMAC-SM3_256 digest computation succeeded.
+ * @retval false  HMAC-SM3_256 digest computation failed.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean hmac_sm3_256_all(IN const void *data, IN uintn data_size,
-                         IN const uint8_t *key, IN uintn key_size,
-                         OUT uint8_t *hmac_value);
+bool libspdm_hmac_sm3_256_all(const void *data, size_t data_size,
+                              const uint8_t *key, size_t key_size,
+                              uint8_t *hmac_value);
 
 /*=====================================================================================
  *    Authenticated Encryption with Associated data (AEAD) Cryptography Primitive
@@ -1823,9 +1823,9 @@ boolean hmac_sm3_256_all(IN const void *data, IN uintn data_size,
 /**
  * Performs AEAD AES-GCM authenticated encryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1840,24 +1840,24 @@ boolean hmac_sm3_256_all(IN const void *data, IN uintn data_size,
  * @param[out]  data_out     Pointer to a buffer that receives the encryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated encryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated encryption failed.
+ * @retval true   AEAD AES-GCM authenticated encryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated encryption failed.
  *
  **/
-boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             OUT uint8_t *tag_out, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_aes_gcm_encrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  uint8_t *tag_out, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size);
 
 /**
  * Performs AEAD AES-GCM authenticated decryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
- * If additional authenticated data verification fails, FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
+ * If additional authenticated data verification fails, false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1872,23 +1872,23 @@ boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  data_out     Pointer to a buffer that receives the decryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated decryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated decryption failed.
+ * @retval true   AEAD AES-GCM authenticated decryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated decryption failed.
  *
  **/
-boolean aead_aes_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             IN const uint8_t *tag, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_aes_gcm_decrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  const uint8_t *tag, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size);
 
 /**
  * Performs AEAD ChaCha20Poly1305 authenticated encryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 32, otherwise FALSE is returned.
- * tag_size must be 16, otherwise FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 32, otherwise false is returned.
+ * tag_size must be 16, otherwise false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1903,23 +1903,23 @@ boolean aead_aes_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  data_out     Pointer to a buffer that receives the encryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD ChaCha20Poly1305 authenticated encryption succeeded.
- * @retval FALSE  AEAD ChaCha20Poly1305 authenticated encryption failed.
+ * @retval true   AEAD ChaCha20Poly1305 authenticated encryption succeeded.
+ * @retval false  AEAD ChaCha20Poly1305 authenticated encryption failed.
  *
  **/
-boolean aead_chacha20_poly1305_encrypt(
-    IN const uint8_t *key, IN uintn key_size, IN const uint8_t *iv,
-    IN uintn iv_size, IN const uint8_t *a_data, IN uintn a_data_size,
-    IN const uint8_t *data_in, IN uintn data_in_size, OUT uint8_t *tag_out,
-    IN uintn tag_size, OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_chacha20_poly1305_encrypt(
+    const uint8_t *key, size_t key_size, const uint8_t *iv,
+    size_t iv_size, const uint8_t *a_data, size_t a_data_size,
+    const uint8_t *data_in, size_t data_in_size, uint8_t *tag_out,
+    size_t tag_size, uint8_t *data_out, size_t *data_out_size);
 
 /**
  * Performs AEAD ChaCha20Poly1305 authenticated decryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 32, otherwise FALSE is returned.
- * tag_size must be 16, otherwise FALSE is returned.
- * If additional authenticated data verification fails, FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 32, otherwise false is returned.
+ * tag_size must be 16, otherwise false is returned.
+ * If additional authenticated data verification fails, false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1934,22 +1934,22 @@ boolean aead_chacha20_poly1305_encrypt(
  * @param[out]  data_out     Pointer to a buffer that receives the decryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD ChaCha20Poly1305 authenticated decryption succeeded.
- * @retval FALSE  AEAD ChaCha20Poly1305 authenticated decryption failed.
+ * @retval true   AEAD ChaCha20Poly1305 authenticated decryption succeeded.
+ * @retval false  AEAD ChaCha20Poly1305 authenticated decryption failed.
  *
  **/
-boolean aead_chacha20_poly1305_decrypt(
-    IN const uint8_t *key, IN uintn key_size, IN const uint8_t *iv,
-    IN uintn iv_size, IN const uint8_t *a_data, IN uintn a_data_size,
-    IN const uint8_t *data_in, IN uintn data_in_size, IN const uint8_t *tag,
-    IN uintn tag_size, OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_chacha20_poly1305_decrypt(
+    const uint8_t *key, size_t key_size, const uint8_t *iv,
+    size_t iv_size, const uint8_t *a_data, size_t a_data_size,
+    const uint8_t *data_in, size_t data_in_size, const uint8_t *tag,
+    size_t tag_size, uint8_t *data_out, size_t *data_out_size);
 
 /**
  * Performs AEAD SM4-GCM authenticated encryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, otherwise FALSE is returned.
- * tag_size must be 16, otherwise FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, otherwise false is returned.
+ * tag_size must be 16, otherwise false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1964,24 +1964,24 @@ boolean aead_chacha20_poly1305_decrypt(
  * @param[out]  data_out     Pointer to a buffer that receives the encryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD SM4-GCM authenticated encryption succeeded.
- * @retval FALSE  AEAD SM4-GCM authenticated encryption failed.
+ * @retval true   AEAD SM4-GCM authenticated encryption succeeded.
+ * @retval false  AEAD SM4-GCM authenticated encryption failed.
  *
  **/
-boolean aead_sm4_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             OUT uint8_t *tag_out, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_sm4_gcm_encrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  uint8_t *tag_out, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size);
 
 /**
  * Performs AEAD SM4-GCM authenticated decryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, otherwise FALSE is returned.
- * tag_size must be 16, otherwise FALSE is returned.
- * If additional authenticated data verification fails, FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, otherwise false is returned.
+ * tag_size must be 16, otherwise false is returned.
+ * If additional authenticated data verification fails, false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -1996,16 +1996,16 @@ boolean aead_sm4_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  data_out     Pointer to a buffer that receives the decryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD SM4-GCM authenticated decryption succeeded.
- * @retval FALSE  AEAD SM4-GCM authenticated decryption failed.
+ * @retval true   AEAD SM4-GCM authenticated decryption succeeded.
+ * @retval false  AEAD SM4-GCM authenticated decryption failed.
  *
  **/
-boolean aead_sm4_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             IN const uint8_t *tag, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size);
+bool libspdm_aead_sm4_gcm_decrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  const uint8_t *tag, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size);
 
 /*=====================================================================================
  *    Asymmetric Cryptography Primitive
@@ -2015,20 +2015,20 @@ boolean aead_sm4_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
  * Allocates and initializes one RSA context for subsequent use.
  *
  * @return  Pointer to the RSA context that has been initialized.
- *         If the allocations fails, rsa_new() returns NULL.
+ *         If the allocations fails, libspdm_rsa_new() returns NULL.
  *
  **/
-void *rsa_new(void);
+void *libspdm_rsa_new(void);
 
 /**
  * Release the specified RSA context.
  *
- * If rsa_context is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
  *
  * @param[in]  rsa_context  Pointer to the RSA context to be released.
  *
  **/
-void rsa_free(IN void *rsa_context);
+void libspdm_rsa_free(void *rsa_context);
 
 /**
  * Sets the tag-designated key component into the established RSA context.
@@ -2038,7 +2038,7 @@ void rsa_free(IN void *rsa_context);
  * represented in RSA PKCS#1).
  * If big_number is NULL, then the specified key component in RSA context is cleared.
  *
- * If rsa_context is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
  *
  * @param[in, out]  rsa_context  Pointer to RSA context being set.
  * @param[in]       key_tag      tag of RSA key component being set.
@@ -2048,12 +2048,12 @@ void rsa_free(IN void *rsa_context);
  * @param[in]       bn_size      size of big number buffer in bytes.
  *                             If big_number is NULL, then it is ignored.
  *
- * @retval  TRUE   RSA key component was set successfully.
- * @retval  FALSE  Invalid RSA key component tag.
+ * @retval  true   RSA key component was set successfully.
+ * @retval  false  Invalid RSA key component tag.
  *
  **/
-boolean rsa_set_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
-                    IN const uint8_t *big_number, IN uintn bn_size);
+bool libspdm_rsa_set_key(void *rsa_context, const libspdm_rsa_key_tag_t key_tag,
+                         const uint8_t *big_number, size_t bn_size);
 
 /**
  * Gets the tag-designated RSA key component from the established RSA context.
@@ -2063,13 +2063,13 @@ boolean rsa_set_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
  * represented in RSA PKCS#1).
  * If specified key component has not been set or has been cleared, then returned
  * bn_size is set to 0.
- * If the big_number buffer is too small to hold the contents of the key, FALSE
+ * If the big_number buffer is too small to hold the contents of the key, false
  * is returned and bn_size is set to the required buffer size to obtain the key.
  *
- * If rsa_context is NULL, then return FALSE.
- * If bn_size is NULL, then return FALSE.
- * If bn_size is large enough but big_number is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If bn_size is NULL, then return false.
+ * If bn_size is large enough but big_number is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  rsa_context  Pointer to RSA context being set.
  * @param[in]       key_tag      tag of RSA key component being set.
@@ -2077,14 +2077,14 @@ boolean rsa_set_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
  * @param[in, out]  bn_size      On input, the size of big number buffer in bytes.
  *                             On output, the size of data returned in big number buffer in bytes.
  *
- * @retval  TRUE   RSA key component was retrieved successfully.
- * @retval  FALSE  Invalid RSA key component tag.
- * @retval  FALSE  bn_size is too small.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   RSA key component was retrieved successfully.
+ * @retval  false  Invalid RSA key component tag.
+ * @retval  false  bn_size is too small.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
-                    OUT uint8_t *big_number, IN OUT uintn *bn_size);
+bool libspdm_rsa_get_key(void *rsa_context, const libspdm_rsa_key_tag_t key_tag,
+                         uint8_t *big_number, size_t *bn_size);
 
 /**
  * Generates RSA key components.
@@ -2094,24 +2094,24 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
  * If public_exponent is NULL, the default RSA public exponent (0x10001) will be used.
  *
  * Before this function can be invoked, pseudorandom number generator must be correctly
- * initialized by random_seed().
+ * initialized by libspdm_random_seed().
  *
- * If rsa_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  rsa_context           Pointer to RSA context being set.
  * @param[in]       modulus_length        length of RSA modulus N in bits.
  * @param[in]       public_exponent       Pointer to RSA public exponent.
  * @param[in]       public_exponent_size   size of RSA public exponent buffer in bytes.
  *
- * @retval  TRUE   RSA key component was generated successfully.
- * @retval  FALSE  Invalid RSA key component tag.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   RSA key component was generated successfully.
+ * @retval  false  Invalid RSA key component tag.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_generate_key(IN OUT void *rsa_context, IN uintn modulus_length,
-                         IN const uint8_t *public_exponent,
-                         IN uintn public_exponent_size);
+bool libspdm_rsa_generate_key(void *rsa_context, size_t modulus_length,
+                              const uint8_t *public_exponent,
+                              size_t public_exponent_size);
 
 /**
  * Validates key components of RSA context.
@@ -2124,31 +2124,31 @@ boolean rsa_generate_key(IN OUT void *rsa_context, IN uintn modulus_length,
  * - Whether n = p * q
  * - Whether d*e = 1  mod lcm(p-1,q-1)
  *
- * If rsa_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  rsa_context  Pointer to RSA context to check.
  *
- * @retval  TRUE   RSA key components are valid.
- * @retval  FALSE  RSA key components are not valid.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   RSA key components are valid.
+ * @retval  false  RSA key components are not valid.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_check_key(IN void *rsa_context);
+bool libspdm_rsa_check_key(void *rsa_context);
 
 /**
  * Carries out the RSA-SSA signature generation with EMSA-PKCS1-v1_5 encoding scheme.
  *
  * This function carries out the RSA-SSA signature generation with EMSA-PKCS1-v1_5 encoding scheme defined in
  * RSA PKCS#1.
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
  * If hash_size need match the hash_nid. hash_nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
- * If sig_size is large enough but signature is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      rsa_context   Pointer to RSA context for signature generation.
  * @param[in]      hash_nid      hash NID
@@ -2158,24 +2158,24 @@ boolean rsa_check_key(IN void *rsa_context);
  * @param[in, out] sig_size      On input, the size of signature buffer in bytes.
  *                             On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in PKCS1-v1_5.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   signature successfully generated in PKCS1-v1_5.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
-                                IN const uint8_t *message_hash,
-                                IN uintn hash_size, OUT uint8_t *signature,
-                                IN OUT uintn *sig_size);
+bool libspdm_rsa_pkcs1_sign_with_nid(void *rsa_context, size_t hash_nid,
+                                     const uint8_t *message_hash,
+                                     size_t hash_size, uint8_t *signature,
+                                     size_t *sig_size);
 
 /**
  * Verifies the RSA-SSA signature with EMSA-PKCS1-v1_5 encoding scheme defined in
  * RSA PKCS#1.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
- * If signature is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
+ * If signature is NULL, then return false.
  * If hash_size need match the hash_nid. hash_nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
  *
  * @param[in]  rsa_context   Pointer to RSA context for signature verification.
@@ -2185,14 +2185,14 @@ boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
  * @param[in]  signature    Pointer to RSA PKCS1-v1_5 signature to be verified.
  * @param[in]  sig_size      size of signature in bytes.
  *
- * @retval  TRUE   Valid signature encoded in PKCS1-v1_5.
- * @retval  FALSE  Invalid signature or invalid RSA context.
+ * @retval  true   Valid signature encoded in PKCS1-v1_5.
+ * @retval  false  Invalid signature or invalid RSA context.
  *
  **/
-boolean rsa_pkcs1_verify_with_nid(IN void *rsa_context, IN uintn hash_nid,
-                                  IN const uint8_t *message_hash,
-                                  IN uintn hash_size, IN const uint8_t *signature,
-                                  IN uintn sig_size);
+bool libspdm_rsa_pkcs1_verify_with_nid(void *rsa_context, size_t hash_nid,
+                                       const uint8_t *message_hash,
+                                       size_t hash_size, const uint8_t *signature,
+                                       size_t sig_size);
 
 /**
  * Carries out the RSA-SSA signature generation with EMSA-PSS encoding scheme.
@@ -2202,13 +2202,13 @@ boolean rsa_pkcs1_verify_with_nid(IN void *rsa_context, IN uintn hash_nid,
  *
  * The salt length is same as digest length.
  *
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
  * If hash_size need match the hash_nid. nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
- * If sig_size is large enough but signature is NULL, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
  *
  * @param[in]       rsa_context   Pointer to RSA context for signature generation.
  * @param[in]       hash_nid      hash NID
@@ -2218,14 +2218,14 @@ boolean rsa_pkcs1_verify_with_nid(IN void *rsa_context, IN uintn hash_nid,
  * @param[in, out]  sig_size      On input, the size of signature buffer in bytes.
  *                              On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in RSA-SSA PSS.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
+ * @retval  true   signature successfully generated in RSA-SSA PSS.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
  *
  **/
-boolean rsa_pss_sign(IN void *rsa_context, IN uintn hash_nid,
-                     IN const uint8_t *message_hash, IN uintn hash_size,
-                     OUT uint8_t *signature, IN OUT uintn *sig_size);
+bool libspdm_rsa_pss_sign(void *rsa_context, size_t hash_nid,
+                          const uint8_t *message_hash, size_t hash_size,
+                          uint8_t *signature, size_t *sig_size);
 
 /**
  * Verifies the RSA-SSA signature with EMSA-PSS encoding scheme defined in
@@ -2233,9 +2233,9 @@ boolean rsa_pss_sign(IN void *rsa_context, IN uintn hash_nid,
  *
  * The salt length is same as digest length.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
- * If signature is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
+ * If signature is NULL, then return false.
  * If hash_size need match the hash_nid. nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
  *
  * @param[in]  rsa_context   Pointer to RSA context for signature verification.
@@ -2245,58 +2245,58 @@ boolean rsa_pss_sign(IN void *rsa_context, IN uintn hash_nid,
  * @param[in]  signature    Pointer to RSA-SSA PSS signature to be verified.
  * @param[in]  sig_size      size of signature in bytes.
  *
- * @retval  TRUE   Valid signature encoded in RSA-SSA PSS.
- * @retval  FALSE  Invalid signature or invalid RSA context.
+ * @retval  true   Valid signature encoded in RSA-SSA PSS.
+ * @retval  false  Invalid signature or invalid RSA context.
  *
  **/
-boolean rsa_pss_verify(IN void *rsa_context, IN uintn hash_nid,
-                       IN const uint8_t *message_hash, IN uintn hash_size,
-                       IN const uint8_t *signature, IN uintn sig_size);
+bool libspdm_rsa_pss_verify(void *rsa_context, size_t hash_nid,
+                            const uint8_t *message_hash, size_t hash_size,
+                            const uint8_t *signature, size_t sig_size);
 
 /**
  * Retrieve the RSA Private key from the password-protected PEM key data.
  *
- * If pem_data is NULL, then return FALSE.
- * If rsa_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If rsa_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  pem_data      Pointer to the PEM-encoded key data to be retrieved.
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] rsa_context   Pointer to new-generated RSA context which contain the retrieved
- *                         RSA private key component. Use rsa_free() function to free the
+ *                         RSA private key component. Use libspdm_rsa_free() function to free the
  *                         resource.
  *
- * @retval  TRUE   RSA Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   RSA Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **rsa_context);
+bool libspdm_rsa_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **rsa_context);
 
 /**
  * Retrieve the RSA public key from one DER-encoded X509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If rsa_context is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If rsa_context is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] rsa_context   Pointer to new-generated RSA context which contain the retrieved
- *                         RSA public key component. Use rsa_free() function to free the
+ *                         RSA public key component. Use libspdm_rsa_free() function to free the
  *                         resource.
  *
- * @retval  TRUE   RSA public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve RSA public key from X509 certificate.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   RSA public key was retrieved successfully.
+ * @retval  false  Fail to retrieve RSA public key from X509 certificate.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **rsa_context);
+bool libspdm_rsa_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **rsa_context);
 
 /**
  * Retrieve the EC Private key from the password-protected PEM key data.
@@ -2305,19 +2305,19 @@ boolean rsa_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] ec_context    Pointer to new-generated EC DSA context which contain the retrieved
- *                         EC private key component. Use ec_free() function to free the
+ *                         EC private key component. Use libspdm_ec_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If ec_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If ec_context is NULL, then return false.
  *
- * @retval  TRUE   EC Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   EC Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_size,
-                                    IN const char *password,
-                                    OUT void **ec_context);
+bool libspdm_ec_get_private_key_from_pem(const uint8_t *pem_data, size_t pem_size,
+                                         const char *password,
+                                         void **ec_context);
 
 /**
  * Retrieve the EC public key from one DER-encoded X509 certificate.
@@ -2325,18 +2325,18 @@ boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_siz
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] ec_context    Pointer to new-generated EC DSA context which contain the retrieved
- *                         EC public key component. Use ec_free() function to free the
+ *                         EC public key component. Use libspdm_ec_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If ec_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ec_context is NULL, then return false.
  *
- * @retval  TRUE   EC public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve EC public key from X509 certificate.
+ * @retval  true   EC public key was retrieved successfully.
+ * @retval  false  Fail to retrieve EC public key from X509 certificate.
  *
  **/
-boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                    OUT void **ec_context);
+bool libspdm_ec_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                         void **ec_context);
 
 /**
  * Retrieve the Ed Private key from the password-protected PEM key data.
@@ -2345,20 +2345,20 @@ boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] ecd_context    Pointer to new-generated Ed DSA context which contain the retrieved
- *                         Ed private key component. Use ecd_free() function to free the
+ *                         Ed private key component. Use libspdm_ecd_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If ecd_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If ecd_context is NULL, then return false.
  *
- * @retval  TRUE   Ed Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   Ed Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean ecd_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **ecd_context);
+bool libspdm_ecd_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **ecd_context);
 
 /**
  * Retrieve the Ed public key from one DER-encoded X509 certificate.
@@ -2366,18 +2366,18 @@ boolean ecd_get_private_key_from_pem(IN const uint8_t *pem_data,
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] ecd_context    Pointer to new-generated Ed DSA context which contain the retrieved
- *                         Ed public key component. Use ecd_free() function to free the
+ *                         Ed public key component. Use libspdm_ecd_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If ecd_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ecd_context is NULL, then return false.
  *
- * @retval  TRUE   Ed public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve Ed public key from X509 certificate.
+ * @retval  true   Ed public key was retrieved successfully.
+ * @retval  false  Fail to retrieve Ed public key from X509 certificate.
  *
  **/
-boolean ecd_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **ecd_context);
+bool libspdm_ecd_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **ecd_context);
 
 /**
  * Retrieve the sm2 Private key from the password-protected PEM key data.
@@ -2389,17 +2389,17 @@ boolean ecd_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  *                         sm2 private key component. Use sm2_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If sm2_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If sm2_context is NULL, then return false.
  *
- * @retval  TRUE   sm2 Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   sm2 Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean sm2_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **sm2_context);
+bool libspdm_sm2_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **sm2_context);
 
 /**
  * Retrieve the sm2 public key from one DER-encoded X509 certificate.
@@ -2410,15 +2410,15 @@ boolean sm2_get_private_key_from_pem(IN const uint8_t *pem_data,
  *                         sm2 public key component. Use sm2_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If sm2_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If sm2_context is NULL, then return false.
  *
- * @retval  TRUE   sm2 public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve sm2 public key from X509 certificate.
+ * @retval  true   sm2 public key was retrieved successfully.
+ * @retval  false  Fail to retrieve sm2 public key from X509 certificate.
  *
  **/
-boolean sm2_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **sm2_context);
+bool libspdm_sm2_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **sm2_context);
 
 /**
  * Retrieve the tag and length of the tag.
@@ -2428,18 +2428,18 @@ boolean sm2_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param length   The variable that will receive the length
  * @param tag      The expected tag
  *
- * @retval      TRUE   Get tag successful
+ * @retval      true   Get tag successful
  * @retval      FALSe  Failed to get tag or tag not match
  **/
-boolean asn1_get_tag(IN OUT uint8_t **ptr, IN uint8_t *end, OUT uintn *length,
-                     IN uint32_t tag);
+bool libspdm_asn1_get_tag(uint8_t **ptr, const uint8_t *end, size_t *length,
+                          uint32_t tag);
 
 /**
  * Retrieve the subject bytes from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If subject_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If subject_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -2447,15 +2447,15 @@ boolean asn1_get_tag(IN OUT uint8_t **ptr, IN uint8_t *end, OUT uintn *length,
  * @param[in, out] subject_size  The size in bytes of the cert_subject buffer on input,
  *                             and the size of buffer returned cert_subject on output.
  *
- * @retval  TRUE   The certificate subject retrieved successfully.
- * @retval  FALSE  Invalid certificate, or the subject_size is too small for the result.
+ * @retval  true   The certificate subject retrieved successfully.
+ * @retval  false  Invalid certificate, or the subject_size is too small for the result.
  *                The subject_size will be updated with the required size.
- * @retval  FALSE  This interface is not supported.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean x509_get_subject_name(IN const uint8_t *cert, IN uintn cert_size,
-                              OUT uint8_t *cert_subject,
-                              IN OUT uintn *subject_size);
+bool libspdm_x509_get_subject_name(const uint8_t *cert, size_t cert_size,
+                                   uint8_t *cert_subject,
+                                   size_t *subject_size);
 
 /**
  * Retrieve the common name (CN) string from one X.509 certificate.
@@ -2483,9 +2483,9 @@ boolean x509_get_subject_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status x509_get_common_name(IN const uint8_t *cert, IN uintn cert_size,
-                                   OUT char *common_name,
-                                   OPTIONAL IN OUT uintn *common_name_size);
+bool libspdm_x509_get_common_name(const uint8_t *cert, size_t cert_size,
+                                  char *common_name,
+                                  size_t *common_name_size);
 
 /**
  * Retrieve the organization name (O) string from one X.509 certificate.
@@ -2513,17 +2513,17 @@ return_status x509_get_common_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_organization_name(IN const uint8_t *cert, IN uintn cert_size,
-                           OUT char *name_buffer,
-                           OPTIONAL IN OUT uintn *name_buffer_size);
+bool
+libspdm_x509_get_organization_name(const uint8_t *cert, size_t cert_size,
+                                   char *name_buffer,
+                                   size_t *name_buffer_size);
 
 /**
  * Retrieve the version from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If cert_size is 0, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If cert_size is 0, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -2534,15 +2534,15 @@ x509_get_organization_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
-                               OUT uintn *version);
+bool libspdm_x509_get_version(const uint8_t *cert, size_t cert_size,
+                              size_t *version);
 
 /**
  * Retrieve the serialNumber from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If cert_size is 0, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If cert_size is 0, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -2560,16 +2560,16 @@ return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
  *                                 serial_number_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_serial_number(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT uint8_t *serial_number,
-                                     OPTIONAL IN OUT uintn *serial_number_size);
+bool libspdm_x509_get_serial_number(const uint8_t *cert, size_t cert_size,
+                                    uint8_t *serial_number,
+                                    size_t *serial_number_size);
 
 /**
  * Retrieve the issuer bytes from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If issuer_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If issuer_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -2577,15 +2577,15 @@ return_status x509_get_serial_number(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in, out] issuer_size  The size in bytes of the cert_issuer buffer on input,
  *                             and the size of buffer returned cert_issuer on output.
  *
- * @retval  TRUE   The certificate issuer retrieved successfully.
- * @retval  FALSE  Invalid certificate, or the issuer_size is too small for the result.
+ * @retval  true   The certificate issuer retrieved successfully.
+ * @retval  false  Invalid certificate, or the issuer_size is too small for the result.
  *                The issuer_size will be updated with the required size.
- * @retval  FALSE  This interface is not supported.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean x509_get_issuer_name(IN const uint8_t *cert, IN uintn cert_size,
-                             OUT uint8_t *cert_issuer,
-                             IN OUT uintn *issuer_size);
+bool libspdm_x509_get_issuer_name(const uint8_t *cert, size_t cert_size,
+                                  uint8_t *cert_issuer,
+                                  size_t *issuer_size);
 
 /**
  * Retrieve the issuer common name (CN) string from one X.509 certificate.
@@ -2613,10 +2613,10 @@ boolean x509_get_issuer_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_issuer_common_name(IN const uint8_t *cert, IN uintn cert_size,
-                            OUT char *common_name,
-                            OPTIONAL IN OUT uintn *common_name_size);
+bool
+libspdm_x509_get_issuer_common_name(const uint8_t *cert, size_t cert_size,
+                                    char *common_name,
+                                    size_t *common_name_size);
 
 /**
  * Retrieve the issuer organization name (O) string from one X.509 certificate.
@@ -2644,10 +2644,10 @@ x509_get_issuer_common_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_issuer_orgnization_name(IN const uint8_t *cert, IN uintn cert_size,
-                                 OUT char *name_buffer,
-                                 OPTIONAL IN OUT uintn *name_buffer_size);
+bool
+libspdm_x509_get_issuer_orgnization_name(const uint8_t *cert, size_t cert_size,
+                                         char *name_buffer,
+                                         size_t *name_buffer_size);
 
 /**
  * Retrieve the signature algorithm from one X.509 certificate.
@@ -2667,9 +2667,9 @@ x509_get_issuer_orgnization_name(IN const uint8_t *cert, IN uintn cert_size,
  *                                 is returned in the oid_size.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_signature_algorithm(IN const uint8_t *cert,
-                                           IN uintn cert_size, OUT uint8_t *oid,
-                                           OPTIONAL IN OUT uintn *oid_size);
+bool libspdm_x509_get_signature_algorithm(const uint8_t *cert,
+                                          size_t cert_size, uint8_t *oid,
+                                          size_t *oid_size);
 
 /**
  * Retrieve Extension data from one X.509 certificate.
@@ -2691,17 +2691,17 @@ return_status x509_get_signature_algorithm(IN const uint8_t *cert,
  *                                 is returned in the extension_data_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_extension_data(IN const uint8_t *cert, IN uintn cert_size,
-                                      IN const uint8_t *oid, IN uintn oid_size,
-                                      OUT uint8_t *extension_data,
-                                      IN OUT uintn *extension_data_size);
+bool libspdm_x509_get_extension_data(const uint8_t *cert, size_t cert_size,
+                                     const uint8_t *oid, size_t oid_size,
+                                     uint8_t *extension_data,
+                                     size_t *extension_data_size);
 
 /**
  * Retrieve the Validity from one X.509 certificate
  *
- * If cert is NULL, then return FALSE.
- * If CertIssuerSize is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If CertIssuerSize is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -2710,23 +2710,23 @@ return_status x509_get_extension_data(IN const uint8_t *cert, IN uintn cert_size
  * @param[out]     to           notAfter Pointer to date_time object.
  * @param[in,out]  to_size       notAfter date_time object size.
  *
- * Note: x509_compare_date_time to compare date_time oject
+ * Note: libspdm_x509_compare_date_time to compare date_time oject
  *      x509SetDateTime to get a date_time object from a date_time_str
  *
- * @retval  TRUE   The certificate Validity retrieved successfully.
- * @retval  FALSE  Invalid certificate, or Validity retrieve failed.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   The certificate Validity retrieved successfully.
+ * @retval  false  Invalid certificate, or Validity retrieve failed.
+ * @retval  false  This interface is not supported.
  **/
-boolean x509_get_validity(IN const uint8_t *cert, IN uintn cert_size,
-                          IN uint8_t *from, IN OUT uintn *from_size, IN uint8_t *to,
-                          IN OUT uintn *to_size);
+bool libspdm_x509_get_validity(const uint8_t *cert, size_t cert_size,
+                               uint8_t *from, size_t *from_size, uint8_t *to,
+                               size_t *to_size);
 
 /**
  * format a date_time object into DataTime buffer
  *
- * If date_time_str is NULL, then return FALSE.
- * If date_time_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If date_time_str is NULL, then return false.
+ * If date_time_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      date_time_str      date_time string like YYYYMMDDhhmmssZ
  *                                 Ref: https://www.w3.org/TR/NOTE-datetime
@@ -2744,8 +2744,8 @@ boolean x509_get_validity(IN const uint8_t *cert, IN uintn cert_size,
  *                                 date_time_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_set_date_time(char *date_time_str, IN OUT void *date_time,
-                                 IN OUT uintn *date_time_size);
+bool libspdm_x509_set_date_time(char *date_time_str, void *date_time,
+                                size_t *date_time_size);
 
 /**
  * Compare date_time1 object and date_time2 object.
@@ -2763,21 +2763,21 @@ return_status x509_set_date_time(char *date_time_str, IN OUT void *date_time,
  * @retval  1      If date_time1 > date_time2
  * @retval  -1     If date_time1 < date_time2
  **/
-intn x509_compare_date_time(IN void *date_time1, IN void *date_time2);
+int32_t libspdm_x509_compare_date_time(const void *date_time1, const void *date_time2);
 
 /**
  * Retrieve the key usage from one X.509 certificate.
  *
  * @param[in]      cert             Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size         size of the X509 certificate in bytes.
- * @param[out]     usage            key usage (CRYPTO_X509_KU_*)
+ * @param[out]     usage            key usage (LIBSPDM_CRYPTO_X509_KU_*)
  *
- * @retval  TRUE   The certificate key usage retrieved successfully.
- * @retval  FALSE  Invalid certificate, or usage is NULL
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   The certificate key usage retrieved successfully.
+ * @retval  false  Invalid certificate, or usage is NULL
+ * @retval  false  This interface is not supported.
  **/
-boolean x509_get_key_usage(IN const uint8_t *cert, IN uintn cert_size,
-                           OUT uintn *usage);
+bool libspdm_x509_get_key_usage(const uint8_t *cert, size_t cert_size,
+                                size_t *usage);
 
 /**
  * Retrieve the Extended key usage from one X.509 certificate.
@@ -2796,30 +2796,53 @@ boolean x509_get_key_usage(IN const uint8_t *cert, IN uintn cert_size,
  *                                 is returned in the usage_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_extended_key_usage(IN const uint8_t *cert,
-                                          IN uintn cert_size, OUT uint8_t *usage,
-                                          IN OUT uintn *usage_size);
+bool libspdm_x509_get_extended_key_usage(const uint8_t *cert,
+                                         size_t cert_size, uint8_t *usage,
+                                         size_t *usage_size);
+
+/**
+ * Retrieve the basic constraints from one X.509 certificate.
+ *
+ * @param[in]      cert                     Pointer to the DER-encoded X509 certificate.
+ * @param[in]      cert_size                size of the X509 certificate in bytes.
+ * @param[out]     basic_constraints        basic constraints bytes.
+ * @param[in, out] basic_constraints_size   basic constraints buffer sizs in bytes.
+ *
+ * @retval RETURN_SUCCESS           The basic constraints retrieve successfully.
+ * @retval RETURN_INVALID_PARAMETER If cert is NULL.
+ *                                  If cert_size is NULL.
+ *                                  If basic_constraints is not NULL and *basic_constraints_size is 0.
+ *                                  If cert is invalid.
+ * @retval RETURN_BUFFER_TOO_SMALL  The required buffer size is small.
+ *                                  The return buffer size is basic_constraints_size parameter.
+ * @retval RETURN_NOT_FOUND         If no Extension entry match oid.
+ * @retval RETURN_UNSUPPORTED       The operation is not supported.
+ **/
+bool libspdm_x509_get_extended_basic_constraints(const uint8_t *cert,
+                                                 size_t cert_size,
+                                                 uint8_t *basic_constraints,
+                                                 size_t *basic_constraints_size);
 
 /**
  * Verify one X509 certificate was issued by the trusted CA.
  *
- * If cert is NULL, then return FALSE.
- * If ca_cert is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ca_cert is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate to be verified.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
  * @param[in]      ca_cert       Pointer to the DER-encoded trusted CA certificate.
  * @param[in]      ca_cert_size   size of the CA Certificate in bytes.
  *
- * @retval  TRUE   The certificate was issued by the trusted CA.
- * @retval  FALSE  Invalid certificate or the certificate was not issued by the given
+ * @retval  true   The certificate was issued by the trusted CA.
+ * @retval  false  Invalid certificate or the certificate was not issued by the given
  *                trusted CA.
- * @retval  FALSE  This interface is not supported.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean x509_verify_cert(IN const uint8_t *cert, IN uintn cert_size,
-                         IN const uint8_t *ca_cert, IN uintn ca_cert_size);
+bool libspdm_x509_verify_cert(const uint8_t *cert, size_t cert_size,
+                              const uint8_t *ca_cert, size_t ca_cert_size);
 
 /**
  * Verify one X509 certificate was issued by the trusted CA.
@@ -2835,13 +2858,13 @@ boolean x509_verify_cert(IN const uint8_t *cert, IN uintn cert_size,
  *
  * @param[in]      root_cert_length    Trusted Root Certificate buffer length
  *
- * @retval  TRUE   All cerificates was issued by the first certificate in X509Certchain.
- * @retval  FALSE  Invalid certificate or the certificate was not issued by the given
+ * @retval  true   All cerificates was issued by the first certificate in X509Certchain.
+ * @retval  false  Invalid certificate or the certificate was not issued by the given
  *                trusted CA.
  **/
-boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
-                               IN uint8_t *cert_chain,
-                               IN uintn cert_chain_length);
+bool libspdm_x509_verify_cert_chain(uint8_t *root_cert, size_t root_cert_length,
+                                    uint8_t *cert_chain,
+                                    size_t cert_chain_length);
 
 /**
  * Get one X509 certificate from cert_chain.
@@ -2859,52 +2882,52 @@ boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
  * @param[out]     cert              The certificate at the index of cert_chain.
  * @param[out]     cert_length        The length certificate at the index of cert_chain.
  *
- * @retval  TRUE   Success.
- * @retval  FALSE  Failed to get certificate from certificate chain.
+ * @retval  true   Success.
+ * @retval  false  Failed to get certificate from certificate chain.
  **/
-boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
-                                      IN uintn cert_chain_length,
-                                      IN int32_t cert_index, OUT uint8_t **cert,
-                                      OUT uintn *cert_length);
+bool libspdm_x509_get_cert_from_cert_chain(uint8_t *cert_chain,
+                                           size_t cert_chain_length,
+                                           const int32_t cert_index, uint8_t **cert,
+                                           size_t *cert_length);
 
 /**
  * Construct a X509 object from DER-encoded certificate data.
  *
- * If cert is NULL, then return FALSE.
- * If single_x509_cert is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If single_x509_cert is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  cert            Pointer to the DER-encoded certificate data.
  * @param[in]  cert_size        The size of certificate data in bytes.
  * @param[out] single_x509_cert  The generated X509 object.
  *
- * @retval     TRUE            The X509 object generation succeeded.
- * @retval     FALSE           The operation failed.
- * @retval     FALSE           This interface is not supported.
+ * @retval     true            The X509 object generation succeeded.
+ * @retval     false           The operation failed.
+ * @retval     false           This interface is not supported.
  *
  **/
-boolean x509_construct_certificate(IN const uint8_t *cert, IN uintn cert_size,
-                                   OUT uint8_t **single_x509_cert);
+bool libspdm_x509_construct_certificate(const uint8_t *cert, size_t cert_size,
+                                        uint8_t **single_x509_cert);
 
 /**
  * Construct a X509 stack object from a list of DER-encoded certificate data.
  *
- * If x509_stack is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If x509_stack is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  x509_stack  On input, pointer to an existing or NULL X509 stack object.
  *                            On output, pointer to the X509 stack object with new
  *                            inserted X509 certificate.
  * @param           ...        A list of DER-encoded single certificate data followed
  *                            by certificate size. A NULL terminates the list. The
- *                            pairs are the arguments to x509_construct_certificate().
+ *                            pairs are the arguments to libspdm_x509_construct_certificate().
  *
- * @retval     TRUE            The X509 stack construction succeeded.
- * @retval     FALSE           The construction operation failed.
- * @retval     FALSE           This interface is not supported.
+ * @retval     true            The X509 stack construction succeeded.
+ * @retval     false           The construction operation failed.
+ * @retval     false           This interface is not supported.
  *
  **/
-boolean x509_construct_certificate_stack(IN OUT uint8_t **x509_stack, ...);
+bool libspdm_x509_construct_certificate_stack(uint8_t **x509_stack, ...);
 
 /**
  * Release the specified X509 object.
@@ -2914,7 +2937,7 @@ boolean x509_construct_certificate_stack(IN OUT uint8_t **x509_stack, ...);
  * @param[in]  x509_cert  Pointer to the X509 object to be released.
  *
  **/
-void x509_free(IN void *x509_cert);
+void libspdm_x509_free(void *x509_cert);
 
 /**
  * Release the specified X509 stack object.
@@ -2924,7 +2947,7 @@ void x509_free(IN void *x509_cert);
  * @param[in]  x509_stack  Pointer to the X509 stack object to be released.
  *
  **/
-void x509_stack_free(IN void *x509_stack);
+void libspdm_x509_stack_free(void *x509_stack);
 
 /**
  * Retrieve the TBSCertificate from one given X.509 certificate.
@@ -2934,17 +2957,17 @@ void x509_stack_free(IN void *x509_stack);
  * @param[out]     tbs_cert      DER-Encoded to-Be-Signed certificate.
  * @param[out]     tbs_cert_size  size of the TBS certificate in bytes.
  *
- * If cert is NULL, then return FALSE.
- * If tbs_cert is NULL, then return FALSE.
- * If tbs_cert_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If tbs_cert is NULL, then return false.
+ * If tbs_cert_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
- * @retval  TRUE   The TBSCertificate was retrieved successfully.
- * @retval  FALSE  Invalid X.509 certificate.
+ * @retval  true   The TBSCertificate was retrieved successfully.
+ * @retval  false  Invalid X.509 certificate.
  *
  **/
-boolean x509_get_tbs_cert(IN const uint8_t *cert, IN uintn cert_size,
-                          OUT uint8_t **tbs_cert, OUT uintn *tbs_cert_size);
+bool libspdm_x509_get_tbs_cert(const uint8_t *cert, size_t cert_size,
+                               uint8_t **tbs_cert, size_t *tbs_cert_size);
 
 /*=====================================================================================
  *    DH key Exchange Primitive
@@ -2957,11 +2980,11 @@ boolean x509_get_tbs_cert(IN const uint8_t *cert, IN uintn cert_size,
  * @param nid cipher NID
  *
  * @return  Pointer to the Diffie-Hellman context that has been initialized.
- *         If the allocations fails, dh_new_by_nid() returns NULL.
- *         If the interface is not supported, dh_new_by_nid() returns NULL.
+ *         If the allocations fails, libspdm_dh_new_by_nid() returns NULL.
+ *         If the interface is not supported, libspdm_dh_new_by_nid() returns NULL.
  *
  **/
-void *dh_new_by_nid(IN uintn nid);
+void *libspdm_dh_new_by_nid(size_t nid);
 
 /**
  * Release the specified DH context.
@@ -2971,7 +2994,7 @@ void *dh_new_by_nid(IN uintn nid);
  * @param[in]  dh_context  Pointer to the DH context to be released.
  *
  **/
-void dh_free(IN void *dh_context);
+void libspdm_dh_free(void *dh_context);
 
 /**
  * Generates DH parameter.
@@ -2980,25 +3003,25 @@ void dh_free(IN void *dh_context);
  * and sets DH context according to value of g and p.
  *
  * Before this function can be invoked, pseudorandom number generator must be correctly
- * initialized by random_seed().
+ * initialized by libspdm_random_seed().
  *
- * If dh_context is NULL, then return FALSE.
- * If prime is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If prime is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  dh_context    Pointer to the DH context.
  * @param[in]       generator    value of generator.
  * @param[in]       prime_length  length in bits of prime to be generated.
  * @param[out]      prime        Pointer to the buffer to receive the generated prime number.
  *
- * @retval TRUE   DH parameter generation succeeded.
- * @retval FALSE  value of generator is not supported.
- * @retval FALSE  PRNG fails to generate random prime number with prime_length.
- * @retval FALSE  This interface is not supported.
+ * @retval true   DH parameter generation succeeded.
+ * @retval false  value of generator is not supported.
+ * @retval false  PRNG fails to generate random prime number with prime_length.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean dh_generate_parameter(IN OUT void *dh_context, IN uintn generator,
-                              IN uintn prime_length, OUT uint8_t *prime);
+bool libspdm_dh_generate_parameter(void *dh_context, size_t generator,
+                                   size_t prime_length, uint8_t *prime);
 
 /**
  * Sets generator and prime parameters for DH.
@@ -3006,38 +3029,38 @@ boolean dh_generate_parameter(IN OUT void *dh_context, IN uintn generator,
  * Given generator g, and prime number p, this function and sets DH
  * context accordingly.
  *
- * If dh_context is NULL, then return FALSE.
- * If prime is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If prime is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in, out]  dh_context    Pointer to the DH context.
  * @param[in]       generator    value of generator.
  * @param[in]       prime_length  length in bits of prime to be generated.
  * @param[in]       prime        Pointer to the prime number.
  *
- * @retval TRUE   DH parameter setting succeeded.
- * @retval FALSE  value of generator is not supported.
- * @retval FALSE  value of generator is not suitable for the prime.
- * @retval FALSE  value of prime is not a prime number.
- * @retval FALSE  value of prime is not a safe prime number.
- * @retval FALSE  This interface is not supported.
+ * @retval true   DH parameter setting succeeded.
+ * @retval false  value of generator is not supported.
+ * @retval false  value of generator is not suitable for the prime.
+ * @retval false  value of prime is not a prime number.
+ * @retval false  value of prime is not a safe prime number.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean dh_set_parameter(IN OUT void *dh_context, IN uintn generator,
-                         IN uintn prime_length, IN const uint8_t *prime);
+bool libspdm_dh_set_parameter(void *dh_context, size_t generator,
+                              size_t prime_length, const uint8_t *prime);
 
 /**
  * Generates DH public key.
  *
  * This function generates random secret exponent, and computes the public key, which is
  * returned via parameter public_key and public_key_size. DH context is updated accordingly.
- * If the public_key buffer is too small to hold the public key, FALSE is returned and
+ * If the public_key buffer is too small to hold the public key, false is returned and
  * public_key_size is set to the required buffer size to obtain the public key.
  *
- * If dh_context is NULL, then return FALSE.
- * If public_key_size is NULL, then return FALSE.
- * If public_key_size is large enough but public_key is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If public_key_size is NULL, then return false.
+ * If public_key_size is large enough but public_key is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * For FFDHE2048, the public_size is 256.
  * For FFDHE3072, the public_size is 384.
@@ -3048,14 +3071,14 @@ boolean dh_set_parameter(IN OUT void *dh_context, IN uintn generator,
  * @param[in, out]  public_key_size  On input, the size of public_key buffer in bytes.
  *                               On output, the size of data returned in public_key buffer in bytes.
  *
- * @retval TRUE   DH public key generation succeeded.
- * @retval FALSE  DH public key generation failed.
- * @retval FALSE  public_key_size is not large enough.
- * @retval FALSE  This interface is not supported.
+ * @retval true   DH public key generation succeeded.
+ * @retval false  DH public key generation failed.
+ * @retval false  public_key_size is not large enough.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
-                        IN OUT uintn *public_key_size);
+bool libspdm_dh_generate_key(void *dh_context, uint8_t *public_key,
+                             size_t *public_key_size);
 
 /**
  * Computes exchanged common key.
@@ -3063,12 +3086,12 @@ boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
  * Given peer's public key, this function computes the exchanged common key, based on its own
  * context including value of prime modulus and random secret exponent.
  *
- * If dh_context is NULL, then return FALSE.
- * If peer_public_key is NULL, then return FALSE.
- * If key_size is NULL, then return FALSE.
- * If key is NULL, then return FALSE.
- * If key_size is not large enough, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If peer_public_key is NULL, then return false.
+ * If key_size is NULL, then return false.
+ * If key is NULL, then return false.
+ * If key_size is not large enough, then return false.
+ * If this interface is not supported, then return false.
  *
  * For FFDHE2048, the peer_public_size and key_size is 256.
  * For FFDHE3072, the peer_public_size and key_size is 384.
@@ -3081,15 +3104,15 @@ boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
  * @param[in, out]  key_size            On input, the size of key buffer in bytes.
  *                                   On output, the size of data returned in key buffer in bytes.
  *
- * @retval TRUE   DH exchanged key generation succeeded.
- * @retval FALSE  DH exchanged key generation failed.
- * @retval FALSE  key_size is not large enough.
- * @retval FALSE  This interface is not supported.
+ * @retval true   DH exchanged key generation succeeded.
+ * @retval false  DH exchanged key generation failed.
+ * @retval false  key_size is not large enough.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean dh_compute_key(IN OUT void *dh_context, IN const uint8_t *peer_public_key,
-                       IN uintn peer_public_key_size, OUT uint8_t *key,
-                       IN OUT uintn *key_size);
+bool libspdm_dh_compute_key(void *dh_context, const uint8_t *peer_public_key,
+                            size_t peer_public_key_size, uint8_t *key,
+                            size_t *key_size);
 
 /*=====================================================================================
  *    Elliptic Curve Primitive
@@ -3102,10 +3125,10 @@ boolean dh_compute_key(IN OUT void *dh_context, IN const uint8_t *peer_public_ke
  * @param nid cipher NID
  *
  * @return  Pointer to the Elliptic Curve context that has been initialized.
- *         If the allocations fails, ec_new_by_nid() returns NULL.
+ *         If the allocations fails, libspdm_ec_new_by_nid() returns NULL.
  *
  **/
-void *ec_new_by_nid(IN uintn nid);
+void *libspdm_ec_new_by_nid(size_t nid);
 
 /**
  * Release the specified EC context.
@@ -3113,7 +3136,7 @@ void *ec_new_by_nid(IN uintn nid);
  * @param[in]  ec_context  Pointer to the EC context to be released.
  *
  **/
-void ec_free(IN void *ec_context);
+void libspdm_ec_free(void *ec_context);
 
 /**
  * Sets the public key component into the established EC context.
@@ -3126,12 +3149,12 @@ void ec_free(IN void *ec_context);
  * @param[in]       public         Pointer to the buffer to receive generated public X,Y.
  * @param[in]       public_size     The size of public buffer in bytes.
  *
- * @retval  TRUE   EC public key component was set successfully.
- * @retval  FALSE  Invalid EC public key component.
+ * @retval  true   EC public key component was set successfully.
+ * @retval  false  Invalid EC public key component.
  *
  **/
-boolean ec_set_pub_key(IN OUT void *ec_context, IN uint8_t *public_key,
-                       IN uintn public_key_size);
+bool libspdm_ec_set_pub_key(void *ec_context, const uint8_t *public_key,
+                            size_t public_key_size);
 
 /**
  * Gets the public key component from the established EC context.
@@ -3145,27 +3168,27 @@ boolean ec_set_pub_key(IN OUT void *ec_context, IN uint8_t *public_key,
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval  TRUE   EC key component was retrieved successfully.
- * @retval  FALSE  Invalid EC key component.
+ * @retval  true   EC key component was retrieved successfully.
+ * @retval  false  Invalid EC key component.
  *
  **/
-boolean ec_get_pub_key(IN OUT void *ec_context, OUT uint8_t *public_key,
-                       IN OUT uintn *public_key_size);
+bool libspdm_ec_get_pub_key(void *ec_context, uint8_t *public_key,
+                            size_t *public_key_size);
 
 /**
  * Validates key components of EC context.
  * NOTE: This function performs integrity checks on all the EC key material, so
  *      the EC key structure must contain all the private key data.
  *
- * If ec_context is NULL, then return FALSE.
+ * If ec_context is NULL, then return false.
  *
  * @param[in]  ec_context  Pointer to EC context to check.
  *
- * @retval  TRUE   EC key components are valid.
- * @retval  FALSE  EC key components are not valid.
+ * @retval  true   EC key components are valid.
+ * @retval  false  EC key components are not valid.
  *
  **/
-boolean ec_check_key(IN void *ec_context);
+bool libspdm_ec_check_key(const void *ec_context);
 
 /**
  * Generates EC key and returns EC public key (X, Y).
@@ -3175,29 +3198,29 @@ boolean ec_check_key(IN void *ec_context);
  * X is the first half of public with size being public_size / 2,
  * Y is the second half of public with size being public_size / 2.
  * EC context is updated accordingly.
- * If the public buffer is too small to hold the public X, Y, FALSE is returned and
+ * If the public buffer is too small to hold the public X, Y, false is returned and
  * public_size is set to the required buffer size to obtain the public X, Y.
  *
  * For P-256, the public_size is 64. first 32-byte is X, second 32-byte is Y.
  * For P-384, the public_size is 96. first 48-byte is X, second 48-byte is Y.
  * For P-521, the public_size is 132. first 66-byte is X, second 66-byte is Y.
  *
- * If ec_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If ec_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  ec_context      Pointer to the EC context.
  * @param[out]      public         Pointer to the buffer to receive generated public X,Y.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   EC public X,Y generation succeeded.
- * @retval FALSE  EC public X,Y generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   EC public X,Y generation succeeded.
+ * @retval false  EC public X,Y generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean ec_generate_key(IN OUT void *ec_context, OUT uint8_t *public_key,
-                        IN OUT uintn *public_key_size);
+bool libspdm_ec_generate_key(void *ec_context, uint8_t *public_key,
+                             size_t *public_key_size);
 
 /**
  * Computes exchanged common key.
@@ -3207,11 +3230,11 @@ boolean ec_generate_key(IN OUT void *ec_context, OUT uint8_t *public_key,
  * X is the first half of peer_public with size being peer_public_size / 2,
  * Y is the second half of peer_public with size being peer_public_size / 2.
  *
- * If ec_context is NULL, then return FALSE.
- * If peer_public is NULL, then return FALSE.
- * If peer_public_size is 0, then return FALSE.
- * If key is NULL, then return FALSE.
- * If key_size is not large enough, then return FALSE.
+ * If ec_context is NULL, then return false.
+ * If peer_public is NULL, then return false.
+ * If peer_public_size is 0, then return false.
+ * If key is NULL, then return false.
+ * If key_size is not large enough, then return false.
  *
  * For P-256, the peer_public_size is 64. first 32-byte is X, second 32-byte is Y. The key_size is 32.
  * For P-384, the peer_public_size is 96. first 48-byte is X, second 48-byte is Y. The key_size is 48.
@@ -3224,26 +3247,26 @@ boolean ec_generate_key(IN OUT void *ec_context, OUT uint8_t *public_key,
  * @param[in, out]  key_size            On input, the size of key buffer in bytes.
  *                                    On output, the size of data returned in key buffer in bytes.
  *
- * @retval TRUE   EC exchanged key generation succeeded.
- * @retval FALSE  EC exchanged key generation failed.
- * @retval FALSE  key_size is not large enough.
+ * @retval true   EC exchanged key generation succeeded.
+ * @retval false  EC exchanged key generation failed.
+ * @retval false  key_size is not large enough.
  *
  **/
-boolean ec_compute_key(IN OUT void *ec_context, IN const uint8_t *peer_public,
-                       IN uintn peer_public_size, OUT uint8_t *key,
-                       IN OUT uintn *key_size);
+bool libspdm_ec_compute_key(void *ec_context, const uint8_t *peer_public,
+                            size_t peer_public_size, uint8_t *key,
+                            size_t *key_size);
 
 /**
  * Carries out the EC-DSA signature.
  *
  * This function carries out the EC-DSA signature.
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If ec_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
+ * If ec_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
  * If hash_size need match the hash_nid. hash_nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
- * If sig_size is large enough but signature is NULL, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
  *
  * For P-256, the sig_size is 64. first 32-byte is R, second 32-byte is S.
  * For P-384, the sig_size is 96. first 48-byte is R, second 48-byte is S.
@@ -3257,21 +3280,21 @@ boolean ec_compute_key(IN OUT void *ec_context, IN const uint8_t *peer_public,
  * @param[in, out]  sig_size      On input, the size of signature buffer in bytes.
  *                              On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in EC-DSA.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
+ * @retval  true   signature successfully generated in EC-DSA.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
  *
  **/
-boolean ecdsa_sign(IN void *ec_context, IN uintn hash_nid,
-                   IN const uint8_t *message_hash, IN uintn hash_size,
-                   OUT uint8_t *signature, IN OUT uintn *sig_size);
+bool libspdm_ecdsa_sign(void *ec_context, size_t hash_nid,
+                        const uint8_t *message_hash, size_t hash_size,
+                        uint8_t *signature, size_t *sig_size);
 
 /**
  * Verifies the EC-DSA signature.
  *
- * If ec_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
- * If signature is NULL, then return FALSE.
+ * If ec_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
+ * If signature is NULL, then return false.
  * If hash_size need match the hash_nid. hash_nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
  *
  * For P-256, the sig_size is 64. first 32-byte is R, second 32-byte is S.
@@ -3285,13 +3308,13 @@ boolean ecdsa_sign(IN void *ec_context, IN uintn hash_nid,
  * @param[in]  signature    Pointer to EC-DSA signature to be verified.
  * @param[in]  sig_size      size of signature in bytes.
  *
- * @retval  TRUE   Valid signature encoded in EC-DSA.
- * @retval  FALSE  Invalid signature or invalid EC context.
+ * @retval  true   Valid signature encoded in EC-DSA.
+ * @retval  false  Invalid signature or invalid EC context.
  *
  **/
-boolean ecdsa_verify(IN void *ec_context, IN uintn hash_nid,
-                     IN const uint8_t *message_hash, IN uintn hash_size,
-                     IN const uint8_t *signature, IN uintn sig_size);
+bool libspdm_ecdsa_verify(void *ec_context, size_t hash_nid,
+                          const uint8_t *message_hash, size_t hash_size,
+                          const uint8_t *signature, size_t sig_size);
 
 /*=====================================================================================
  *    Edwards-Curve Primitive
@@ -3306,10 +3329,10 @@ boolean ecdsa_verify(IN void *ec_context, IN uintn hash_nid,
  * @param nid cipher NID
  *
  * @return  Pointer to the Edwards-Curve context that has been initialized.
- *         If the allocations fails, ecd_new_by_nid() returns NULL.
+ *         If the allocations fails, libspdm_ecd_new_by_nid() returns NULL.
  *
  **/
-void *ecd_new_by_nid(IN uintn nid);
+void *libspdm_ecd_new_by_nid(size_t nid);
 
 /**
  * Release the specified Ed context.
@@ -3317,7 +3340,7 @@ void *ecd_new_by_nid(IN uintn nid);
  * @param[in]  ecd_context  Pointer to the Ed context to be released.
  *
  **/
-void ecd_free(IN void *ecd_context);
+void libspdm_ecd_free(void *ecd_context);
 
 /**
  * Sets the public key component into the established Ed context.
@@ -3329,12 +3352,12 @@ void ecd_free(IN void *ecd_context);
  * @param[in]       public         Pointer to the buffer to receive generated public X,Y.
  * @param[in]       public_size     The size of public buffer in bytes.
  *
- * @retval  TRUE   Ed public key component was set successfully.
- * @retval  FALSE  Invalid EC public key component.
+ * @retval  true   Ed public key component was set successfully.
+ * @retval  false  Invalid EC public key component.
  *
  **/
-boolean ecd_set_pub_key(IN OUT void *ecd_context, IN uint8_t *public_key,
-                        IN uintn public_key_size);
+bool libspdm_ecd_set_pub_key(void *ecd_context, const uint8_t *public_key,
+                             size_t public_key_size);
 
 /**
  * Gets the public key component from the established Ed context.
@@ -3347,27 +3370,27 @@ boolean ecd_set_pub_key(IN OUT void *ecd_context, IN uint8_t *public_key,
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval  TRUE   Ed key component was retrieved successfully.
- * @retval  FALSE  Invalid EC public key component.
+ * @retval  true   Ed key component was retrieved successfully.
+ * @retval  false  Invalid EC public key component.
  *
  **/
-boolean ecd_get_pub_key(IN OUT void *ecd_context, OUT uint8_t *public_key,
-                        IN OUT uintn *public_key_size);
+bool libspdm_ecd_get_pub_key(void *ecd_context, uint8_t *public_key,
+                             size_t *public_key_size);
 
 /**
  * Validates key components of Ed context.
  * NOTE: This function performs integrity checks on all the Ed key material, so
  *      the Ed key structure must contain all the private key data.
  *
- * If ecd_context is NULL, then return FALSE.
+ * If ecd_context is NULL, then return false.
  *
  * @param[in]  ecd_context  Pointer to Ed context to check.
  *
- * @retval  TRUE   Ed key components are valid.
- * @retval  FALSE  Ed key components are not valid.
+ * @retval  true   Ed key components are valid.
+ * @retval  false  Ed key components are not valid.
  *
  **/
-boolean ecd_check_key(IN void *ecd_context);
+bool libspdm_ecd_check_key(const void *ecd_context);
 
 /**
  * Generates Ed key and returns Ed public key.
@@ -3375,34 +3398,34 @@ boolean ecd_check_key(IN void *ecd_context);
  * For ed25519, the public_size is 32.
  * For ed448, the public_size is 57.
  *
- * If ecd_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If ecd_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  ecd_context      Pointer to the Ed context.
  * @param[out]      public         Pointer to the buffer to receive generated public key.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   Ed public key generation succeeded.
- * @retval FALSE  Ed public key generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   Ed public key generation succeeded.
+ * @retval false  Ed public key generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean ecd_generate_key(IN OUT void *ecd_context, OUT uint8_t *public_key,
-                         IN OUT uintn *public_key_size);
+bool libspdm_ecd_generate_key(void *ecd_context, uint8_t *public_key,
+                              size_t *public_key_size);
 
 /**
  * Carries out the Ed-DSA signature.
  *
  * This function carries out the Ed-DSA signature.
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If ecd_context is NULL, then return FALSE.
- * If message is NULL, then return FALSE.
+ * If ecd_context is NULL, then return false.
+ * If message is NULL, then return false.
  * hash_nid must be NULL.
- * If sig_size is large enough but signature is NULL, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
  *
  * For ed25519, context must be NULL and context_size must be 0.
  * For ed448, context must be maximum of 255 octets.
@@ -3420,22 +3443,22 @@ boolean ecd_generate_key(IN OUT void *ecd_context, OUT uint8_t *public_key,
  * @param[in, out]  sig_size      On input, the size of signature buffer in bytes.
  *                              On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in Ed-DSA.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
+ * @retval  true   signature successfully generated in Ed-DSA.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
  *
  **/
-boolean eddsa_sign(IN void *ecd_context, IN uintn hash_nid,
-                   IN const uint8_t *context, IN uintn context_size,
-                   IN const uint8_t *message, IN uintn size, OUT uint8_t *signature,
-                   IN OUT uintn *sig_size);
+bool libspdm_eddsa_sign(const void *ecd_context, size_t hash_nid,
+                        const uint8_t *context, size_t context_size,
+                        const uint8_t *message, size_t size, uint8_t *signature,
+                        size_t *sig_size);
 
 /**
  * Verifies the Ed-DSA signature.
  *
- * If ecd_context is NULL, then return FALSE.
- * If message is NULL, then return FALSE.
- * If signature is NULL, then return FALSE.
+ * If ecd_context is NULL, then return false.
+ * If message is NULL, then return false.
+ * If signature is NULL, then return false.
  * hash_nid must be NULL.
  *
  * For ed25519, context must be NULL and context_size must be 0.
@@ -3453,14 +3476,14 @@ boolean eddsa_sign(IN void *ecd_context, IN uintn hash_nid,
  * @param[in]  signature    Pointer to Ed-DSA signature to be verified.
  * @param[in]  sig_size      size of signature in bytes.
  *
- * @retval  TRUE   Valid signature encoded in Ed-DSA.
- * @retval  FALSE  Invalid signature or invalid Ed context.
+ * @retval  true   Valid signature encoded in Ed-DSA.
+ * @retval  false  Invalid signature or invalid Ed context.
  *
  **/
-boolean eddsa_verify(IN void *ecd_context, IN uintn hash_nid,
-                     IN const uint8_t *context, IN uintn context_size,
-                     IN const uint8_t *message, IN uintn size,
-                     IN const uint8_t *signature, IN uintn sig_size);
+bool libspdm_eddsa_verify(const void *ecd_context, size_t hash_nid,
+                          const uint8_t *context, size_t context_size,
+                          const uint8_t *message, size_t size,
+                          const uint8_t *signature, size_t sig_size);
 
 /*=====================================================================================
  *    Montgomery-Curve Primitive
@@ -3473,10 +3496,10 @@ boolean eddsa_verify(IN void *ecd_context, IN uintn hash_nid,
  * @param nid cipher NID
  *
  * @return  Pointer to the Montgomery-Curve Context that has been initialized.
- *         If the allocations fails, ecx_new_by_nid() returns NULL.
+ *         If the allocations fails, libspdm_ecx_new_by_nid() returns NULL.
  *
  **/
-void *ecx_new_by_nid(IN uintn nid);
+void *libspdm_ecx_new_by_nid(size_t nid);
 
 /**
  * Release the specified Ecx context.
@@ -3484,7 +3507,7 @@ void *ecx_new_by_nid(IN uintn nid);
  * @param[in]  ecx_context  Pointer to the Ecx context to be released.
  *
  **/
-void ecx_free(IN void *ecx_context);
+void libspdm_ecx_free(const void *ecx_context);
 
 /**
  * Generates Ecx key and returns Ecx public key.
@@ -3492,28 +3515,28 @@ void ecx_free(IN void *ecx_context);
  * This function generates random secret, and computes the public key, which is
  * returned via parameter public, public_size.
  * Ecx context is updated accordingly.
- * If the public buffer is too small to hold the public key, FALSE is returned and
+ * If the public buffer is too small to hold the public key, false is returned and
  * public_size is set to the required buffer size to obtain the public key.
  *
  * For X25519, the public_size is 32.
  * For X448, the public_size is 56.
  *
- * If ecx_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If ecx_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  ecx_context      Pointer to the Ecx context.
  * @param[out]      public         Pointer to the buffer to receive generated public key.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   Ecx public key generation succeeded.
- * @retval FALSE  Ecx public key generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   Ecx public key generation succeeded.
+ * @retval false  Ecx public key generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
-                         IN OUT uintn *public_size);
+bool libspdm_ecx_generate_key(void *ecx_context, uint8_t *public,
+                              size_t *public_size);
 
 /**
  * Computes exchanged common key.
@@ -3521,11 +3544,11 @@ boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
  * Given peer's public key, this function computes the exchanged common key,
  * based on its own context including value of curve parameter and random secret.
  *
- * If ecx_context is NULL, then return FALSE.
- * If peer_public is NULL, then return FALSE.
- * If peer_public_size is 0, then return FALSE.
- * If key is NULL, then return FALSE.
- * If key_size is not large enough, then return FALSE.
+ * If ecx_context is NULL, then return false.
+ * If peer_public is NULL, then return false.
+ * If peer_public_size is 0, then return false.
+ * If key is NULL, then return false.
+ * If key_size is not large enough, then return false.
  *
  * For X25519, the public_size is 32.
  * For X448, the public_size is 56.
@@ -3537,14 +3560,14 @@ boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
  * @param[in, out]  key_size            On input, the size of key buffer in bytes.
  *                                    On output, the size of data returned in key buffer in bytes.
  *
- * @retval TRUE   Ecx exchanged key generation succeeded.
- * @retval FALSE  Ecx exchanged key generation failed.
- * @retval FALSE  key_size is not large enough.
+ * @retval true   Ecx exchanged key generation succeeded.
+ * @retval false  Ecx exchanged key generation failed.
+ * @retval false  key_size is not large enough.
  *
  **/
-boolean ecx_compute_key(IN OUT void *ecx_context, IN const uint8_t *peer_public,
-                        IN uintn peer_public_size, OUT uint8_t *key,
-                        IN OUT uintn *key_size);
+bool libspdm_ecx_compute_key(void *ecx_context, const uint8_t *peer_public,
+                             size_t peer_public_size, uint8_t *key,
+                             size_t *key_size);
 
 /*=====================================================================================
  *    Shang-Mi2 Primitive
@@ -3561,7 +3584,7 @@ boolean ecx_compute_key(IN OUT void *ecx_context, IN const uint8_t *peer_public,
  *         If the allocations fails, sm2_new_by_nid() returns NULL.
  *
  **/
-void *sm2_dsa_new_by_nid(IN uintn nid);
+void *libspdm_sm2_dsa_new_by_nid(size_t nid);
 
 /**
  * Release the specified sm2 context.
@@ -3569,7 +3592,7 @@ void *sm2_dsa_new_by_nid(IN uintn nid);
  * @param[in]  sm2_context  Pointer to the sm2 context to be released.
  *
  **/
-void sm2_dsa_free(IN void *sm2_context);
+void libspdm_sm2_dsa_free(void *sm2_context);
 
 /**
  * Sets the public key component into the established sm2 context.
@@ -3580,12 +3603,12 @@ void sm2_dsa_free(IN void *sm2_context);
  * @param[in]       public         Pointer to the buffer to receive generated public X,Y.
  * @param[in]       public_size     The size of public buffer in bytes.
  *
- * @retval  TRUE   sm2 public key component was set successfully.
- * @retval  FALSE  Invalid sm2 public key component.
+ * @retval  true   sm2 public key component was set successfully.
+ * @retval  false  Invalid sm2 public key component.
  *
  **/
-boolean sm2_dsa_set_pub_key(IN OUT void *sm2_context, IN uint8_t *public_key,
-                            IN uintn public_key_size);
+bool libspdm_sm2_dsa_set_pub_key(void *sm2_context, const uint8_t *public_key,
+                                 size_t public_key_size);
 
 /**
  * Gets the public key component from the established sm2 context.
@@ -3597,27 +3620,27 @@ boolean sm2_dsa_set_pub_key(IN OUT void *sm2_context, IN uint8_t *public_key,
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval  TRUE   sm2 key component was retrieved successfully.
- * @retval  FALSE  Invalid sm2 key component.
+ * @retval  true   sm2 key component was retrieved successfully.
+ * @retval  false  Invalid sm2 key component.
  *
  **/
-boolean sm2_dsa_get_pub_key(IN OUT void *sm2_context, OUT uint8_t *public_key,
-                            IN OUT uintn *public_key_size);
+bool libspdm_sm2_dsa_get_pub_key(void *sm2_context, uint8_t *public_key,
+                                 size_t *public_key_size);
 
 /**
  * Validates key components of sm2 context.
  * NOTE: This function performs integrity checks on all the sm2 key material, so
  *      the sm2 key structure must contain all the private key data.
  *
- * If sm2_context is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
  *
  * @param[in]  sm2_context  Pointer to sm2 context to check.
  *
- * @retval  TRUE   sm2 key components are valid.
- * @retval  FALSE  sm2 key components are not valid.
+ * @retval  true   sm2 key components are valid.
+ * @retval  false  sm2 key components are not valid.
  *
  **/
-boolean sm2_dsa_check_key(IN void *sm2_context);
+bool libspdm_sm2_dsa_check_key(const void *sm2_context);
 
 /**
  * Generates sm2 key and returns sm2 public key (X, Y), based upon GB/T 32918.3-2016: SM2 - Part3.
@@ -3627,27 +3650,27 @@ boolean sm2_dsa_check_key(IN void *sm2_context);
  * X is the first half of public with size being public_size / 2,
  * Y is the second half of public with size being public_size / 2.
  * sm2 context is updated accordingly.
- * If the public buffer is too small to hold the public X, Y, FALSE is returned and
+ * If the public buffer is too small to hold the public X, Y, false is returned and
  * public_size is set to the required buffer size to obtain the public X, Y.
  *
  * The public_size is 64. first 32-byte is X, second 32-byte is Y.
  *
- * If sm2_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  sm2_context     Pointer to the sm2 context.
  * @param[out]      public         Pointer to the buffer to receive generated public X,Y.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   sm2 public X,Y generation succeeded.
- * @retval FALSE  sm2 public X,Y generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   sm2 public X,Y generation succeeded.
+ * @retval false  sm2 public X,Y generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean sm2_dsa_generate_key(IN OUT void *sm2_context, OUT uint8_t *public,
-                             IN OUT uintn *public_size);
+bool libspdm_sm2_dsa_generate_key(void *sm2_context, uint8_t *public,
+                                  size_t *public_size);
 
 /**
  * Allocates and Initializes one Shang-Mi2 context for subsequent use.
@@ -3660,7 +3683,7 @@ boolean sm2_dsa_generate_key(IN OUT void *sm2_context, OUT uint8_t *public,
  *         If the allocations fails, sm2_new_by_nid() returns NULL.
  *
  **/
-void *sm2_key_exchange_new_by_nid(IN uintn nid);
+void *libspdm_sm2_key_exchange_new_by_nid(size_t nid);
 
 /**
  * Release the specified sm2 context.
@@ -3668,7 +3691,7 @@ void *sm2_key_exchange_new_by_nid(IN uintn nid);
  * @param[in]  sm2_context  Pointer to the sm2 context to be released.
  *
  **/
-void sm2_key_exchange_free(IN void *sm2_context);
+void libspdm_sm2_key_exchange_free(void *sm2_context);
 
 /**
  * Initialize the specified sm2 context.
@@ -3680,16 +3703,16 @@ void sm2_key_exchange_free(IN void *sm2_context);
  * @param[in]  id_b                the ID-B of the key exchange context.
  * @param[in]  id_b_size           size of ID-B key exchange context.
  * @param[in]  is_initiator        if the caller is initiator.
- *                                TRUE: initiator
- *                                FALSE: not an initiator
+ *                                true: initiator
+ *                                false: not an initiator
  *
- * @retval TRUE   sm2 context is initialized.
- * @retval FALSE  sm2 context is not initialized.
+ * @retval true   sm2 context is initialized.
+ * @retval false  sm2 context is not initialized.
  **/
-boolean sm2_key_exchange_init(IN void *sm2_context, IN uintn hash_nid,
-                              IN const uint8_t *id_a, IN uintn id_a_size,
-                              IN const uint8_t *id_b, IN uintn id_b_size,
-                              IN const boolean is_initiator);
+bool libspdm_sm2_key_exchange_init(const void *sm2_context, size_t hash_nid,
+                                   const uint8_t *id_a, size_t id_a_size,
+                                   const uint8_t *id_b, size_t id_b_size,
+                                   bool is_initiator);
 
 /**
  * Generates sm2 key and returns sm2 public key (X, Y), based upon GB/T 32918.3-2016: SM2 - Part3.
@@ -3699,27 +3722,27 @@ boolean sm2_key_exchange_init(IN void *sm2_context, IN uintn hash_nid,
  * X is the first half of public with size being public_size / 2,
  * Y is the second half of public with size being public_size / 2.
  * sm2 context is updated accordingly.
- * If the public buffer is too small to hold the public X, Y, FALSE is returned and
+ * If the public buffer is too small to hold the public X, Y, false is returned and
  * public_size is set to the required buffer size to obtain the public X, Y.
  *
  * The public_size is 64. first 32-byte is X, second 32-byte is Y.
  *
- * If sm2_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  sm2_context     Pointer to the sm2 context.
  * @param[out]      public         Pointer to the buffer to receive generated public X,Y.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   sm2 public X,Y generation succeeded.
- * @retval FALSE  sm2 public X,Y generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   sm2 public X,Y generation succeeded.
+ * @retval false  sm2 public X,Y generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean sm2_key_exchange_generate_key(IN OUT void *sm2_context, OUT uint8_t *public,
-                                      IN OUT uintn *public_size);
+bool libspdm_sm2_key_exchange_generate_key(void *sm2_context, uint8_t *public,
+                                           size_t *public_size);
 
 /**
  * Computes exchanged common key, based upon GB/T 32918.3-2016: SM2 - Part3.
@@ -3729,10 +3752,10 @@ boolean sm2_key_exchange_generate_key(IN OUT void *sm2_context, OUT uint8_t *pub
  * X is the first half of peer_public with size being peer_public_size / 2,
  * Y is the second half of peer_public with size being peer_public_size / 2.
  *
- * If sm2_context is NULL, then return FALSE.
- * If peer_public is NULL, then return FALSE.
- * If peer_public_size is 0, then return FALSE.
- * If key is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
+ * If peer_public is NULL, then return false.
+ * If peer_public_size is 0, then return false.
+ * If key is NULL, then return false.
  *
  * The id_a_size and id_b_size must be smaller than 2^16-1.
  * The peer_public_size is 64. first 32-byte is X, second 32-byte is Y.
@@ -3744,26 +3767,26 @@ boolean sm2_key_exchange_generate_key(IN OUT void *sm2_context, OUT uint8_t *pub
  * @param[out]      key                Pointer to the buffer to receive generated key.
  * @param[in]       key_size            On input, the size of key buffer in bytes.
  *
- * @retval TRUE   sm2 exchanged key generation succeeded.
- * @retval FALSE  sm2 exchanged key generation failed.
+ * @retval true   sm2 exchanged key generation succeeded.
+ * @retval false  sm2 exchanged key generation failed.
  *
  **/
-boolean sm2_key_exchange_compute_key(IN OUT void *sm2_context,
-                                     IN const uint8_t *peer_public,
-                                     IN uintn peer_public_size, OUT uint8_t *key,
-                                     IN uintn *key_size);
+bool libspdm_sm2_key_exchange_compute_key(void *sm2_context,
+                                          const uint8_t *peer_public,
+                                          size_t peer_public_size, uint8_t *key,
+                                          size_t *key_size);
 
 /**
  * Carries out the SM2 signature, based upon GB/T 32918.2-2016: SM2 - Part2.
  *
  * This function carries out the SM2 signature.
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If sm2_context is NULL, then return FALSE.
- * If message is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
+ * If message is NULL, then return false.
  * hash_nid must be SM3_256.
- * If sig_size is large enough but signature is NULL, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
  *
  * The id_a_size must be smaller than 2^16-1.
  * The sig_size is 64. first 32-byte is R, second 32-byte is S.
@@ -3778,22 +3801,22 @@ boolean sm2_key_exchange_compute_key(IN OUT void *sm2_context,
  * @param[in, out]  sig_size      On input, the size of signature buffer in bytes.
  *                              On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in SM2.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
+ * @retval  true   signature successfully generated in SM2.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
  *
  **/
-boolean sm2_dsa_sign(IN void *sm2_context, IN uintn hash_nid,
-                     IN const uint8_t *id_a, IN uintn id_a_size,
-                     IN const uint8_t *message, IN uintn size,
-                     OUT uint8_t *signature, IN OUT uintn *sig_size);
+bool libspdm_sm2_dsa_sign(const void *sm2_context, size_t hash_nid,
+                          const uint8_t *id_a, size_t id_a_size,
+                          const uint8_t *message, size_t size,
+                          uint8_t *signature, size_t *sig_size);
 
 /**
  * Verifies the SM2 signature, based upon GB/T 32918.2-2016: SM2 - Part2.
  *
- * If sm2_context is NULL, then return FALSE.
- * If message is NULL, then return FALSE.
- * If signature is NULL, then return FALSE.
+ * If sm2_context is NULL, then return false.
+ * If message is NULL, then return false.
+ * If signature is NULL, then return false.
  * hash_nid must be SM3_256.
  *
  * The id_a_size must be smaller than 2^16-1.
@@ -3808,14 +3831,14 @@ boolean sm2_dsa_sign(IN void *sm2_context, IN uintn hash_nid,
  * @param[in]  signature    Pointer to SM2 signature to be verified.
  * @param[in]  sig_size      size of signature in bytes.
  *
- * @retval  TRUE   Valid signature encoded in SM2.
- * @retval  FALSE  Invalid signature or invalid sm2 context.
+ * @retval  true   Valid signature encoded in SM2.
+ * @retval  false  Invalid signature or invalid sm2 context.
  *
  **/
-boolean sm2_dsa_verify(IN void *sm2_context, IN uintn hash_nid,
-                       IN const uint8_t *id_a, IN uintn id_a_size,
-                       IN const uint8_t *message, IN uintn size,
-                       IN const uint8_t *signature, IN uintn sig_size);
+bool libspdm_sm2_dsa_verify(const void *sm2_context, size_t hash_nid,
+                            const uint8_t *id_a, size_t id_a_size,
+                            const uint8_t *message, size_t size,
+                            const uint8_t *signature, size_t sig_size);
 
 /*=====================================================================================
  *    Pseudo-Random Generation Primitive
@@ -3827,35 +3850,35 @@ boolean sm2_dsa_verify(IN void *sm2_context, IN uintn hash_nid,
  * This function sets up the seed value for the pseudorandom number generator.
  * If seed is not NULL, then the seed passed in is used.
  * If seed is NULL, then default seed is used.
- * If this interface is not supported, then return FALSE.
+ * If this interface is not supported, then return false.
  *
  * @param[in]  seed      Pointer to seed value.
  *                      If NULL, default seed is used.
  * @param[in]  seed_size  size of seed value.
  *                      If seed is NULL, this parameter is ignored.
  *
- * @retval TRUE   Pseudorandom number generator has enough entropy for random generation.
- * @retval FALSE  Pseudorandom number generator does not have enough entropy for random generation.
- * @retval FALSE  This interface is not supported.
+ * @retval true   Pseudorandom number generator has enough entropy for random generation.
+ * @retval false  Pseudorandom number generator does not have enough entropy for random generation.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean random_seed(IN const uint8_t *seed OPTIONAL, IN uintn seed_size);
+bool libspdm_random_seed(const uint8_t *seed, size_t seed_size);
 
 /**
  * Generates a pseudorandom byte stream of the specified size.
  *
- * If output is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If output is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[out]  output  Pointer to buffer to receive random value.
  * @param[in]   size    size of random bytes to generate.
  *
- * @retval TRUE   Pseudorandom byte stream generated successfully.
- * @retval FALSE  Pseudorandom number generator fails to generate due to lack of entropy.
- * @retval FALSE  This interface is not supported.
+ * @retval true   Pseudorandom byte stream generated successfully.
+ * @retval false  Pseudorandom number generator fails to generate due to lack of entropy.
+ * @retval false  This interface is not supported.
  *
  **/
-boolean random_bytes(OUT uint8_t *output, IN uintn size);
+bool libspdm_random_bytes(uint8_t *output, size_t size);
 
 /*=====================================================================================
  *    key Derivation Function Primitive
@@ -3873,14 +3896,14 @@ boolean random_bytes(OUT uint8_t *output, IN uintn size);
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha256_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                       IN const uint8_t *salt, IN uintn salt_size,
-                                       IN const uint8_t *info, IN uintn info_size,
-                                       OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha256_extract_and_expand(const uint8_t *key, size_t key_size,
+                                            const uint8_t *salt, size_t salt_size,
+                                            const uint8_t *info, size_t info_size,
+                                            uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA256 HMAC-based Extract key Derivation Function (HKDF).
@@ -3892,13 +3915,13 @@ boolean hkdf_sha256_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha256_extract(IN const uint8_t *key, IN uintn key_size,
-                            IN const uint8_t *salt, IN uintn salt_size,
-                            OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha256_extract(const uint8_t *key, size_t key_size,
+                                 const uint8_t *salt, size_t salt_size,
+                                 uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA256 HMAC-based Expand key Derivation Function (HKDF).
@@ -3910,13 +3933,13 @@ boolean hkdf_sha256_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha256_expand(IN const uint8_t *prk, IN uintn prk_size,
-                           IN const uint8_t *info, IN uintn info_size,
-                           OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha256_expand(const uint8_t *prk, size_t prk_size,
+                                const uint8_t *info, size_t info_size,
+                                uint8_t *out, size_t out_size);
 
 /**
  * Derive key data using HMAC-SHA384 based KDF.
@@ -3930,14 +3953,14 @@ boolean hkdf_sha256_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha384_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                       IN const uint8_t *salt, IN uintn salt_size,
-                                       IN const uint8_t *info, IN uintn info_size,
-                                       OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha384_extract_and_expand(const uint8_t *key, size_t key_size,
+                                            const uint8_t *salt, size_t salt_size,
+                                            const uint8_t *info, size_t info_size,
+                                            uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA384 HMAC-based Extract key Derivation Function (HKDF).
@@ -3949,13 +3972,13 @@ boolean hkdf_sha384_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha384_extract(IN const uint8_t *key, IN uintn key_size,
-                            IN const uint8_t *salt, IN uintn salt_size,
-                            OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha384_extract(const uint8_t *key, size_t key_size,
+                                 const uint8_t *salt, size_t salt_size,
+                                 uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA384 HMAC-based Expand key Derivation Function (HKDF).
@@ -3967,13 +3990,13 @@ boolean hkdf_sha384_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha384_expand(IN const uint8_t *prk, IN uintn prk_size,
-                           IN const uint8_t *info, IN uintn info_size,
-                           OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha384_expand(const uint8_t *prk, size_t prk_size,
+                                const uint8_t *info, size_t info_size,
+                                uint8_t *out, size_t out_size);
 
 /**
  * Derive key data using HMAC-SHA512 based KDF.
@@ -3987,14 +4010,14 @@ boolean hkdf_sha384_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha512_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                       IN const uint8_t *salt, IN uintn salt_size,
-                                       IN const uint8_t *info, IN uintn info_size,
-                                       OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha512_extract_and_expand(const uint8_t *key, size_t key_size,
+                                            const uint8_t *salt, size_t salt_size,
+                                            const uint8_t *info, size_t info_size,
+                                            uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA512 HMAC-based Extract key Derivation Function (HKDF).
@@ -4006,13 +4029,13 @@ boolean hkdf_sha512_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha512_extract(IN const uint8_t *key, IN uintn key_size,
-                            IN const uint8_t *salt, IN uintn salt_size,
-                            OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha512_extract(const uint8_t *key, size_t key_size,
+                                 const uint8_t *salt, size_t salt_size,
+                                 uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA512 HMAC-based Expand key Derivation Function (HKDF).
@@ -4024,13 +4047,13 @@ boolean hkdf_sha512_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha512_expand(IN const uint8_t *prk, IN uintn prk_size,
-                           IN const uint8_t *info, IN uintn info_size,
-                           OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha512_expand(const uint8_t *prk, size_t prk_size,
+                                const uint8_t *info, size_t info_size,
+                                uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_256 HMAC-based Extract-and-Expand key Derivation Function (HKDF).
@@ -4044,14 +4067,14 @@ boolean hkdf_sha512_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_256_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                         IN const uint8_t *salt, IN uintn salt_size,
-                                         IN const uint8_t *info, IN uintn info_size,
-                                         OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_256_extract_and_expand(const uint8_t *key, size_t key_size,
+                                              const uint8_t *salt, size_t salt_size,
+                                              const uint8_t *info, size_t info_size,
+                                              uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_256 HMAC-based Extract key Derivation Function (HKDF).
@@ -4063,13 +4086,13 @@ boolean hkdf_sha3_256_extract_and_expand(IN const uint8_t *key, IN uintn key_siz
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_256_extract(IN const uint8_t *key, IN uintn key_size,
-                              IN const uint8_t *salt, IN uintn salt_size,
-                              OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha3_256_extract(const uint8_t *key, size_t key_size,
+                                   const uint8_t *salt, size_t salt_size,
+                                   uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA3_256 HMAC-based Expand key Derivation Function (HKDF).
@@ -4081,13 +4104,13 @@ boolean hkdf_sha3_256_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_256_expand(IN const uint8_t *prk, IN uintn prk_size,
-                             IN const uint8_t *info, IN uintn info_size,
-                             OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_256_expand(const uint8_t *prk, size_t prk_size,
+                                  const uint8_t *info, size_t info_size,
+                                  uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_384 HMAC-based Extract-and-Expand key Derivation Function (HKDF).
@@ -4101,14 +4124,14 @@ boolean hkdf_sha3_256_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_384_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                         IN const uint8_t *salt, IN uintn salt_size,
-                                         IN const uint8_t *info, IN uintn info_size,
-                                         OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_384_extract_and_expand(const uint8_t *key, size_t key_size,
+                                              const uint8_t *salt, size_t salt_size,
+                                              const uint8_t *info, size_t info_size,
+                                              uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_384 HMAC-based Extract key Derivation Function (HKDF).
@@ -4120,13 +4143,13 @@ boolean hkdf_sha3_384_extract_and_expand(IN const uint8_t *key, IN uintn key_siz
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_384_extract(IN const uint8_t *key, IN uintn key_size,
-                              IN const uint8_t *salt, IN uintn salt_size,
-                              OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha3_384_extract(const uint8_t *key, size_t key_size,
+                                   const uint8_t *salt, size_t salt_size,
+                                   uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA3_384 HMAC-based Expand key Derivation Function (HKDF).
@@ -4138,13 +4161,13 @@ boolean hkdf_sha3_384_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_384_expand(IN const uint8_t *prk, IN uintn prk_size,
-                             IN const uint8_t *info, IN uintn info_size,
-                             OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_384_expand(const uint8_t *prk, size_t prk_size,
+                                  const uint8_t *info, size_t info_size,
+                                  uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_512 HMAC-based Extract-and-Expand key Derivation Function (HKDF).
@@ -4158,14 +4181,14 @@ boolean hkdf_sha3_384_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_512_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                         IN const uint8_t *salt, IN uintn salt_size,
-                                         IN const uint8_t *info, IN uintn info_size,
-                                         OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_512_extract_and_expand(const uint8_t *key, size_t key_size,
+                                              const uint8_t *salt, size_t salt_size,
+                                              const uint8_t *info, size_t info_size,
+                                              uint8_t *out, size_t out_size);
 
 /**
  * Derive SHA3_512 HMAC-based Extract key Derivation Function (HKDF).
@@ -4177,13 +4200,13 @@ boolean hkdf_sha3_512_extract_and_expand(IN const uint8_t *key, IN uintn key_siz
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_512_extract(IN const uint8_t *key, IN uintn key_size,
-                              IN const uint8_t *salt, IN uintn salt_size,
-                              OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sha3_512_extract(const uint8_t *key, size_t key_size,
+                                   const uint8_t *salt, size_t salt_size,
+                                   uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SHA3_512 HMAC-based Expand key Derivation Function (HKDF).
@@ -4195,13 +4218,13 @@ boolean hkdf_sha3_512_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sha3_512_expand(IN const uint8_t *prk, IN uintn prk_size,
-                             IN const uint8_t *info, IN uintn info_size,
-                             OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sha3_512_expand(const uint8_t *prk, size_t prk_size,
+                                  const uint8_t *info, size_t info_size,
+                                  uint8_t *out, size_t out_size);
 
 /**
  * Derive SM3_256 HMAC-based Extract-and-Expand key Derivation Function (HKDF).
@@ -4215,14 +4238,14 @@ boolean hkdf_sha3_512_expand(IN const uint8_t *prk, IN uintn prk_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sm3_256_extract_and_expand(IN const uint8_t *key, IN uintn key_size,
-                                        IN const uint8_t *salt, IN uintn salt_size,
-                                        IN const uint8_t *info, IN uintn info_size,
-                                        OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sm3_256_extract_and_expand(const uint8_t *key, size_t key_size,
+                                             const uint8_t *salt, size_t salt_size,
+                                             const uint8_t *info, size_t info_size,
+                                             uint8_t *out, size_t out_size);
 
 /**
  * Derive SM3_256 HMAC-based Extract key Derivation Function (HKDF).
@@ -4234,13 +4257,13 @@ boolean hkdf_sm3_256_extract_and_expand(IN const uint8_t *key, IN uintn key_size
  * @param[out]  prk_out           Pointer to buffer to receive hkdf value.
  * @param[in]   prk_out_size       size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sm3_256_extract(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *salt, IN uintn salt_size,
-                             OUT uint8_t *prk_out, IN uintn prk_out_size);
+bool libspdm_hkdf_sm3_256_extract(const uint8_t *key, size_t key_size,
+                                  const uint8_t *salt, size_t salt_size,
+                                  uint8_t *prk_out, size_t prk_out_size);
 
 /**
  * Derive SM3_256 HMAC-based Expand key Derivation Function (HKDF).
@@ -4252,12 +4275,12 @@ boolean hkdf_sm3_256_extract(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  out              Pointer to buffer to receive hkdf value.
  * @param[in]   out_size          size of hkdf bytes to generate.
  *
- * @retval TRUE   Hkdf generated successfully.
- * @retval FALSE  Hkdf generation failed.
+ * @retval true   Hkdf generated successfully.
+ * @retval false  Hkdf generation failed.
  *
  **/
-boolean hkdf_sm3_256_expand(IN const uint8_t *prk, IN uintn prk_size,
-                            IN const uint8_t *info, IN uintn info_size,
-                            OUT uint8_t *out, IN uintn out_size);
+bool libspdm_hkdf_sm3_256_expand(const uint8_t *prk, size_t prk_size,
+                                 const uint8_t *info, size_t info_size,
+                                 uint8_t *out, size_t out_size);
 
 #endif /* __BASE_CRYPT_LIB_H__*/

@@ -16,9 +16,9 @@
 /**
  * Performs AEAD AES-GCM authenticated encryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -33,30 +33,30 @@
  * @param[out]  data_out     Pointer to a buffer that receives the encryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated encryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated encryption failed.
+ * @retval true   AEAD AES-GCM authenticated encryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated encryption failed.
  *
  **/
-boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             OUT uint8_t *tag_out, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size)
+bool libspdm_aead_aes_gcm_encrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  uint8_t *tag_out, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size)
 {
-    copy_mem(data_out, data_in, data_in_size);
+    libspdm_copy_mem(data_out, *data_out_size, data_in, data_in_size);
     *data_out_size = data_in_size;
-    zero_mem(tag_out, tag_size);
-    return TRUE;
+    libspdm_zero_mem(tag_out, tag_size);
+    return true;
 }
 
 /**
  * Performs AEAD AES-GCM authenticated decryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
- * If additional authenticated data verification fails, FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
+ * If additional authenticated data verification fails, false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -71,18 +71,18 @@ boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
  * @param[out]  data_out     Pointer to a buffer that receives the decryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated decryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated decryption failed.
+ * @retval true   AEAD AES-GCM authenticated decryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated decryption failed.
  *
  **/
-boolean aead_aes_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             IN const uint8_t *tag, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size)
+bool libspdm_aead_aes_gcm_decrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  const uint8_t *tag, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size)
 {
-    copy_mem(data_out, data_in, data_in_size);
+    libspdm_copy_mem(data_out, *data_out_size, data_in, data_in_size);
     *data_out_size = data_in_size;
-    return TRUE;
+    return true;
 }

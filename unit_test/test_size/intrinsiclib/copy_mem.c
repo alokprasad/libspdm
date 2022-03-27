@@ -17,7 +17,8 @@
 static __attribute__((__used__)) void *__memcpy(void *dest, const void *src,
                                                 unsigned int count)
 {
-    return copy_mem(dest, src, (uintn)count);
+    libspdm_copy_mem(dest, (size_t)count, src, (size_t)count);
+    return dest;
 }
 __attribute__((__alias__("__memcpy"))) void *memcpy(void *dest, const void *src,
                                                     unsigned int count);
@@ -26,6 +27,7 @@ __attribute__((__alias__("__memcpy"))) void *memcpy(void *dest, const void *src,
 /* Copies bytes between buffers */
 void *memcpy(void *dest, const void *src, unsigned int count)
 {
-    return copy_mem(dest, src, (uintn)count);
+    libspdm_copy_mem(dest, (size_t) count, src, (size_t)count);
+    return dest;
 }
 #endif

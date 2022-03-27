@@ -11,7 +11,7 @@
 #include "hal/base.h"
 #include "hal/library/memlib.h"
 
-typedef uintn size_t;
+typedef size_t size_t;
 
 #if defined(__GNUC__) || defined(__clang__)
 #define GLOBAL_USED __attribute__((used))
@@ -28,7 +28,7 @@ void *memset(void *dest, int ch, size_t count)
 {
 
     /* NOTE: Here we use one base implementation for memset, instead of the direct
-     *       optimized set_mem() wrapper. Because the intrinsiclib has to be built
+     *       optimized libspdm_set_mem() wrapper. Because the intrinsiclib has to be built
      *       without whole program optimization option, and there will be some
      *       potential register usage errors when calling other optimized codes.*/
 
@@ -50,17 +50,17 @@ void *memset(void *dest, int ch, size_t count)
 
 void *memmove(void *dest, const void *src, size_t count)
 {
-    copy_mem(dest, src, count);
+    libspdm_copy_mem(dest, count, src, count);
     return dest;
 }
 
 /* Compare bytes in two buffers. */
 int memcmp(const void *buf1, const void *buf2, size_t count)
 {
-    return (int)const_compare_mem(buf1, buf2, count);
+    return (int)libspdm_const_compare_mem(buf1, buf2, count);
 }
 
-intn ascii_strcmp(IN const char *first_string, IN const char *second_string)
+int ascii_strcmp(const char *first_string, const char *second_string)
 {
     while ((*first_string != '\0') && (*first_string == *second_string)) {
         first_string++;
@@ -75,9 +75,9 @@ int strcmp(const char *s1, const char *s2)
     return (int)ascii_strcmp(s1, s2);
 }
 
-uintn ascii_strlen(IN const char *string)
+size_t ascii_strlen(const char *string)
 {
-    uintn length;
+    size_t length;
 
     if (string == NULL) {
         return 0;
@@ -92,7 +92,7 @@ unsigned int strlen(char *s)
     return (unsigned int)ascii_strlen(s);
 }
 
-char *ascii_strstr(IN const char *string, IN const char *search_string)
+char *ascii_strstr(const char *string, const char *search_string)
 {
     const char *first_match;
     const char *search_string_tmp;

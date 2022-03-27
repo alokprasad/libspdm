@@ -9,27 +9,27 @@
 /**
  * Validate Crypto Ed Interfaces.
  *
- * @retval  RETURN_SUCCESS  Validation succeeded.
- * @retval  RETURN_ABORTED  Validation failed.
+ * @retval  true  Validation succeeded.
+ * @retval  false  Validation failed.
  *
  **/
-return_status validate_crypt_ecd(void)
+bool libspdm_validate_crypt_ecd(void)
 {
     void *ecd1;
     void *ecd2;
     uint8_t message[] = "EdDsaTest";
     uint8_t signature1[32 * 2];
     uint8_t signature2[57 * 2];
-    uintn sig1_size;
-    uintn sig2_size;
-    boolean status;
+    size_t sig1_size;
+    size_t sig2_size;
+    bool status;
 
-    my_print("\nCrypto Ed-DSA Signing Verification Testing:\n");
+    libspdm_my_print("\nCrypto Ed-DSA Signing Verification Testing:\n");
 
-    my_print("- Context1 ... ");
-    ecd1 = ecd_new_by_nid(CRYPTO_NID_EDDSA_ED25519);
+    libspdm_my_print("- Context1 ... ");
+    ecd1 = libspdm_ecd_new_by_nid(LIBSPDM_CRYPTO_NID_EDDSA_ED25519);
     if (ecd1 == NULL) {
-        my_print("[Fail]");
+        libspdm_my_print("[Fail]");
         goto Exit;
     }
 
@@ -37,57 +37,57 @@ return_status validate_crypt_ecd(void)
     /* Verify Ed-DSA*/
 
     sig1_size = sizeof(signature1);
-    my_print("\n- Ed-DSA Signing ... ");
-    status = eddsa_sign(ecd1, CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
-                        signature1, &sig1_size);
+    libspdm_my_print("\n- Ed-DSA Signing ... ");
+    status = libspdm_eddsa_sign(ecd1, LIBSPDM_CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
+                                signature1, &sig1_size);
     if (!status) {
-        my_print("[Fail]");
-        ecd_free(ecd1);
+        libspdm_my_print("[Fail]");
+        libspdm_ecd_free(ecd1);
         goto Exit;
     }
 
-    my_print("Ed-DSA Verification ... ");
-    status = eddsa_verify(ecd1, CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
-                          signature1, sig1_size);
+    libspdm_my_print("Ed-DSA Verification ... ");
+    status = libspdm_eddsa_verify(ecd1, LIBSPDM_CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
+                                  signature1, sig1_size);
     if (!status) {
-        my_print("[Fail]");
-        ecd_free(ecd1);
+        libspdm_my_print("[Fail]");
+        libspdm_ecd_free(ecd1);
         goto Exit;
     } else {
-        my_print("[Pass]\n");
+        libspdm_my_print("[Pass]\n");
     }
-    ecd_free(ecd1);
+    libspdm_ecd_free(ecd1);
 
-    my_print("Context2 ... ");
-    ecd2 = ecd_new_by_nid(CRYPTO_NID_EDDSA_ED448);
+    libspdm_my_print("Context2 ... ");
+    ecd2 = libspdm_ecd_new_by_nid(LIBSPDM_CRYPTO_NID_EDDSA_ED448);
     if (ecd2 == NULL) {
-        my_print("[Fail]");
+        libspdm_my_print("[Fail]");
         goto Exit;
     }
 
     sig2_size = sizeof(signature2);
-    my_print("\n- Ed-DSA Signing ... ");
-    status = eddsa_sign(ecd2, CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
-                        signature2, &sig2_size);
+    libspdm_my_print("\n- Ed-DSA Signing ... ");
+    status = libspdm_eddsa_sign(ecd2, LIBSPDM_CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
+                                signature2, &sig2_size);
     if (!status) {
-        my_print("[Fail]");
-        ecd_free(ecd2);
+        libspdm_my_print("[Fail]");
+        libspdm_ecd_free(ecd2);
         goto Exit;
     }
 
-    my_print("Ed-DSA Verification ... ");
-    status = eddsa_verify(ecd2, CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
-                          signature2, sig2_size);
+    libspdm_my_print("Ed-DSA Verification ... ");
+    status = libspdm_eddsa_verify(ecd2, LIBSPDM_CRYPTO_NID_NULL, NULL, 0, message, sizeof(message),
+                                  signature2, sig2_size);
     if (!status) {
-        my_print("[Fail]");
-        ecd_free(ecd2);
+        libspdm_my_print("[Fail]");
+        libspdm_ecd_free(ecd2);
         goto Exit;
     } else {
-        my_print("[Pass]\n");
+        libspdm_my_print("[Pass]\n");
     }
 
-    ecd_free(ecd2);
+    libspdm_ecd_free(ecd2);
 
 Exit:
-    return RETURN_SUCCESS;
+    return true;
 }

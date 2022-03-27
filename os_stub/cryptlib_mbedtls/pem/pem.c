@@ -16,11 +16,11 @@
 #include <mbedtls/ecdh.h>
 #include <mbedtls/ecdsa.h>
 
-static uintn ascii_str_len(IN const char *string)
+static size_t ascii_str_len(const char *string)
 {
-    uintn length;
+    size_t length;
 
-    ASSERT(string != NULL);
+    LIBSPDM_ASSERT(string != NULL);
     if (string == NULL) {
         return 0;
     }
@@ -38,38 +38,38 @@ static uintn ascii_str_len(IN const char *string)
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] rsa_context   Pointer to new-generated RSA context which contain the retrieved
- *                         RSA private key component. Use rsa_free() function to free the
+ *                         RSA private key component. Use libspdm_rsa_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If rsa_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If rsa_context is NULL, then return false.
  *
- * @retval  TRUE   RSA Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   RSA Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean rsa_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **rsa_context)
+bool libspdm_rsa_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **rsa_context)
 {
     int32_t ret;
     mbedtls_pk_context pk;
     mbedtls_rsa_context *rsa;
     uint8_t *new_pem_data;
-    uintn password_len;
+    size_t password_len;
 
     if (pem_data == NULL || rsa_context == NULL || pem_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     new_pem_data = NULL;
     if (pem_data[pem_size - 1] != 0) {
         new_pem_data = allocate_pool(pem_size + 1);
         if (new_pem_data == NULL) {
-            return FALSE;
+            return false;
         }
-        copy_mem(new_pem_data, pem_data, pem_size + 1);
+        libspdm_copy_mem(new_pem_data, pem_size + 1, pem_data, pem_size);
         new_pem_data[pem_size] = 0;
         pem_data = new_pem_data;
         pem_size += 1;
@@ -93,28 +93,28 @@ boolean rsa_get_private_key_from_pem(IN const uint8_t *pem_data,
 
     if (ret != 0) {
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
 
     if (mbedtls_pk_get_type(&pk) != MBEDTLS_PK_RSA) {
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
 
-    rsa = rsa_new();
+    rsa = libspdm_rsa_new();
     if (rsa == NULL) {
-        return FALSE;
+        return false;
     }
     ret = mbedtls_rsa_copy(rsa, mbedtls_pk_rsa(pk));
     if (ret != 0) {
-        rsa_free(rsa);
+        libspdm_rsa_free(rsa);
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
     mbedtls_pk_free(&pk);
 
     *rsa_context = rsa;
-    return TRUE;
+    return true;
 }
 
 /**
@@ -124,37 +124,37 @@ boolean rsa_get_private_key_from_pem(IN const uint8_t *pem_data,
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] ec_context    Pointer to new-generated EC DSA context which contain the retrieved
- *                         EC private key component. Use ec_free() function to free the
+ *                         EC private key component. Use libspdm_ec_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If ec_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If ec_context is NULL, then return false.
  *
- * @retval  TRUE   EC Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   EC Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_size,
-                                    IN const char *password,
-                                    OUT void **ec_context)
+bool libspdm_ec_get_private_key_from_pem(const uint8_t *pem_data, size_t pem_size,
+                                         const char *password,
+                                         void **ec_context)
 {
     int32_t ret;
     mbedtls_pk_context pk;
     mbedtls_ecdh_context *ecdh;
     uint8_t *new_pem_data;
-    uintn password_len;
+    size_t password_len;
 
     if (pem_data == NULL || ec_context == NULL || pem_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     new_pem_data = NULL;
     if (pem_data[pem_size - 1] != 0) {
         new_pem_data = allocate_pool(pem_size + 1);
         if (new_pem_data == NULL) {
-            return FALSE;
+            return false;
         }
-        copy_mem(new_pem_data, pem_data, pem_size + 1);
+        libspdm_copy_mem(new_pem_data, pem_size + 1, pem_data, pem_size);
         new_pem_data[pem_size] = 0;
         pem_data = new_pem_data;
         pem_size += 1;
@@ -178,18 +178,18 @@ boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_siz
 
     if (ret != 0) {
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
 
     if (mbedtls_pk_get_type(&pk) != MBEDTLS_PK_ECKEY) {
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
 
     ecdh = allocate_zero_pool(sizeof(mbedtls_ecdh_context));
     if (ecdh == NULL) {
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
     mbedtls_ecdh_init(ecdh);
 
@@ -199,12 +199,12 @@ boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_siz
         mbedtls_ecdh_free(ecdh);
         free_pool(ecdh);
         mbedtls_pk_free(&pk);
-        return FALSE;
+        return false;
     }
     mbedtls_pk_free(&pk);
 
     *ec_context = ecdh;
-    return TRUE;
+    return true;
 }
 
 /**
@@ -214,22 +214,22 @@ boolean ec_get_private_key_from_pem(IN const uint8_t *pem_data, IN uintn pem_siz
  * @param[in]  pem_size      size of the PEM key data in bytes.
  * @param[in]  password     NULL-terminated passphrase used for encrypted PEM key data.
  * @param[out] ecd_context    Pointer to new-generated Ed DSA context which contain the retrieved
- *                         Ed private key component. Use ecd_free() function to free the
+ *                         Ed private key component. Use libspdm_ecd_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If ecd_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If ecd_context is NULL, then return false.
  *
- * @retval  TRUE   Ed Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   Ed Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean ecd_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **ecd_context)
+bool libspdm_ecd_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **ecd_context)
 {
-    return FALSE;
+    return false;
 }
 
 /**
@@ -242,17 +242,17 @@ boolean ecd_get_private_key_from_pem(IN const uint8_t *pem_data,
  *                         sm2 private key component. Use sm2_free() function to free the
  *                         resource.
  *
- * If pem_data is NULL, then return FALSE.
- * If sm2_context is NULL, then return FALSE.
+ * If pem_data is NULL, then return false.
+ * If sm2_context is NULL, then return false.
  *
- * @retval  TRUE   sm2 Private key was retrieved successfully.
- * @retval  FALSE  Invalid PEM key data or incorrect password.
+ * @retval  true   sm2 Private key was retrieved successfully.
+ * @retval  false  Invalid PEM key data or incorrect password.
  *
  **/
-boolean sm2_get_private_key_from_pem(IN const uint8_t *pem_data,
-                                     IN uintn pem_size,
-                                     IN const char *password,
-                                     OUT void **sm2_context)
+bool libspdm_sm2_get_private_key_from_pem(const uint8_t *pem_data,
+                                          size_t pem_size,
+                                          const char *password,
+                                          void **sm2_context)
 {
-    return FALSE;
+    return false;
 }

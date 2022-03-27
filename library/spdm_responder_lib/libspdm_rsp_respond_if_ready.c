@@ -23,28 +23,28 @@
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_respond_if_ready(IN void *context,
-                                                 IN uintn request_size,
-                                                 IN void *request,
-                                                 IN OUT uintn *response_size,
-                                                 OUT void *response)
+libspdm_return_t libspdm_get_response_respond_if_ready(void *context,
+                                                       size_t request_size,
+                                                       const void *request,
+                                                       size_t *response_size,
+                                                       void *response)
 {
-    spdm_message_header_t *spdm_request;
-    spdm_context_t *spdm_context;
-    spdm_get_spdm_response_func get_response_func;
-    return_status status;
+    const spdm_message_header_t *spdm_request;
+    libspdm_context_t *spdm_context;
+    libspdm_get_spdm_response_func get_response_func;
+    libspdm_return_t status;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (spdm_request->spdm_version != spdm_get_connection_version(spdm_context)) {
+    if (spdm_request->spdm_version != libspdm_get_connection_version(spdm_context)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_VERSION_MISMATCH, 0,
                                                response_size, response);
     }
     if (spdm_context->response_state == LIBSPDM_RESPONSE_STATE_NEED_RESYNC ||
         spdm_context->response_state == LIBSPDM_RESPONSE_STATE_NOT_READY) {
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context, spdm_request->request_response_code,
             response_size, response);
     }
@@ -73,7 +73,7 @@ return_status spdm_get_response_respond_if_ready(IN void *context,
 
     get_response_func = NULL;
     get_response_func =
-        spdm_get_response_func_via_request_code(spdm_request->param1);
+        libspdm_get_response_func_via_request_code(spdm_request->param1);
     if (get_response_func == NULL) {
         return libspdm_generate_error_response(
             spdm_context, SPDM_ERROR_CODE_UNSUPPORTED_REQUEST,

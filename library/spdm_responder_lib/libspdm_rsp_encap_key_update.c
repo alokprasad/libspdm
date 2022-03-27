@@ -19,51 +19,51 @@
  * @retval RETURN_SUCCESS               The encapsulated request is returned.
  * @retval RETURN_BUFFER_TOO_SMALL      The buffer is too small to hold the data.
  **/
-return_status
-spdm_get_encap_request_key_update(IN spdm_context_t *spdm_context,
-                                  IN OUT uintn *encap_request_size,
-                                  OUT void *encap_request)
+libspdm_return_t
+libspdm_get_encap_request_key_update(libspdm_context_t *spdm_context,
+                                     size_t *encap_request_size,
+                                     void *encap_request)
 {
     spdm_key_update_request_t *spdm_request;
     uint32_t session_id;
-    spdm_session_info_t *session_info;
+    libspdm_session_info_t *session_info;
     libspdm_session_state_t session_state;
-    return_status status;
+    bool result;
 
     spdm_context->encap_context.last_encap_request_size = 0;
 
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, false,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_KEY_UPD_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_UPD_CAP)) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
 
     if (!spdm_context->last_spdm_request_session_id_valid) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
     session_id = spdm_context->last_spdm_request_session_id;
     session_info =
         libspdm_get_session_info_via_session_id(spdm_context, session_id);
     if (session_info == NULL) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
     session_state = libspdm_secured_message_get_session_state(
         session_info->secured_message_context);
     if (session_state != LIBSPDM_SESSION_STATE_ESTABLISHED) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_INVALID_STATE_LOCAL;
     }
 
-    ASSERT(*encap_request_size >= sizeof(spdm_key_update_request_t));
+    LIBSPDM_ASSERT(*encap_request_size >= sizeof(spdm_key_update_request_t));
     *encap_request_size = sizeof(spdm_key_update_request_t);
 
     spdm_request = encap_request;
 
-    spdm_request->header.spdm_version = spdm_get_connection_version (spdm_context);
+    spdm_request->header.spdm_version = libspdm_get_connection_version (spdm_context);
     spdm_request->header.request_response_code = SPDM_KEY_UPDATE;
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, session_info,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, session_info,
+                                                  spdm_request->header.request_response_code);
 
     if (spdm_context->encap_context.last_encap_request_header
         .request_response_code != SPDM_KEY_UPDATE) {
@@ -72,7 +72,7 @@ spdm_get_encap_request_key_update(IN spdm_context_t *spdm_context,
         spdm_request->header.param2 = 0;
         if(!libspdm_get_random_number(sizeof(spdm_request->header.param2),
                                       &spdm_request->header.param2)) {
-            return RETURN_DEVICE_ERROR;
+            return LIBSPDM_STATUS_LOW_ENTROPY;
         }
     } else {
         spdm_request->header.param1 =
@@ -80,36 +80,37 @@ spdm_get_encap_request_key_update(IN spdm_context_t *spdm_context,
         spdm_request->header.param2 = 1;
         if(!libspdm_get_random_number(sizeof(spdm_request->header.param2),
                                       &spdm_request->header.param2)) {
-            return RETURN_DEVICE_ERROR;
+            return LIBSPDM_STATUS_LOW_ENTROPY;
         }
 
         /* Create new key*/
-        DEBUG((DEBUG_INFO,
-               "libspdm_create_update_session_data_key[%x] Responder\n",
-               session_id));
-        status = libspdm_create_update_session_data_key(
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_create_update_session_data_key[%x] Responder\n",
+                       session_id));
+        result = libspdm_create_update_session_data_key(
             session_info->secured_message_context,
             LIBSPDM_KEY_UPDATE_ACTION_RESPONDER);
-        if (RETURN_ERROR(status)) {
-            return status;
+        if (!result) {
+            return LIBSPDM_STATUS_CRYPTO_ERROR;
         }
-        DEBUG((DEBUG_INFO,
-               "libspdm_activate_update_session_data_key[%x] Responder new\n",
-               session_id));
-        status = libspdm_activate_update_session_data_key(
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_activate_update_session_data_key[%x] Responder new\n",
+                       session_id));
+        result = libspdm_activate_update_session_data_key(
             session_info->secured_message_context,
-            LIBSPDM_KEY_UPDATE_ACTION_RESPONDER, TRUE);
-        if (RETURN_ERROR(status)) {
-            return status;
+            LIBSPDM_KEY_UPDATE_ACTION_RESPONDER, true);
+        if (!result) {
+            return LIBSPDM_STATUS_CRYPTO_ERROR;
         }
     }
 
-    copy_mem(&spdm_context->encap_context.last_encap_request_header,
-             &spdm_request->header, sizeof(spdm_message_header_t));
+    libspdm_copy_mem(&spdm_context->encap_context.last_encap_request_header,
+                     sizeof(spdm_context->encap_context.last_encap_request_header),
+                     &spdm_request->header, sizeof(spdm_message_header_t));
     spdm_context->encap_context.last_encap_request_size =
         *encap_request_size;
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 /**
@@ -124,30 +125,30 @@ spdm_get_encap_request_key_update(IN spdm_context_t *spdm_context,
  * @retval RETURN_BUFFER_TOO_SMALL      The buffer is too small to hold the data.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_process_encap_response_key_update(
-    IN spdm_context_t *spdm_context, IN uintn encap_response_size,
-    IN void *encap_response, OUT boolean *need_continue)
+libspdm_return_t libspdm_process_encap_response_key_update(
+    libspdm_context_t *spdm_context, size_t encap_response_size,
+    const void *encap_response, bool *need_continue)
 {
     spdm_key_update_request_t *spdm_request;
-    spdm_key_update_response_t *spdm_response;
-    uintn spdm_response_size;
+    const spdm_key_update_response_t *spdm_response;
+    size_t spdm_response_size;
     uint32_t session_id;
-    spdm_session_info_t *session_info;
+    libspdm_session_info_t *session_info;
     libspdm_session_state_t session_state;
 
     if (!spdm_context->last_spdm_request_session_id_valid) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
     session_id = spdm_context->last_spdm_request_session_id;
     session_info =
         libspdm_get_session_info_via_session_id(spdm_context, session_id);
     if (session_info == NULL) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
     session_state = libspdm_secured_message_get_session_state(
         session_info->secured_message_context);
     if (session_state != LIBSPDM_SESSION_STATE_ESTABLISHED) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
 
     spdm_request =
@@ -156,9 +157,17 @@ return_status spdm_process_encap_response_key_update(
     spdm_response = encap_response;
     spdm_response_size = encap_response_size;
 
-    if (spdm_response->header.spdm_version != spdm_get_connection_version (spdm_context)) {
-        return RETURN_DEVICE_ERROR;
+    if (spdm_response->header.spdm_version != libspdm_get_connection_version (spdm_context)) {
+        return LIBSPDM_STATUS_INVALID_MSG_FIELD;
     }
+
+    if (spdm_response->header.request_response_code == SPDM_ERROR) {
+        if (spdm_response->header.param1 == SPDM_ERROR_CODE_DECRYPT_ERROR) {
+            libspdm_free_session_id(spdm_context, session_id);
+            return LIBSPDM_STATUS_UNSUPPORTED_CAP;
+        }
+    }
+
     if ((spdm_response_size != sizeof(spdm_key_update_response_t)) ||
         (spdm_response->header.request_response_code !=
          SPDM_KEY_UPDATE_ACK) ||
@@ -166,24 +175,24 @@ return_status spdm_process_encap_response_key_update(
         (spdm_response->header.param2 != spdm_request->header.param2)) {
         if (spdm_request->header.param1 !=
             SPDM_KEY_UPDATE_OPERATIONS_TABLE_VERIFY_NEW_KEY) {
-            DEBUG((DEBUG_INFO, "libspdm_key_update[%x] failed\n",
-                   session_id));
+            LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "libspdm_key_update[%x] failed\n",
+                           session_id));
         } else {
-            DEBUG((DEBUG_INFO, "SpdmVerifyKey[%x] failed\n",
-                   session_id));
+            LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "SpdmVerifyKey[%x] failed\n",
+                           session_id));
         }
-        return RETURN_DEVICE_ERROR;
+        return LIBSPDM_STATUS_INVALID_MSG_FIELD;
     }
 
     if (spdm_request->header.param1 !=
         SPDM_KEY_UPDATE_OPERATIONS_TABLE_VERIFY_NEW_KEY) {
-        DEBUG((DEBUG_INFO, "libspdm_key_update[%x] success\n",
-               session_id));
-        *need_continue = TRUE;
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "libspdm_key_update[%x] success\n",
+                       session_id));
+        *need_continue = true;
     } else {
-        DEBUG((DEBUG_INFO, "SpdmVerifyKey[%x] Success\n", session_id));
-        *need_continue = FALSE;
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "SpdmVerifyKey[%x] Success\n", session_id));
+        *need_continue = false;
     }
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }

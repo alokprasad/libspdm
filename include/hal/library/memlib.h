@@ -16,24 +16,43 @@
 #define __BASE_MEMORY_LIB__
 
 /**
- * Copies a source buffer to a destination buffer, and returns the destination buffer.
+ * Copies bytes from a source buffer to a destination buffer.
  *
- * This function copies length bytes from source_buffer to destination_buffer, and returns
- * destination_buffer.  The implementation must be reentrant, and it must handle the case
- * where source_buffer overlaps destination_buffer.
+ * This function copies "src_len" bytes from "src_buf" to "dst_buf".
  *
- * If length is greater than (MAX_ADDRESS - destination_buffer + 1), then ASSERT().
- * If length is greater than (MAX_ADDRESS - source_buffer + 1), then ASSERT().
+ * Asserts and returns a non-zero value if any of the following are true:
+ *   1) "src_buf" or "dst_buf" are NULL.
+ *   2) "src_len" or "dst_len" is greater than (SIZE_MAX >> 1).
+ *   3) "src_len" is greater than "dst_len".
+ *   4) "src_buf" and "dst_buf" overlap.
  *
- * @param  destination_buffer   The pointer to the destination buffer of the memory copy.
- * @param  source_buffer        The pointer to the source buffer of the memory copy.
- * @param  length              The number of bytes to copy from source_buffer to destination_buffer.
+ * If any of these cases fail, a non-zero value is returned. Additionally if
+ * "dst_buf" points to a non-NULL value and "dst_len" is valid, then "dst_len"
+ * bytes of "dst_buf" are zeroed.
  *
- * @return destination_buffer.
+ * This function follows the C11 cppreference description of memcpy_s.
+ * https://en.cppreference.com/w/c/string/byte/memcpy
+ * The cppreferece description does NOT allow the source or destination
+ * buffers to be NULL.
+ *
+ * This function differs from the Microsoft and Safeclib memcpy_s implementations
+ * in that the Microsoft and Safeclib implementations allow for NULL source and
+ * destinations pointers when the number of bytes to copy (src_len) is zero.
+ *
+ * In addition the Microsoft and Safeclib memcpy_s functions return different
+ * negative values on error. For best support, clients should generally check
+ * against zero for success or failure.
+ *
+ * @param    dst_buf   Destination buffer to copy to.
+ * @param    dst_len   Maximum length in bytes of the destination buffer.
+ * @param    src_buf   Source buffer to copy from.
+ * @param    src_len   The number of bytes to copy from the source buffer.
+ *
+ * @return   0 on success. non-zero on error.
  *
  **/
-void *copy_mem(OUT void *destination_buffer, IN const void *source_buffer,
-               IN uintn length);
+int libspdm_copy_mem(void *dst_buf, size_t dst_len,
+                     const void *src_buf, size_t src_len);
 
 /**
  * Fills a target buffer with a byte value, and returns the target buffer.
@@ -49,7 +68,7 @@ void *copy_mem(OUT void *destination_buffer, IN const void *source_buffer,
  * @return buffer.
  *
  **/
-void *set_mem(OUT void *buffer, IN uintn length, IN uint8_t value);
+void *libspdm_set_mem(void *buffer, size_t length, uint8_t value);
 
 /**
  * Fills a target buffer with zeros, and returns the target buffer.
@@ -65,7 +84,7 @@ void *set_mem(OUT void *buffer, IN uintn length, IN uint8_t value);
  * @return buffer.
  *
  **/
-void *zero_mem(OUT void *buffer, IN uintn length);
+void *libspdm_zero_mem(void *buffer, size_t length);
 
 /**
  * Compares the contents of two buffers in const time.
@@ -88,7 +107,7 @@ void *zero_mem(OUT void *buffer, IN uintn length);
  * @retval Non-zero          There is mismatched between source_buffer and destination_buffer.
  *
  **/
-intn const_compare_mem(IN const void *destination_buffer,
-                       IN const void *source_buffer, IN uintn length);
+int32_t libspdm_const_compare_mem(const void *destination_buffer,
+                                  const void *source_buffer, size_t length);
 
 #endif

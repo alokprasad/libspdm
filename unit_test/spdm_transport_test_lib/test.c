@@ -6,7 +6,7 @@
 
 #include "library/spdm_transport_test_lib.h"
 
-#define TEST_ALIGNMENT 4
+#define LIBSPDM_TEST_ALIGNMENT 4
 #define TEST_SEQUENCE_NUMBER_COUNT 2
 #define TEST_MAX_RANDOM_NUMBER_COUNT 32
 
@@ -23,11 +23,11 @@
  *        It shall be no greater than 8.
  *        0 means no sequence number is required.
  **/
-uint8_t test_get_sequence_number(IN uint64_t sequence_number,
-                                 IN OUT uint8_t *sequence_number_buffer)
+uint8_t libspdm_test_get_sequence_number(uint64_t sequence_number,
+                                         uint8_t *sequence_number_buffer)
 {
-    copy_mem(sequence_number_buffer, &sequence_number,
-             TEST_SEQUENCE_NUMBER_COUNT);
+    libspdm_copy_mem(sequence_number_buffer, TEST_SEQUENCE_NUMBER_COUNT,
+                     &sequence_number, TEST_SEQUENCE_NUMBER_COUNT);
     return TEST_SEQUENCE_NUMBER_COUNT;
 }
 
@@ -39,7 +39,7 @@ uint8_t test_get_sequence_number(IN uint64_t sequence_number,
  * @return Max random number count in an SPDM secured message.
  *        0 means no randum number is required.
  **/
-uint32_t test_get_max_random_number_count(void)
+uint32_t libspdm_test_get_max_random_number_count(void)
 {
     return TEST_MAX_RANDOM_NUMBER_COUNT;
 }
@@ -58,47 +58,36 @@ uint32_t test_get_max_random_number_count(void)
  * @retval RETURN_SUCCESS               The message is encoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  **/
-return_status test_encode_message(IN uint32_t *session_id, IN uintn message_size,
-                                  IN void *message,
-                                  IN OUT uintn *transport_message_size,
-                                  OUT void *transport_message)
+libspdm_return_t libspdm_test_encode_message(const uint32_t *session_id, size_t message_size,
+                                             const void *message,
+                                             size_t *transport_message_size,
+                                             void **transport_message)
 {
-    uintn aligned_message_size;
-    uintn alignment;
-    test_message_header_t *test_message_header;
+    size_t aligned_message_size;
+    size_t alignment;
+    libspdm_test_message_header_t *test_message_header;
 
-    alignment = TEST_ALIGNMENT;
+    alignment = LIBSPDM_TEST_ALIGNMENT;
     aligned_message_size =
         (message_size + (alignment - 1)) & ~(alignment - 1);
 
-    ASSERT(*transport_message_size >=
-           aligned_message_size + sizeof(test_message_header_t));
-    if (*transport_message_size <
-        aligned_message_size + sizeof(test_message_header_t)) {
-        *transport_message_size =
-            aligned_message_size + sizeof(test_message_header_t);
-        return RETURN_BUFFER_TOO_SMALL;
-    }
     *transport_message_size =
-        aligned_message_size + sizeof(test_message_header_t);
-    test_message_header = transport_message;
+        aligned_message_size + sizeof(libspdm_test_message_header_t);
+    *transport_message = (uint8_t *)message - sizeof(libspdm_test_message_header_t);
+    test_message_header = *transport_message;
     if (session_id != NULL) {
         test_message_header->message_type =
-            TEST_MESSAGE_TYPE_SECURED_TEST;
-        ASSERT(*session_id == *(uint32_t *)(message));
+            LIBSPDM_TEST_MESSAGE_TYPE_SECURED_TEST;
+        LIBSPDM_ASSERT(*session_id == *(uint32_t *)(message));
         if (*session_id != *(uint32_t *)(message)) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_INVALID_MSG_FIELD;
         }
     } else {
-        test_message_header->message_type = TEST_MESSAGE_TYPE_SPDM;
+        test_message_header->message_type = LIBSPDM_TEST_MESSAGE_TYPE_SPDM;
     }
-    copy_mem((uint8_t *)transport_message + sizeof(test_message_header_t),
-             message, message_size);
-    zero_mem((uint8_t *)transport_message + sizeof(test_message_header_t) +
-             message_size,
-             *transport_message_size - sizeof(test_message_header_t) -
-             message_size);
-    return RETURN_SUCCESS;
+    libspdm_zero_mem((uint8_t *)message + message_size,
+                     aligned_message_size - message_size);
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 /**
@@ -111,75 +100,70 @@ return_status test_encode_message(IN uint32_t *session_id, IN uintn message_size
  * @param  transport_message             A pointer to a source buffer to store the transport message.
  * @param  message_size                  size in bytes of the message data buffer.
  * @param  message                      A pointer to a destination buffer to store the message.
+ *
  * @retval RETURN_SUCCESS               The message is encoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  **/
-return_status test_decode_message(OUT uint32_t **session_id,
-                                  IN uintn transport_message_size,
-                                  IN void *transport_message,
-                                  IN OUT uintn *message_size, OUT void *message)
+libspdm_return_t libspdm_test_decode_message(uint32_t **session_id,
+                                             size_t transport_message_size,
+                                             const void *transport_message,
+                                             size_t *message_size, void **message)
 {
-    uintn alignment;
-    test_message_header_t *test_message_header;
+    size_t alignment;
+    const libspdm_test_message_header_t *test_message_header;
 
-    alignment = TEST_ALIGNMENT;
+    alignment = LIBSPDM_TEST_ALIGNMENT;
 
-    ASSERT(transport_message_size > sizeof(test_message_header_t));
-    if (transport_message_size <= sizeof(test_message_header_t)) {
-        return RETURN_UNSUPPORTED;
+    LIBSPDM_ASSERT(transport_message_size > sizeof(libspdm_test_message_header_t));
+    if (transport_message_size <= sizeof(libspdm_test_message_header_t)) {
+        return LIBSPDM_STATUS_INVALID_MSG_SIZE;
     }
 
     test_message_header = transport_message;
 
     switch (test_message_header->message_type) {
-    case TEST_MESSAGE_TYPE_SECURED_TEST:
-        ASSERT(session_id != NULL);
+    case LIBSPDM_TEST_MESSAGE_TYPE_SECURED_TEST:
+        LIBSPDM_ASSERT(session_id != NULL);
         if (session_id == NULL) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_INVALID_MSG_FIELD;
         }
         if (transport_message_size <=
-            sizeof(test_message_header_t) + sizeof(uint32_t)) {
-            return RETURN_UNSUPPORTED;
+            sizeof(libspdm_test_message_header_t) + sizeof(uint32_t)) {
+            return LIBSPDM_STATUS_INVALID_MSG_SIZE;
         }
         *session_id = (uint32_t *)((uint8_t *)transport_message +
-                                   sizeof(test_message_header_t));
+                                   sizeof(libspdm_test_message_header_t));
         break;
-    case TEST_MESSAGE_TYPE_SPDM:
+    case LIBSPDM_TEST_MESSAGE_TYPE_SPDM:
         if (session_id != NULL) {
             *session_id = NULL;
         }
         break;
     default:
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
 
-    ASSERT(((transport_message_size - sizeof(test_message_header_t)) &
-            (alignment - 1)) == 0);
+    LIBSPDM_ASSERT(((transport_message_size - sizeof(libspdm_test_message_header_t)) &
+                    (alignment - 1)) == 0);
 
-    if (*message_size <
-        transport_message_size - sizeof(test_message_header_t)) {
+    *message_size = transport_message_size - sizeof(libspdm_test_message_header_t);
+    *message = (uint8_t *)transport_message + sizeof(libspdm_test_message_header_t);
+    return LIBSPDM_STATUS_SUCCESS;
+}
 
-        /* Handle special case for the side effect of alignment
-         * Caller may allocate a good enough buffer without considering alignment.
-         * Here we will not copy all the message and ignore the the last padding bytes.*/
-
-        if (*message_size + alignment - 1 >=
-            transport_message_size - sizeof(test_message_header_t)) {
-            copy_mem(message,
-                     (uint8_t *)transport_message +
-                     sizeof(test_message_header_t),
-                     *message_size);
-            return RETURN_SUCCESS;
-        }
-        *message_size =
-            transport_message_size - sizeof(test_message_header_t);
-        ASSERT(*message_size >=
-               transport_message_size - sizeof(test_message_header_t));
-        return RETURN_BUFFER_TOO_SMALL;
-    }
-    *message_size = transport_message_size - sizeof(test_message_header_t);
-    copy_mem(message,
-             (uint8_t *)transport_message + sizeof(test_message_header_t),
-             *message_size);
-    return RETURN_SUCCESS;
+/**
+ * Return the maximum transport layer message header size.
+ *   Transport Message Header Size + sizeof(spdm_secured_message_cipher_header_t))
+ *
+ *   For MCTP, Transport Message Header Size = sizeof(mctp_message_header_t)
+ *   For PCI_DOE, Transport Message Header Size = sizeof(pci_doe_data_object_header_t)
+ *
+ * @param  spdm_context                  A pointer to the SPDM context.
+ *
+ * @return size of maximum transport layer message header size
+ **/
+uint32_t libspdm_transport_test_get_header_size(
+    void *spdm_context)
+{
+    return sizeof(libspdm_test_message_header_t) + sizeof(spdm_secured_message_cipher_header_t);
 }

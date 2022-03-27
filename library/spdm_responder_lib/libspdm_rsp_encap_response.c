@@ -19,9 +19,9 @@
  * @retval RETURN_SUCCESS               The encapsulated request is returned.
  * @retval RETURN_BUFFER_TOO_SMALL      The buffer is too small to hold the data.
  **/
-typedef return_status (*spdm_get_encap_request_func)(
-    IN spdm_context_t *spdm_context, IN OUT uintn *encap_request_size,
-    OUT void *encap_request);
+typedef libspdm_return_t (*libspdm_get_encap_request_func)(
+    libspdm_context_t *spdm_context, size_t *encap_request_size,
+    void *encap_request);
 
 /**
  * Process the SPDM encapsulated response.
@@ -35,55 +35,55 @@ typedef return_status (*spdm_get_encap_request_func)(
  * @retval RETURN_BUFFER_TOO_SMALL      The buffer is too small to hold the data.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-typedef return_status (*spdm_process_encap_response_func)(
-    IN spdm_context_t *spdm_context, IN uintn encap_response_size,
-    IN void *encap_response, OUT boolean *need_continue);
+typedef libspdm_return_t (*libspdm_process_encap_response_func)(
+    libspdm_context_t *spdm_context, size_t encap_response_size,
+    const void *encap_response, bool *need_continue);
 
 typedef struct {
     uint8_t request_op_code;
-    spdm_get_encap_request_func get_encap_request;
-    spdm_process_encap_response_func process_encap_response;
-} spdm_encap_response_struct_t;
+    libspdm_get_encap_request_func get_encap_request;
+    libspdm_process_encap_response_func process_encap_response;
+} libspdm_encap_response_struct_t;
 
-spdm_encap_response_struct_t m_encap_response_struct[] = {
+libspdm_encap_response_struct_t m_libspdm_encap_response_struct[] = {
     #if LIBSPDM_ENABLE_CAPABILITY_CERT_CAP
-    { SPDM_GET_DIGESTS, spdm_get_encap_request_get_digest,
-      spdm_process_encap_response_digest },
+    { SPDM_GET_DIGESTS, libspdm_get_encap_request_get_digest,
+      libspdm_process_encap_response_digest },
 
-    { SPDM_GET_CERTIFICATE, spdm_get_encap_request_get_certificate,
-      spdm_process_encap_response_certificate },
+    { SPDM_GET_CERTIFICATE, libspdm_get_encap_request_get_certificate,
+      libspdm_process_encap_response_certificate },
     #endif /* LIBSPDM_ENABLE_CAPABILITY_CERT_CAP*/
 
     #if LIBSPDM_ENABLE_CAPABILITY_CHAL_CAP
-    { SPDM_CHALLENGE, spdm_get_encap_request_challenge,
-      spdm_process_encap_response_challenge_auth },
+    { SPDM_CHALLENGE, libspdm_get_encap_request_challenge,
+      libspdm_process_encap_response_challenge_auth },
     #endif /* LIBSPDM_ENABLE_CAPABILITY_CHAL_CAP*/
 
-    { SPDM_KEY_UPDATE, spdm_get_encap_request_key_update,
-      spdm_process_encap_response_key_update },
+    { SPDM_KEY_UPDATE, libspdm_get_encap_request_key_update,
+      libspdm_process_encap_response_key_update },
 };
 
-spdm_encap_response_struct_t *
-spdm_get_encap_struct_via_op_code(IN uint8_t request_op_code)
+libspdm_encap_response_struct_t *
+libspdm_get_encap_struct_via_op_code(uint8_t request_op_code)
 {
-    uintn index;
+    size_t index;
 
-    for (index = 0; index < ARRAY_SIZE(m_encap_response_struct); index++) {
-        if (m_encap_response_struct[index].request_op_code ==
+    for (index = 0; index < ARRAY_SIZE(m_libspdm_encap_response_struct); index++) {
+        if (m_libspdm_encap_response_struct[index].request_op_code ==
             request_op_code) {
-            return &m_encap_response_struct[index];
+            return &m_libspdm_encap_response_struct[index];
         }
     }
-    ASSERT(FALSE);
+    LIBSPDM_ASSERT(false);
     return NULL;
 }
 
-void spdm_encap_move_to_next_op_code(IN spdm_context_t *spdm_context)
+void libspdm_encap_move_to_next_op_code(libspdm_context_t *spdm_context)
 {
     uint8_t index;
 
-    ASSERT(spdm_context->encap_context.request_op_code_count <=
-           MAX_ENCAP_REQUEST_OP_CODE_SEQUENCE_COUNT);
+    LIBSPDM_ASSERT(spdm_context->encap_context.request_op_code_count <=
+                   LIBSPDM_MAX_ENCAP_REQUEST_OP_CODE_SEQUENCE_COUNT);
     if (spdm_context->encap_context.current_request_op_code == 0) {
         spdm_context->encap_context.current_request_op_code =
             spdm_context->encap_context.request_op_code_sequence[0];
@@ -100,7 +100,7 @@ void spdm_encap_move_to_next_op_code(IN spdm_context_t *spdm_context)
             return;
         }
     }
-    ASSERT(FALSE);
+    LIBSPDM_ASSERT(false);
 }
 
 /**
@@ -115,33 +115,33 @@ void spdm_encap_move_to_next_op_code(IN spdm_context_t *spdm_context)
  * @retval RETURN_SUCCESS               The SPDM encapsulated request is generated successfully.
  * @retval RETURN_UNSUPPORTED           Do not know how to process the request.
  **/
-return_status spdm_process_encapsulated_response(
-    IN spdm_context_t *spdm_context, IN uintn encap_response_size,
-    IN void *encap_response, IN OUT uintn *encap_request_size,
-    OUT void *encap_request)
+libspdm_return_t libspdm_process_encapsulated_response(
+    libspdm_context_t *spdm_context, size_t encap_response_size,
+    const void *encap_response, size_t *encap_request_size,
+    void *encap_request)
 {
-    return_status status;
-    boolean need_continue;
-    spdm_encap_response_struct_t *encap_response_struct;
+    libspdm_return_t status;
+    bool need_continue;
+    libspdm_encap_response_struct_t *encap_response_struct;
 
     /* Process previous response*/
-    need_continue = FALSE;
+    need_continue = false;
 
     if (spdm_context->encap_context.current_request_op_code != 0) {
-        encap_response_struct = spdm_get_encap_struct_via_op_code(
+        encap_response_struct = libspdm_get_encap_struct_via_op_code(
             spdm_context->encap_context.current_request_op_code);
-        ASSERT(encap_response_struct != NULL);
+        LIBSPDM_ASSERT(encap_response_struct != NULL);
         if (encap_response_struct == NULL) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_UNSUPPORTED_CAP;
         }
-        ASSERT(encap_response_struct->process_encap_response != NULL);
+        LIBSPDM_ASSERT(encap_response_struct->process_encap_response != NULL);
         if (encap_response_struct->process_encap_response == NULL) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_UNSUPPORTED_CAP;
         }
         status = encap_response_struct->process_encap_response(
             spdm_context, encap_response_size, encap_response,
             &need_continue);
-        if (RETURN_ERROR(status)) {
+        if (LIBSPDM_STATUS_IS_ERROR(status)) {
             return status;
         }
     }
@@ -150,26 +150,26 @@ return_status spdm_process_encapsulated_response(
 
     /* Move to next request*/
     if (!need_continue) {
-        spdm_encap_move_to_next_op_code(spdm_context);
+        libspdm_encap_move_to_next_op_code(spdm_context);
     }
 
     if (spdm_context->encap_context.current_request_op_code == 0) {
         /* No more work to do - stop*/
         *encap_request_size = 0;
         spdm_context->encap_context.current_request_op_code = 0;
-        return RETURN_SUCCESS;
+        return LIBSPDM_STATUS_SUCCESS;
     }
 
     /* Process the next request*/
-    encap_response_struct = spdm_get_encap_struct_via_op_code(
+    encap_response_struct = libspdm_get_encap_struct_via_op_code(
         spdm_context->encap_context.current_request_op_code);
-    ASSERT(encap_response_struct != NULL);
+    LIBSPDM_ASSERT(encap_response_struct != NULL);
     if (encap_response_struct == NULL) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
-    ASSERT(encap_response_struct->get_encap_request != NULL);
+    LIBSPDM_ASSERT(encap_response_struct->get_encap_request != NULL);
     if (encap_response_struct->get_encap_request == NULL) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
     status = encap_response_struct->get_encap_request(
         spdm_context, encap_request_size, encap_request);
@@ -182,8 +182,8 @@ return_status spdm_process_encapsulated_response(
  * @param  spdm_context                  A pointer to the SPDM context.
  * @param  mut_auth_requested             Indicate of the mut_auth_requested through KEY_EXCHANGE or CHALLENG response.
  **/
-void spdm_init_mut_auth_encap_state(IN spdm_context_t *spdm_context,
-                                    IN uint8_t mut_auth_requested)
+void libspdm_init_mut_auth_encap_state(libspdm_context_t *spdm_context,
+                                       uint8_t mut_auth_requested)
 {
     spdm_context->encap_context.error_state = 0;
     spdm_context->encap_context.current_request_op_code = 0x00;
@@ -194,8 +194,8 @@ void spdm_init_mut_auth_encap_state(IN spdm_context_t *spdm_context,
     }
     spdm_context->encap_context.request_id = 0;
     spdm_context->encap_context.last_encap_request_size = 0;
-    zero_mem(&spdm_context->encap_context.last_encap_request_header,
-             sizeof(spdm_context->encap_context.last_encap_request_header));
+    libspdm_zero_mem(&spdm_context->encap_context.last_encap_request_header,
+                     sizeof(spdm_context->encap_context.last_encap_request_header));
     spdm_context->encap_context.certificate_chain_buffer.buffer_size = 0;
     spdm_context->response_state = LIBSPDM_RESPONSE_STATE_PROCESSING_ENCAP;
 
@@ -212,11 +212,11 @@ void spdm_init_mut_auth_encap_state(IN spdm_context_t *spdm_context,
      *    2.2 GET_DIGEST (spdm_context->encap_context.req_slot_id == 0xFF)
      *    2.3 N/A (SPDM_GET_CAPABILITIES_REQUEST_FLAGS_PUB_KEY_ID_CAP)*/
 
-    zero_mem(spdm_context->encap_context.request_op_code_sequence,
-             sizeof(spdm_context->encap_context.request_op_code_sequence));
+    libspdm_zero_mem(spdm_context->encap_context.request_op_code_sequence,
+                     sizeof(spdm_context->encap_context.request_op_code_sequence));
     /* Session Mutual Auth*/
-    if (spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE,
+    if (libspdm_is_capabilities_flag_supported(
+            spdm_context, false,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_PUB_KEY_ID_CAP, 0) ||
         (mut_auth_requested ==
          SPDM_KEY_EXCHANGE_RESPONSE_MUT_AUTH_REQUESTED)) {
@@ -240,14 +240,14 @@ void spdm_init_mut_auth_encap_state(IN spdm_context_t *spdm_context,
  *
  * @param  spdm_context                  A pointer to the SPDM context.
  **/
-void spdm_init_basic_mut_auth_encap_state(IN spdm_context_t *spdm_context)
+void libspdm_init_basic_mut_auth_encap_state(libspdm_context_t *spdm_context)
 {
     spdm_context->encap_context.error_state = 0;
     spdm_context->encap_context.current_request_op_code = 0x00;
     spdm_context->encap_context.request_id = 0;
     spdm_context->encap_context.last_encap_request_size = 0;
-    zero_mem(&spdm_context->encap_context.last_encap_request_header,
-             sizeof(spdm_context->encap_context.last_encap_request_header));
+    libspdm_zero_mem(&spdm_context->encap_context.last_encap_request_header,
+                     sizeof(spdm_context->encap_context.last_encap_request_header));
     spdm_context->encap_context.certificate_chain_buffer.buffer_size = 0;
     spdm_context->response_state = LIBSPDM_RESPONSE_STATE_PROCESSING_ENCAP;
 
@@ -264,11 +264,11 @@ void spdm_init_basic_mut_auth_encap_state(IN spdm_context_t *spdm_context)
      *    1.2 GET_DIGEST/CHALLENGE (spdm_context->encap_context.req_slot_id == 0xFF)
      *    1.3 CHALLENGE (SPDM_GET_CAPABILITIES_REQUEST_FLAGS_PUB_KEY_ID_CAP)*/
 
-    zero_mem(spdm_context->encap_context.request_op_code_sequence,
-             sizeof(spdm_context->encap_context.request_op_code_sequence));
+    libspdm_zero_mem(spdm_context->encap_context.request_op_code_sequence,
+                     sizeof(spdm_context->encap_context.request_op_code_sequence));
     /* Basic Mutual Auth*/
-    if (spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE,
+    if (libspdm_is_capabilities_flag_supported(
+            spdm_context, false,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_PUB_KEY_ID_CAP, 0)) {
         spdm_context->encap_context.request_op_code_count = 1;
         spdm_context->encap_context.request_op_code_sequence[0] =
@@ -295,9 +295,9 @@ void spdm_init_basic_mut_auth_encap_state(IN spdm_context_t *spdm_context)
  *
  * @param  spdm_context                  A pointer to the SPDM context.
  **/
-void libspdm_init_key_update_encap_state(IN void *context)
+void libspdm_init_key_update_encap_state(void *context)
 {
-    spdm_context_t *spdm_context;
+    libspdm_context_t *spdm_context;
 
     spdm_context = context;
 
@@ -305,16 +305,16 @@ void libspdm_init_key_update_encap_state(IN void *context)
     spdm_context->encap_context.current_request_op_code = 0x00;
     spdm_context->encap_context.request_id = 0;
     spdm_context->encap_context.last_encap_request_size = 0;
-    zero_mem(&spdm_context->encap_context.last_encap_request_header,
-             sizeof(spdm_context->encap_context.last_encap_request_header));
+    libspdm_zero_mem(&spdm_context->encap_context.last_encap_request_header,
+                     sizeof(spdm_context->encap_context.last_encap_request_header));
     spdm_context->encap_context.certificate_chain_buffer.buffer_size = 0;
     spdm_context->response_state = LIBSPDM_RESPONSE_STATE_PROCESSING_ENCAP;
 
     libspdm_reset_message_mut_b(spdm_context);
     libspdm_reset_message_mut_c(spdm_context);
 
-    zero_mem(spdm_context->encap_context.request_op_code_sequence,
-             sizeof(spdm_context->encap_context.request_op_code_sequence));
+    libspdm_zero_mem(spdm_context->encap_context.request_op_code_sequence,
+                     sizeof(spdm_context->encap_context.request_op_code_sequence));
     spdm_context->encap_context.request_op_code_count = 1;
     spdm_context->encap_context.request_op_code_sequence[0] =
         SPDM_KEY_UPDATE;
@@ -337,22 +337,22 @@ void libspdm_init_key_update_encap_state(IN void *context)
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_encapsulated_request(
-    IN void *context, IN uintn request_size, IN void *request,
-    IN OUT uintn *response_size, OUT void *response)
+libspdm_return_t libspdm_get_response_encapsulated_request(
+    void *context, size_t request_size, const void *request,
+    size_t *response_size, void *response)
 {
     spdm_encapsulated_request_response_t *spdm_response;
-    spdm_context_t *spdm_context;
+    libspdm_context_t *spdm_context;
     void *encap_request;
-    uintn encap_request_size;
-    return_status status;
-    spdm_get_encapsulated_request_request_t *spdm_request;
+    size_t encap_request_size;
+    libspdm_return_t status;
+    const spdm_get_encapsulated_request_request_t *spdm_request;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, false,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_ENCAP_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_ENCAP_CAP)) {
         return libspdm_generate_error_response(
@@ -368,7 +368,7 @@ return_status spdm_get_response_encapsulated_request(
                 SPDM_ERROR_CODE_UNEXPECTED_REQUEST, 0,
                 response_size, response);
         }
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context,
             spdm_request->header.request_response_code,
             response_size, response);
@@ -380,11 +380,11 @@ return_status spdm_get_response_encapsulated_request(
                                                response_size, response);
     }
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
-    ASSERT(*response_size > sizeof(spdm_encapsulated_request_response_t));
-    zero_mem(response, *response_size);
+    LIBSPDM_ASSERT(*response_size > sizeof(spdm_encapsulated_request_response_t));
+    libspdm_zero_mem(response, *response_size);
 
     spdm_response = response;
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -396,9 +396,9 @@ return_status spdm_get_response_encapsulated_request(
         *response_size - sizeof(spdm_encapsulated_request_response_t);
     encap_request = spdm_response + 1;
 
-    status = spdm_process_encapsulated_response(
+    status = libspdm_process_encapsulated_response(
         context, 0, NULL, &encap_request_size, encap_request);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         spdm_context->response_state = LIBSPDM_RESPONSE_STATE_NORMAL;
         return libspdm_generate_error_response(
             spdm_context, SPDM_ERROR_CODE_INVALID_RESPONSE_CODE, 0,
@@ -412,7 +412,7 @@ return_status spdm_get_response_encapsulated_request(
         spdm_context->response_state = LIBSPDM_RESPONSE_STATE_NORMAL;
     }
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 /**
@@ -432,26 +432,26 @@ return_status spdm_get_response_encapsulated_request(
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_encapsulated_response_ack(
-    IN void *context, IN uintn request_size, IN void *request,
-    IN OUT uintn *response_size, OUT void *response)
+libspdm_return_t libspdm_get_response_encapsulated_response_ack(
+    void *context, size_t request_size, const void *request,
+    size_t *response_size, void *response)
 {
-    spdm_deliver_encapsulated_response_request_t *spdm_request;
-    uintn spdm_request_size;
+    const spdm_deliver_encapsulated_response_request_t *spdm_request;
+    size_t spdm_request_size;
     spdm_encapsulated_response_ack_response_t *spdm_response;
-    spdm_context_t *spdm_context;
-    void *encap_response;
-    uintn encap_response_size;
+    libspdm_context_t *spdm_context;
+    const void *encap_response;
+    size_t encap_response_size;
     void *encap_request;
-    uintn encap_request_size;
-    return_status status;
-    uintn ack_header_size;
+    size_t encap_request_size;
+    libspdm_return_t status;
+    size_t ack_header_size;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, false,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_ENCAP_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_ENCAP_CAP)) {
         return libspdm_generate_error_response(
@@ -468,7 +468,7 @@ return_status spdm_get_response_encapsulated_response_ack(
                 SPDM_ERROR_CODE_UNEXPECTED_REQUEST, 0,
                 response_size, response);
         }
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context,
             spdm_request->header.request_response_code,
             response_size, response);
@@ -501,8 +501,8 @@ return_status spdm_get_response_encapsulated_response_ack(
         ack_header_size = sizeof(spdm_message_header_t);
     }
 
-    ASSERT(*response_size > ack_header_size);
-    zero_mem(response, *response_size);
+    LIBSPDM_ASSERT(*response_size > ack_header_size);
+    libspdm_zero_mem(response, *response_size);
 
     spdm_response = response;
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -520,13 +520,13 @@ return_status spdm_get_response_encapsulated_response_ack(
                                                response_size, response);
     }
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
-    status = spdm_process_encapsulated_response(
+    status = libspdm_process_encapsulated_response(
         context, encap_response_size, encap_response,
         &encap_request_size, encap_request);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         spdm_context->response_state = LIBSPDM_RESPONSE_STATE_NORMAL;
         return libspdm_generate_error_response(
             spdm_context, SPDM_ERROR_CODE_INVALID_RESPONSE_CODE, 0,
@@ -553,7 +553,7 @@ return_status spdm_get_response_encapsulated_response_ack(
         spdm_context->response_state = LIBSPDM_RESPONSE_STATE_NORMAL;
     }
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 /**
@@ -564,12 +564,12 @@ return_status spdm_get_response_encapsulated_response_ack(
  *
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  **/
-return_status spdm_handle_encap_error_response_main(
-    IN spdm_context_t *spdm_context, IN uint8_t error_code)
+libspdm_return_t libspdm_handle_encap_error_response_main(
+    libspdm_context_t *spdm_context, uint8_t error_code)
 {
 
     /* According to "Timing Specification for SPDM messages", RESPONSE_NOT_READY is only for responder.
      * RESPONSE_NOT_READY should not be sent by requester. No need to check it.*/
 
-    return RETURN_DEVICE_ERROR;
+    return LIBSPDM_STATUS_UNSUPPORTED_CAP;
 }

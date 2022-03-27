@@ -20,7 +20,7 @@
 typedef struct {
     uint32_t signature;
     uint32_t reserved;
-    uintn size;
+    size_t size;
 } CRYPTMEM_HEAD;
 
 #define CRYPTMEM_OVERHEAD sizeof(CRYPTMEM_HEAD)
@@ -30,16 +30,16 @@ typedef struct {
 
 
 /* Allocates memory blocks */
-void *mbedtls_calloc(size_t num, size_t size)
+void *my_calloc(size_t num, size_t size)
 {
     CRYPTMEM_HEAD *pool_hdr;
-    uintn new_size;
+    size_t new_size;
     void *data;
 
 
     /* Adjust the size by the buffer header overhead*/
 
-    new_size = (uintn)(size * num) + CRYPTMEM_OVERHEAD;
+    new_size = (size_t)(size * num) + CRYPTMEM_OVERHEAD;
 
     data = allocate_zero_pool(new_size);
     if (data != NULL) {
@@ -60,7 +60,7 @@ void *mbedtls_calloc(size_t num, size_t size)
 }
 
 /* De-allocates or frees a memory block */
-void mbedtls_free(void *ptr)
+void my_free(void *ptr)
 {
     CRYPTMEM_HEAD *pool_hdr;
 
@@ -70,7 +70,7 @@ void mbedtls_free(void *ptr)
 
     if (ptr != NULL) {
         pool_hdr = (CRYPTMEM_HEAD *)ptr - 1;
-        ASSERT(pool_hdr->signature == CRYPTMEM_HEAD_SIGNATURE);
+        LIBSPDM_ASSERT(pool_hdr->signature == CRYPTMEM_HEAD_SIGNATURE);
         free_pool(pool_hdr);
     }
 }

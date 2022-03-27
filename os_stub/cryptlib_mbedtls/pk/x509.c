@@ -19,37 +19,43 @@
 
 /* OID*/
 
-static const uint8_t m_oid_common_name[] = { 0x55, 0x04, 0x03 };
-static const uint8_t m_oid_organization_name[] = { 0x55, 0x04, 0x0A };
-static const uint8_t m_oid_ext_key_usage[] = { 0x55, 0x1D, 0x25 };
+#define OID_COMMON_NAME       { 0x55, 0x04, 0x03 }
+#define OID_ORGANIZATION_NAME { 0x55, 0x04, 0x0A }
+#define OID_EXT_KEY_USAGE     { 0x55, 0x1D, 0x25 }
+#define OID_BASIC_CONSTRAINTS { 0x55, 0x1D, 0x13 }
+
+static const uint8_t m_libspdm_oid_common_name[] = OID_COMMON_NAME;
+static const uint8_t m_libspdm_oid_organization_name[] = OID_ORGANIZATION_NAME;
+static const uint8_t m_libspdm_oid_ext_key_usage[] = OID_EXT_KEY_USAGE;
+static const uint8_t m_libspdm_oid_basic_constraints[] = OID_BASIC_CONSTRAINTS;
 
 /**
  * Construct a X509 object from DER-encoded certificate data.
  *
- * If cert is NULL, then return FALSE.
- * If single_x509_cert is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If single_x509_cert is NULL, then return false.
  *
  * @param[in]  cert            Pointer to the DER-encoded certificate data.
  * @param[in]  cert_size        The size of certificate data in bytes.
  * @param[out] single_x509_cert  The generated X509 object.
  *
- * @retval     TRUE            The X509 object generation succeeded.
- * @retval     FALSE           The operation failed.
+ * @retval     true            The X509 object generation succeeded.
+ * @retval     false           The operation failed.
  *
  **/
-boolean x509_construct_certificate(IN const uint8_t *cert, IN uintn cert_size,
-                                   OUT uint8_t **single_x509_cert)
+bool libspdm_x509_construct_certificate(const uint8_t *cert, size_t cert_size,
+                                        uint8_t **single_x509_cert)
 {
     mbedtls_x509_crt *mbedtls_cert;
     int32_t ret;
 
     if (cert == NULL || single_x509_cert == NULL || cert_size == 0) {
-        return FALSE;
+        return false;
     }
 
     mbedtls_cert = allocate_pool(sizeof(mbedtls_x509_crt));
     if (mbedtls_cert == NULL) {
-        return FALSE;
+        return false;
     }
 
     mbedtls_x509_crt_init(mbedtls_cert);
@@ -60,16 +66,16 @@ boolean x509_construct_certificate(IN const uint8_t *cert, IN uintn cert_size,
     return ret == 0;
 }
 
-static boolean X509ConstructCertificateStackV(IN OUT uint8_t **x509_stack,
-                                              IN VA_LIST args)
+static bool libspdm_x509_construct_certificate_stack_v(uint8_t **x509_stack,
+                                                       VA_LIST args)
 {
     uint8_t *cert;
-    uintn cert_size;
+    size_t cert_size;
     int32_t index;
     int32_t ret;
 
     if (x509_stack == NULL) {
-        return FALSE;
+        return false;
     }
 
     ret = 0;
@@ -77,7 +83,7 @@ static boolean X509ConstructCertificateStackV(IN OUT uint8_t **x509_stack,
     if (crt == NULL) {
         crt = allocate_pool(sizeof(mbedtls_x509_crt));
         if (crt == NULL) {
-            return FALSE;
+            return false;
         }
         mbedtls_x509_crt_init(crt);
         *x509_stack = (uint8_t *)crt;
@@ -92,7 +98,7 @@ static boolean X509ConstructCertificateStackV(IN OUT uint8_t **x509_stack,
             break;
         }
 
-        cert_size = VA_ARG(args, uintn);
+        cert_size = VA_ARG(args, size_t);
         if (cert_size == 0) {
             break;
         }
@@ -109,26 +115,26 @@ static boolean X509ConstructCertificateStackV(IN OUT uint8_t **x509_stack,
 /**
  * Construct a X509 stack object from a list of DER-encoded certificate data.
  *
- * If x509_stack is NULL, then return FALSE.
+ * If x509_stack is NULL, then return false.
  *
  * @param[in, out]  x509_stack  On input, pointer to an existing or NULL X509 stack object.
  *                            On output, pointer to the X509 stack object with new
  *                            inserted X509 certificate.
  * @param           ...        A list of DER-encoded single certificate data followed
  *                            by certificate size. A NULL terminates the list. The
- *                            pairs are the arguments to x509_construct_certificate().
+ *                            pairs are the arguments to libspdm_x509_construct_certificate().
  *
- * @retval     TRUE            The X509 stack construction succeeded.
- * @retval     FALSE           The construction operation failed.
+ * @retval     true            The X509 stack construction succeeded.
+ * @retval     false           The construction operation failed.
  *
  **/
-boolean x509_construct_certificate_stack(IN OUT uint8_t **x509_stack, ...)
+bool libspdm_x509_construct_certificate_stack(uint8_t **x509_stack, ...)
 {
     VA_LIST args;
-    boolean result;
+    bool result;
 
     VA_START(args, x509_stack);
-    result = X509ConstructCertificateStackV(x509_stack, args);
+    result = libspdm_x509_construct_certificate_stack_v(x509_stack, args);
     VA_END(args);
     return result;
 }
@@ -136,12 +142,12 @@ boolean x509_construct_certificate_stack(IN OUT uint8_t **x509_stack, ...)
 /**
  * Release the specified X509 object.
  *
- * If x509_cert is NULL, then return FALSE.
+ * If x509_cert is NULL, then return false.
  *
  * @param[in]  x509_cert  Pointer to the X509 object to be released.
  *
  **/
-void x509_free(IN void *x509_cert)
+void libspdm_x509_free(void *x509_cert)
 {
     if (x509_cert) {
         mbedtls_x509_crt_free(x509_cert);
@@ -152,12 +158,12 @@ void x509_free(IN void *x509_cert)
 /**
  * Release the specified X509 stack object.
  *
- * If x509_stack is NULL, then return FALSE.
+ * If x509_stack is NULL, then return false.
  *
  * @param[in]  x509_stack  Pointer to the X509 stack object to be released.
  *
  **/
-void x509_stack_free(IN void *x509_stack)
+void libspdm_x509_stack_free(void *x509_stack)
 {
     if (x509_stack == NULL) {
         return;
@@ -174,16 +180,16 @@ void x509_stack_free(IN void *x509_stack)
  * @param length   The variable that will receive the length
  * @param tag      The expected tag
  *
- * @retval      TRUE   Get tag successful
+ * @retval      true   Get tag successful
  * @retval      FALSe  Failed to get tag or tag not match
  **/
-boolean asn1_get_tag(IN OUT uint8_t **ptr, IN uint8_t *end, OUT uintn *length,
-                     IN uint32_t tag)
+bool libspdm_asn1_get_tag(uint8_t **ptr, const uint8_t *end, size_t *length,
+                          uint32_t tag)
 {
     if (mbedtls_asn1_get_tag(ptr, end, length, (int32_t)tag) == 0) {
-        return TRUE;
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
@@ -196,27 +202,27 @@ boolean asn1_get_tag(IN OUT uint8_t **ptr, IN uint8_t *end, OUT uintn *length,
  * @param[in, out] subject_size  The size in bytes of the cert_subject buffer on input,
  *                             and the size of buffer returned cert_subject on output.
  *
- * If cert is NULL, then return FALSE.
- * If subject_size is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If subject_size is NULL, then return false.
  *
- * @retval  TRUE   The certificate subject retrieved successfully.
- * @retval  FALSE  Invalid certificate, or the subject_size is too small for the result.
+ * @retval  true   The certificate subject retrieved successfully.
+ * @retval  false  Invalid certificate, or the subject_size is too small for the result.
  *                The subject_size will be updated with the required size.
  *
  **/
-boolean x509_get_subject_name(IN const uint8_t *cert, IN uintn cert_size,
-                              OUT uint8_t *cert_subject,
-                              IN OUT uintn *subject_size)
+bool libspdm_x509_get_subject_name(const uint8_t *cert, size_t cert_size,
+                                   uint8_t *cert_subject,
+                                   size_t *subject_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    boolean status;
+    bool status;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = FALSE;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -225,14 +231,15 @@ boolean x509_get_subject_name(IN const uint8_t *cert, IN uintn cert_size,
     if (ret == 0) {
         if (*subject_size < crt.subject_raw.len) {
             *subject_size = crt.subject_raw.len;
-            status = FALSE;
+            status = false;
             goto cleanup;
         }
         if (cert_subject != NULL) {
-            copy_mem(cert_subject, crt.subject_raw.p, crt.subject_raw.len);
+            libspdm_copy_mem(cert_subject, *subject_size,
+                             crt.subject_raw.p, crt.subject_raw.len);
         }
         *subject_size = crt.subject_raw.len;
-        status = TRUE;
+        status = true;
     }
 
 cleanup:
@@ -241,10 +248,10 @@ cleanup:
     return status;
 }
 
-return_status
-internal_x509_get_nid_name(IN mbedtls_x509_name *name, IN uint8_t *oid,
-                           IN uintn oid_size, IN OUT char *common_name,
-                           OPTIONAL IN OUT uintn *common_name_size)
+bool
+libspdm_internal_x509_get_nid_name(mbedtls_x509_name *name, const uint8_t *oid,
+                                   size_t oid_size, char *common_name,
+                                   size_t *common_name_size)
 {
     mbedtls_asn1_named_data *data;
 
@@ -252,35 +259,36 @@ internal_x509_get_nid_name(IN mbedtls_x509_name *name, IN uint8_t *oid,
     if (data != NULL) {
         if (*common_name_size <= data->val.len) {
             *common_name_size = data->val.len + 1;
-            return RETURN_BUFFER_TOO_SMALL;
+            return false;
         }
         if (common_name != NULL) {
-            copy_mem(common_name, data->val.p, data->val.len);
+            libspdm_copy_mem(common_name, *common_name_size, data->val.p, data->val.len);
             common_name[data->val.len] = '\0';
         }
         *common_name_size = data->val.len + 1;
-        return RETURN_SUCCESS;
+        return true;
     } else {
-        return RETURN_NOT_FOUND;
+        *common_name_size = 0;
+        return false;
     }
 }
 
-return_status
-internal_x509_get_subject_nid_name(IN const uint8_t *cert, IN uintn cert_size,
-                                   IN uint8_t *oid, IN uintn oid_size,
-                                   OUT char *common_name,
-                                   OPTIONAL IN OUT uintn *common_name_size)
+bool
+libspdm_internal_x509_get_subject_nid_name(const uint8_t *cert, size_t cert_size,
+                                           const uint8_t *oid, size_t oid_size,
+                                           char *common_name,
+                                           size_t *common_name_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
     mbedtls_x509_name *name;
-    return_status status;
+    bool status;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -288,7 +296,7 @@ internal_x509_get_subject_nid_name(IN const uint8_t *cert, IN uintn cert_size,
 
     if (ret == 0) {
         name = &(crt.subject);
-        status = internal_x509_get_nid_name(
+        status = libspdm_internal_x509_get_nid_name(
             name, oid, oid_size, common_name, common_name_size);
     }
 
@@ -297,22 +305,22 @@ internal_x509_get_subject_nid_name(IN const uint8_t *cert, IN uintn cert_size,
     return status;
 }
 
-return_status
-internal_x509_get_issuer_nid_name(IN const uint8_t *cert, IN uintn cert_size,
-                                  IN uint8_t *oid, IN uintn oid_size,
-                                  OUT char *common_name,
-                                  OPTIONAL IN OUT uintn *common_name_size)
+bool
+libspdm_internal_x509_get_issuer_nid_name(const uint8_t *cert, size_t cert_size,
+                                          const uint8_t *oid, size_t oid_size,
+                                          char *common_name,
+                                          size_t *common_name_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
     mbedtls_x509_name *name;
-    return_status status;
+    bool status;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -320,7 +328,7 @@ internal_x509_get_issuer_nid_name(IN const uint8_t *cert, IN uintn cert_size,
 
     if (ret == 0) {
         name = &(crt.issuer);
-        status = internal_x509_get_nid_name(
+        status = libspdm_internal_x509_get_nid_name(
             name, oid, oid_size, common_name, common_name_size);
     }
 
@@ -355,13 +363,13 @@ internal_x509_get_issuer_nid_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status x509_get_common_name(IN const uint8_t *cert, IN uintn cert_size,
-                                   OUT char *common_name,
-                                   OPTIONAL IN OUT uintn *common_name_size)
+bool libspdm_x509_get_common_name(const uint8_t *cert, size_t cert_size,
+                                  char *common_name,
+                                  size_t *common_name_size)
 {
-    return internal_x509_get_subject_nid_name(
-        cert, cert_size, (uint8_t *)m_oid_common_name,
-        sizeof(m_oid_common_name), common_name, common_name_size);
+    return libspdm_internal_x509_get_subject_nid_name(
+        cert, cert_size, (uint8_t *)m_libspdm_oid_common_name,
+        sizeof(m_libspdm_oid_common_name), common_name, common_name_size);
 }
 
 /**
@@ -390,14 +398,14 @@ return_status x509_get_common_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_organization_name(IN const uint8_t *cert, IN uintn cert_size,
-                           OUT char *name_buffer,
-                           OPTIONAL IN OUT uintn *name_buffer_size)
+bool
+libspdm_x509_get_organization_name(const uint8_t *cert, size_t cert_size,
+                                   char *name_buffer,
+                                   size_t *name_buffer_size)
 {
-    return internal_x509_get_subject_nid_name(
-        cert, cert_size, (uint8_t *)m_oid_organization_name,
-        sizeof(m_oid_organization_name), name_buffer, name_buffer_size);
+    return libspdm_internal_x509_get_subject_nid_name(
+        cert, cert_size, (uint8_t *)m_libspdm_oid_organization_name,
+        sizeof(m_libspdm_oid_organization_name), name_buffer, name_buffer_size);
 }
 
 /**
@@ -406,18 +414,18 @@ x509_get_organization_name(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] rsa_context   Pointer to new-generated RSA context which contain the retrieved
- *                         RSA public key component. Use rsa_free() function to free the
+ *                         RSA public key component. Use libspdm_rsa_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If rsa_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If rsa_context is NULL, then return false.
  *
- * @retval  TRUE   RSA public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve RSA public key from X509 certificate.
+ * @retval  true   RSA public key was retrieved successfully.
+ * @retval  false  Fail to retrieve RSA public key from X509 certificate.
  *
  **/
-boolean rsa_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **rsa_context)
+bool libspdm_rsa_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **rsa_context)
 {
     mbedtls_x509_crt crt;
     mbedtls_rsa_context *rsa;
@@ -426,29 +434,29 @@ boolean rsa_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
     mbedtls_x509_crt_init(&crt);
 
     if (mbedtls_x509_crt_parse_der(&crt, cert, cert_size) != 0) {
-        return FALSE;
+        return false;
     }
 
     if (mbedtls_pk_get_type(&crt.pk) != MBEDTLS_PK_RSA) {
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
 
-    rsa = rsa_new();
+    rsa = libspdm_rsa_new();
     if (rsa == NULL) {
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
     ret = mbedtls_rsa_copy(rsa, mbedtls_pk_rsa(crt.pk));
     if (ret != 0) {
-        rsa_free(rsa);
+        libspdm_rsa_free(rsa);
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
     mbedtls_x509_crt_free(&crt);
 
     *rsa_context = rsa;
-    return TRUE;
+    return true;
 }
 
 /**
@@ -457,18 +465,18 @@ boolean rsa_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] ec_context    Pointer to new-generated EC DSA context which contain the retrieved
- *                         EC public key component. Use ec_free() function to free the
+ *                         EC public key component. Use libspdm_ec_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If ec_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ec_context is NULL, then return false.
  *
- * @retval  TRUE   EC public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve EC public key from X509 certificate.
+ * @retval  true   EC public key was retrieved successfully.
+ * @retval  false  Fail to retrieve EC public key from X509 certificate.
  *
  **/
-boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                    OUT void **ec_context)
+bool libspdm_ec_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                         void **ec_context)
 {
     mbedtls_x509_crt crt;
     mbedtls_ecdh_context *ecdh;
@@ -477,18 +485,18 @@ boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
     mbedtls_x509_crt_init(&crt);
 
     if (mbedtls_x509_crt_parse_der(&crt, cert, cert_size) != 0) {
-        return FALSE;
+        return false;
     }
 
     if (mbedtls_pk_get_type(&crt.pk) != MBEDTLS_PK_ECKEY) {
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
 
     ecdh = allocate_zero_pool(sizeof(mbedtls_ecdh_context));
     if (ecdh == NULL) {
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
     mbedtls_ecdh_init(ecdh);
 
@@ -498,12 +506,12 @@ boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
         mbedtls_ecdh_free(ecdh);
         free_pool(ecdh);
         mbedtls_x509_crt_free(&crt);
-        return FALSE;
+        return false;
     }
     mbedtls_x509_crt_free(&crt);
 
     *ec_context = ecdh;
-    return TRUE;
+    return true;
 }
 
 /**
@@ -512,20 +520,20 @@ boolean ec_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]  cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]  cert_size     size of the X509 certificate in bytes.
  * @param[out] ecd_context    Pointer to new-generated Ed DSA context which contain the retrieved
- *                         Ed public key component. Use ecd_free() function to free the
+ *                         Ed public key component. Use libspdm_ecd_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If ecd_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ecd_context is NULL, then return false.
  *
- * @retval  TRUE   Ed public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve Ed public key from X509 certificate.
+ * @retval  true   Ed public key was retrieved successfully.
+ * @retval  false  Fail to retrieve Ed public key from X509 certificate.
  *
  **/
-boolean ecd_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **ecd_context)
+bool libspdm_ecd_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **ecd_context)
 {
-    return FALSE;
+    return false;
 }
 
 /**
@@ -537,17 +545,17 @@ boolean ecd_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  *                         sm2 public key component. Use sm2_free() function to free the
  *                         resource.
  *
- * If cert is NULL, then return FALSE.
- * If ecd_context is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ecd_context is NULL, then return false.
  *
- * @retval  TRUE   sm2 public key was retrieved successfully.
- * @retval  FALSE  Fail to retrieve sm2 public key from X509 certificate.
+ * @retval  true   sm2 public key was retrieved successfully.
+ * @retval  false  Fail to retrieve sm2 public key from X509 certificate.
  *
  **/
-boolean sm2_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT void **sm2_context)
+bool libspdm_sm2_get_public_key_from_x509(const uint8_t *cert, size_t cert_size,
+                                          void **sm2_context)
 {
-    return FALSE;
+    return false;
 }
 
 /**
@@ -558,16 +566,16 @@ boolean sm2_get_public_key_from_x509(IN const uint8_t *cert, IN uintn cert_size,
  * @param[in]      ca_cert       Pointer to the DER-encoded trusted CA certificate.
  * @param[in]      ca_cert_size   size of the CA Certificate in bytes.
  *
- * If cert is NULL, then return FALSE.
- * If ca_cert is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If ca_cert is NULL, then return false.
  *
- * @retval  TRUE   The certificate was issued by the trusted CA.
- * @retval  FALSE  Invalid certificate or the certificate was not issued by the given
+ * @retval  true   The certificate was issued by the trusted CA.
+ * @retval  false  Invalid certificate or the certificate was not issued by the given
  *                trusted CA.
  *
  **/
-boolean x509_verify_cert(IN const uint8_t *cert, IN uintn cert_size,
-                         IN const uint8_t *ca_cert, IN uintn ca_cert_size)
+bool libspdm_x509_verify_cert(const uint8_t *cert, size_t cert_size,
+                              const uint8_t *ca_cert, size_t ca_cert_size)
 {
     int32_t ret;
     mbedtls_x509_crt ca, end;
@@ -575,11 +583,12 @@ boolean x509_verify_cert(IN const uint8_t *cert, IN uintn cert_size,
     mbedtls_x509_crt_profile profile = { 0 };
 
     if (cert == NULL || ca_cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    copy_mem(&profile, &mbedtls_x509_crt_profile_default,
-             sizeof(mbedtls_x509_crt_profile));
+    libspdm_copy_mem(&profile, sizeof(profile),
+                     &mbedtls_x509_crt_profile_default,
+                     sizeof(mbedtls_x509_crt_profile));
 
     mbedtls_x509_crt_init(&ca);
     mbedtls_x509_crt_init(&end);
@@ -615,23 +624,23 @@ boolean x509_verify_cert(IN const uint8_t *cert, IN uintn cert_size,
  *
  * @param[in]      root_cert_length    Trusted Root Certificate buffer length
  *
- * @retval  TRUE   All cerificates was issued by the first certificate in X509Certchain.
- * @retval  FALSE  Invalid certificate or the certificate was not issued by the given
+ * @retval  true   All cerificates was issued by the first certificate in X509Certchain.
+ * @retval  false  Invalid certificate or the certificate was not issued by the given
  *                trusted CA.
  **/
-boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
-                               IN uint8_t *cert_chain, IN uintn cert_chain_length)
+bool libspdm_x509_verify_cert_chain(uint8_t *root_cert, size_t root_cert_length,
+                                    uint8_t *cert_chain, size_t cert_chain_length)
 {
-    uintn asn1_len;
-    uintn preceding_cert_len;
+    size_t asn1_len;
+    size_t preceding_cert_len;
     uint8_t *preceding_cert;
-    uintn current_cert_len;
+    size_t current_cert_len;
     uint8_t *current_cert;
     uint8_t *tmp_ptr;
     uint32_t ret;
-    boolean verify_flag;
+    bool verify_flag;
 
-    verify_flag = FALSE;
+    verify_flag = false;
     preceding_cert = root_cert;
     preceding_cert_len = root_cert_length;
 
@@ -651,13 +660,13 @@ boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
 
         current_cert_len = asn1_len + (tmp_ptr - current_cert);
 
-        if (x509_verify_cert(current_cert, current_cert_len,
-                             preceding_cert,
-                             preceding_cert_len) == FALSE) {
-            verify_flag = FALSE;
+        if (libspdm_x509_verify_cert(current_cert, current_cert_len,
+                                     preceding_cert,
+                                     preceding_cert_len) == false) {
+            verify_flag = false;
             break;
         } else {
-            verify_flag = TRUE;
+            verify_flag = true;
         }
 
 
@@ -670,7 +679,7 @@ boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
         /* Move current certificate to next;*/
 
         current_cert = current_cert + current_cert_len;
-    } while (TRUE);
+    } while (true);
 
     return verify_flag;
 }
@@ -690,17 +699,17 @@ boolean x509_verify_cert_chain(IN uint8_t *root_cert, IN uintn root_cert_length,
  * @param[out]     cert              The certificate at the index of cert_chain.
  * @param[out]     cert_length        The length certificate at the index of cert_chain.
  *
- * @retval  TRUE   Success.
- * @retval  FALSE  Failed to get certificate from certificate chain.
+ * @retval  true   Success.
+ * @retval  false  Failed to get certificate from certificate chain.
  **/
-boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
-                                      IN uintn cert_chain_length,
-                                      IN int32_t cert_index, OUT uint8_t **cert,
-                                      OUT uintn *cert_length)
+bool libspdm_x509_get_cert_from_cert_chain(uint8_t *cert_chain,
+                                           size_t cert_chain_length,
+                                           const int32_t cert_index, uint8_t **cert,
+                                           size_t *cert_length)
 {
-    uintn asn1_len;
+    size_t asn1_len;
     int32_t current_index;
-    uintn current_cert_len;
+    size_t current_cert_len;
     uint8_t *current_cert;
     uint8_t *tmp_ptr;
     int32_t ret;
@@ -710,7 +719,7 @@ boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
 
     if ((cert_chain == NULL) || (cert == NULL) || (cert_index < -1) ||
         (cert_length == NULL)) {
-        return FALSE;
+        return false;
     }
 
     current_cert = cert_chain;
@@ -719,7 +728,7 @@ boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
 
     /* Traverse the certificate chain*/
 
-    while (TRUE) {
+    while (true) {
 
         /* Get asn1 tag len*/
 
@@ -737,7 +746,7 @@ boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
         if (current_index == cert_index) {
             *cert = current_cert;
             *cert_length = current_cert_len;
-            return TRUE;
+            return true;
         }
 
 
@@ -752,10 +761,10 @@ boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
     if (cert_index == -1 && current_index >= 0) {
         *cert = current_cert - current_cert_len;
         *cert_length = current_cert_len;
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 /**
@@ -766,26 +775,26 @@ boolean x509_get_cert_from_cert_chain(IN uint8_t *cert_chain,
  * @param[out]     tbs_cert      DER-Encoded to-Be-Signed certificate.
  * @param[out]     tbs_cert_size  size of the TBS certificate in bytes.
  *
- * If cert is NULL, then return FALSE.
- * If tbs_cert is NULL, then return FALSE.
- * If tbs_cert_size is NULL, then return FALSE.
+ * If cert is NULL, then return false.
+ * If tbs_cert is NULL, then return false.
+ * If tbs_cert_size is NULL, then return false.
  *
- * @retval  TRUE   The TBSCertificate was retrieved successfully.
- * @retval  FALSE  Invalid X.509 certificate.
+ * @retval  true   The TBSCertificate was retrieved successfully.
+ * @retval  false  Invalid X.509 certificate.
  *
  **/
-boolean x509_get_tbs_cert(IN const uint8_t *cert, IN uintn cert_size,
-                          OUT uint8_t **tbs_cert, OUT uintn *tbs_cert_size)
+bool libspdm_x509_get_tbs_cert(const uint8_t *cert, size_t cert_size,
+                               uint8_t **tbs_cert, size_t *tbs_cert_size)
 {
-    return FALSE;
+    return false;
 }
 
 /**
  * Retrieve the version from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If cert_size is 0, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If cert_size is 0, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -796,18 +805,18 @@ boolean x509_get_tbs_cert(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
-                               OUT uintn *version)
+bool libspdm_x509_get_version(const uint8_t *cert, size_t cert_size,
+                              size_t *version)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    return_status status;
+    bool status;
 
     if (cert == NULL) {
-        return RETURN_INVALID_PARAMETER;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -815,7 +824,7 @@ return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
 
     if (ret == 0) {
         *version = crt.version - 1;
-        status = RETURN_SUCCESS;
+        status = true;
     }
 
     mbedtls_x509_crt_free(&crt);
@@ -826,9 +835,9 @@ return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
 /**
  * Retrieve the serialNumber from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If cert_size is 0, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If cert_size is 0, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -846,19 +855,19 @@ return_status x509_get_version(IN const uint8_t *cert, IN uintn cert_size,
  *                                 serial_number_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_serial_number(IN const uint8_t *cert, IN uintn cert_size,
-                                     OUT uint8_t *serial_number,
-                                     OPTIONAL IN OUT uintn *serial_number_size)
+bool libspdm_x509_get_serial_number(const uint8_t *cert, size_t cert_size,
+                                    uint8_t *serial_number,
+                                    size_t *serial_number_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    return_status status;
+    bool status;
 
     if (cert == NULL) {
-        return RETURN_INVALID_PARAMETER;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -867,15 +876,15 @@ return_status x509_get_serial_number(IN const uint8_t *cert, IN uintn cert_size,
     if (ret == 0) {
         if (*serial_number_size <= crt.serial.len) {
             *serial_number_size = crt.serial.len + 1;
-            status = RETURN_BUFFER_TOO_SMALL;
+            status = false;
             goto cleanup;
         }
         if (serial_number != NULL) {
-            copy_mem(serial_number, crt.serial.p, crt.serial.len);
+            libspdm_copy_mem(serial_number, *serial_number_size, crt.serial.p, crt.serial.len);
             serial_number[crt.serial.len] = '\0';
         }
         *serial_number_size = crt.serial.len + 1;
-        status = RETURN_SUCCESS;
+        status = true;
     }
 cleanup:
     mbedtls_x509_crt_free(&crt);
@@ -886,9 +895,9 @@ cleanup:
 /**
  * Retrieve the issuer bytes from one X.509 certificate.
  *
- * If cert is NULL, then return FALSE.
- * If issuer_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If issuer_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -896,25 +905,25 @@ cleanup:
  * @param[in, out] issuer_size  The size in bytes of the cert_issuer buffer on input,
  *                             and the size of buffer returned cert_issuer on output.
  *
- * @retval  TRUE   The certificate issuer retrieved successfully.
- * @retval  FALSE  Invalid certificate, or the issuer_size is too small for the result.
+ * @retval  true   The certificate issuer retrieved successfully.
+ * @retval  false  Invalid certificate, or the issuer_size is too small for the result.
  *                The issuer_size will be updated with the required size.
- * @retval  FALSE  This interface is not supported.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean x509_get_issuer_name(IN const uint8_t *cert, IN uintn cert_size,
-                             OUT uint8_t *cert_issuer,
-                             IN OUT uintn *issuer_size)
+bool libspdm_x509_get_issuer_name(const uint8_t *cert, size_t cert_size,
+                                  uint8_t *cert_issuer,
+                                  size_t *issuer_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    boolean status;
+    bool status;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = FALSE;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -923,14 +932,14 @@ boolean x509_get_issuer_name(IN const uint8_t *cert, IN uintn cert_size,
     if (ret == 0) {
         if (*issuer_size < crt.issuer_raw.len) {
             *issuer_size = crt.issuer_raw.len;
-            status = FALSE;
+            status = false;
             goto cleanup;
         }
         if (cert_issuer != NULL) {
-            copy_mem(cert_issuer, crt.issuer_raw.p, crt.issuer_raw.len);
+            libspdm_copy_mem(cert_issuer, *issuer_size, crt.issuer_raw.p, crt.issuer_raw.len);
         }
         *issuer_size = crt.issuer_raw.len;
-        status = TRUE;
+        status = true;
     }
 
 cleanup:
@@ -965,15 +974,15 @@ cleanup:
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_issuer_common_name(IN const uint8_t *cert, IN uintn cert_size,
-                            OUT char *common_name,
-                            OPTIONAL IN OUT uintn *common_name_size)
+bool
+libspdm_x509_get_issuer_common_name(const uint8_t *cert, size_t cert_size,
+                                    char *common_name,
+                                    size_t *common_name_size)
 {
-    return internal_x509_get_issuer_nid_name(cert, cert_size,
-                                             (uint8_t *)m_oid_common_name,
-                                             sizeof(m_oid_common_name),
-                                             common_name, common_name_size);
+    return libspdm_internal_x509_get_issuer_nid_name(cert, cert_size,
+                                                     (uint8_t *)m_libspdm_oid_common_name,
+                                                     sizeof(m_libspdm_oid_common_name),
+                                                     common_name, common_name_size);
 }
 
 /**
@@ -1002,14 +1011,14 @@ x509_get_issuer_common_name(IN const uint8_t *cert, IN uintn cert_size,
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  *
  **/
-return_status
-x509_get_issuer_orgnization_name(IN const uint8_t *cert, IN uintn cert_size,
-                                 OUT char *name_buffer,
-                                 OPTIONAL IN OUT uintn *name_buffer_size)
+bool
+libspdm_x509_get_issuer_orgnization_name(const uint8_t *cert, size_t cert_size,
+                                         char *name_buffer,
+                                         size_t *name_buffer_size)
 {
-    return internal_x509_get_issuer_nid_name(
-        cert, cert_size, (uint8_t *)m_oid_organization_name,
-        sizeof(m_oid_organization_name), name_buffer, name_buffer_size);
+    return libspdm_internal_x509_get_issuer_nid_name(
+        cert, cert_size, (uint8_t *)m_libspdm_oid_organization_name,
+        sizeof(m_libspdm_oid_organization_name), name_buffer, name_buffer_size);
 }
 
 /**
@@ -1030,19 +1039,19 @@ x509_get_issuer_orgnization_name(IN const uint8_t *cert, IN uintn cert_size,
  *                                 is returned in the oid_size.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_signature_algorithm(IN const uint8_t *cert,
-                                           IN uintn cert_size, OUT uint8_t *oid,
-                                           OPTIONAL IN OUT uintn *oid_size)
+bool libspdm_x509_get_signature_algorithm(const uint8_t *cert,
+                                          size_t cert_size, uint8_t *oid,
+                                          size_t *oid_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    return_status status;
+    bool status;
 
     if (cert == NULL || cert_size == 0 || oid_size == NULL) {
-        return RETURN_INVALID_PARAMETER;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -1051,14 +1060,14 @@ return_status x509_get_signature_algorithm(IN const uint8_t *cert,
     if (ret == 0) {
         if (*oid_size < crt.sig_oid.len) {
             *oid_size = crt.serial.len;
-            status = RETURN_BUFFER_TOO_SMALL;
+            status = false;
             goto cleanup;
         }
         if (oid != NULL) {
-            copy_mem(oid, crt.sig_oid.p, crt.sig_oid.len);
+            libspdm_copy_mem(oid, *oid_size, crt.sig_oid.p, crt.sig_oid.len);
         }
         *oid_size = crt.sig_oid.len;
-        status = RETURN_SUCCESS;
+        status = true;
     }
 
 cleanup:
@@ -1078,29 +1087,30 @@ cleanup:
  * @param[out]     find_extension_data_len matched extension data size.
  *
  **/
-static return_status
-internal_x509_find_extension_data(uint8_t *start, uint8_t *end, const uint8_t *oid,
-                                  uintn oid_size, uint8_t **find_extension_data,
-                                  uintn *find_extension_data_len)
+static bool
+libspdm_internal_x509_find_extension_data(uint8_t *start, uint8_t *end, const uint8_t *oid,
+                                          size_t oid_size, uint8_t **find_extension_data,
+                                          size_t *find_extension_data_len)
 {
     uint8_t *ptr;
     uint8_t *extension_ptr;
     size_t obj_len;
     int32_t ret;
-    return_status status;
+    bool status;
     size_t find_extension_len;
     size_t header_len;
 
-    status = RETURN_INVALID_PARAMETER;
+    /*If no Extension entry match oid*/
+    status = false;
     ptr = start;
 
     ret = 0;
 
-    while (TRUE) {
+    while (true) {
         /*
          * Extension  ::=  SEQUENCE  {
          *      extnID      OBJECT IDENTIFIER,
-         *      critical    boolean DEFAULT FALSE,
+         *      critical    bool DEFAULT false,
          *      extnValue   OCTET STRING  }
          */
         extension_ptr = ptr;
@@ -1117,7 +1127,7 @@ internal_x509_find_extension_data(uint8_t *start, uint8_t *end, const uint8_t *o
             break;
         }
 
-        if (ret == 0 && const_compare_mem(ptr, oid, oid_size) == 0) {
+        if (ret == 0 && libspdm_const_compare_mem(ptr, oid, oid_size) == 0) {
             ptr += obj_len;
 
             ret = mbedtls_asn1_get_tag(&ptr, end, &obj_len,
@@ -1135,7 +1145,7 @@ internal_x509_find_extension_data(uint8_t *start, uint8_t *end, const uint8_t *o
         if (ret == 0) {
             *find_extension_data = ptr;
             *find_extension_data_len = obj_len;
-            status = RETURN_SUCCESS;
+            status = true;
             break;
         }
 
@@ -1167,24 +1177,24 @@ internal_x509_find_extension_data(uint8_t *start, uint8_t *end, const uint8_t *o
  *                                 is returned in the extension_data_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_extension_data(IN const uint8_t *cert, IN uintn cert_size,
-                                      IN const uint8_t *oid, IN uintn oid_size,
-                                      OUT uint8_t *extension_data,
-                                      IN OUT uintn *extension_data_size)
+bool libspdm_x509_get_extension_data(const uint8_t *cert, size_t cert_size,
+                                     const uint8_t *oid, size_t oid_size,
+                                     uint8_t *extension_data,
+                                     size_t *extension_data_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    return_status status;
+    bool status;
     uint8_t *ptr;
     uint8_t *end;
     size_t obj_len;
 
     if (cert == NULL || cert_size == 0 || oid == NULL || oid_size == 0 ||
         extension_data_size == NULL) {
-        return RETURN_INVALID_PARAMETER;
+        return false;
     }
 
-    status = RETURN_INVALID_PARAMETER;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -1199,21 +1209,22 @@ return_status x509_get_extension_data(IN const uint8_t *cert, IN uintn cert_size
     }
 
     if (ret == 0) {
-        status = internal_x509_find_extension_data(
+        status = libspdm_internal_x509_find_extension_data(
             ptr, end, oid, oid_size, &ptr, &obj_len);
     }
 
-    if (status == RETURN_SUCCESS) {
+    if (status) {
         if (*extension_data_size < obj_len) {
             *extension_data_size = obj_len;
-            status = RETURN_BUFFER_TOO_SMALL;
+            status = false;
             goto cleanup;
         }
         if (oid != NULL) {
-            copy_mem(extension_data, ptr, obj_len);
+            libspdm_copy_mem(extension_data, *extension_data_size, ptr, obj_len);
         }
         *extension_data_size = obj_len;
-        status = RETURN_SUCCESS;
+    } else {
+        *extension_data_size = 0;
     }
 
 cleanup:
@@ -1225,9 +1236,9 @@ cleanup:
 /**
  * Retrieve the Validity from one X.509 certificate
  *
- * If cert is NULL, then return FALSE.
- * If CertIssuerSize is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If cert is NULL, then return false.
+ * If CertIssuerSize is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      cert         Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size     size of the X509 certificate in bytes.
@@ -1236,28 +1247,28 @@ cleanup:
  * @param[out]     to           notAfter Pointer to date_time object.
  * @param[in,out]  to_size       notAfter date_time object size.
  *
- * Note: x509_compare_date_time to compare date_time oject
+ * Note: libspdm_x509_compare_date_time to compare date_time oject
  *      x509SetDateTime to get a date_time object from a date_time_str
  *
- * @retval  TRUE   The certificate Validity retrieved successfully.
- * @retval  FALSE  Invalid certificate, or Validity retrieve failed.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   The certificate Validity retrieved successfully.
+ * @retval  false  Invalid certificate, or Validity retrieve failed.
+ * @retval  false  This interface is not supported.
  **/
-boolean x509_get_validity(IN const uint8_t *cert, IN uintn cert_size,
-                          IN uint8_t *from, IN OUT uintn *from_size, IN uint8_t *to,
-                          IN OUT uintn *to_size)
+bool libspdm_x509_get_validity(const uint8_t *cert, size_t cert_size,
+                               uint8_t *from, size_t *from_size, uint8_t *to,
+                               size_t *to_size)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    boolean status;
-    uintn t_size;
-    uintn f_size;
+    bool status;
+    size_t t_size;
+    size_t f_size;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = FALSE;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -1269,22 +1280,22 @@ boolean x509_get_validity(IN const uint8_t *cert, IN uintn cert_size,
             *from_size = f_size;
             goto done;
         }
-        *from_size = f_size;
         if (from != NULL) {
-            copy_mem(from, &(crt.valid_from), f_size);
+            libspdm_copy_mem(from, *from_size, &(crt.valid_from), f_size);
         }
+        *from_size = f_size;
 
         t_size = sizeof(mbedtls_x509_time);
         if (*to_size < t_size) {
             *to_size = t_size;
             goto done;
         }
-        *to_size = t_size;
         if (to != NULL) {
-            copy_mem(to, &(crt.valid_to),
-                     sizeof(mbedtls_x509_time));
+            libspdm_copy_mem(to, *to_size, &(crt.valid_to),
+                             sizeof(mbedtls_x509_time));
         }
-        status = TRUE;
+        *to_size = t_size;
+        status = true;
     }
 
 done:
@@ -1298,24 +1309,24 @@ done:
  *
  * @param[in]      cert             Pointer to the DER-encoded X509 certificate.
  * @param[in]      cert_size         size of the X509 certificate in bytes.
- * @param[out]     usage            key usage (CRYPTO_X509_KU_*)
+ * @param[out]     usage            key usage (LIBSPDM_CRYPTO_X509_KU_*)
  *
- * @retval  TRUE   The certificate key usage retrieved successfully.
- * @retval  FALSE  Invalid certificate, or usage is NULL
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   The certificate key usage retrieved successfully.
+ * @retval  false  Invalid certificate, or usage is NULL
+ * @retval  false  This interface is not supported.
  **/
-boolean x509_get_key_usage(IN const uint8_t *cert, IN uintn cert_size,
-                           OUT uintn *usage)
+bool libspdm_x509_get_key_usage(const uint8_t *cert, size_t cert_size,
+                                size_t *usage)
 {
     mbedtls_x509_crt crt;
     int32_t ret;
-    boolean status;
+    bool status;
 
     if (cert == NULL) {
-        return FALSE;
+        return false;
     }
 
-    status = FALSE;
+    status = false;
 
     mbedtls_x509_crt_init(&crt);
 
@@ -1323,7 +1334,7 @@ boolean x509_get_key_usage(IN const uint8_t *cert, IN uintn cert_size,
 
     if (ret == 0) {
         *usage = crt.key_usage;
-        status = TRUE;
+        status = true;
     }
     mbedtls_x509_crt_free(&crt);
 
@@ -1347,29 +1358,66 @@ boolean x509_get_key_usage(IN const uint8_t *cert, IN uintn cert_size,
  *                                 is returned in the usage_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_get_extended_key_usage(IN const uint8_t *cert,
-                                          IN uintn cert_size, OUT uint8_t *usage,
-                                          IN OUT uintn *usage_size)
+bool libspdm_x509_get_extended_key_usage(const uint8_t *cert,
+                                         size_t cert_size, uint8_t *usage,
+                                         size_t *usage_size)
 {
-    return_status status;
+    bool status;
 
     if (cert == NULL || cert_size == 0 || usage_size == NULL) {
-        return RETURN_INVALID_PARAMETER;
+        return false;
     }
 
-    status = x509_get_extension_data((uint8_t *)cert, cert_size,
-                                     (uint8_t *)m_oid_ext_key_usage,
-                                     sizeof(m_oid_ext_key_usage), usage,
-                                     usage_size);
+    status = libspdm_x509_get_extension_data((uint8_t *)cert, cert_size,
+                                             (uint8_t *)m_libspdm_oid_ext_key_usage,
+                                             sizeof(m_libspdm_oid_ext_key_usage), usage,
+                                             usage_size);
 
+    return status;
+}
+
+/**
+ * Retrieve the basic constraints from one X.509 certificate.
+ *
+ * @param[in]      cert                     Pointer to the DER-encoded X509 certificate.
+ * @param[in]      cert_size                size of the X509 certificate in bytes.
+ * @param[out]     basic_constraints        basic constraints bytes.
+ * @param[in, out] basic_constraints_size   basic constraints buffer sizs in bytes.
+ *
+ * @retval RETURN_SUCCESS           The basic constraints retrieve successfully.
+ * @retval RETURN_INVALID_PARAMETER If cert is NULL.
+ *                                  If cert_size is NULL.
+ *                                  If basic_constraints is not NULL and *basic_constraints_size is 0.
+ *                                  If cert is invalid.
+ * @retval RETURN_BUFFER_TOO_SMALL  The required buffer size is small.
+ *                                  The return buffer size is basic_constraints_size parameter.
+ * @retval RETURN_NOT_FOUND         If no Extension entry match oid.
+ * @retval RETURN_UNSUPPORTED       The operation is not supported.
+ **/
+bool libspdm_x509_get_extended_basic_constraints(const uint8_t *cert,
+                                                 size_t cert_size,
+                                                 uint8_t *basic_constraints,
+                                                 size_t *basic_constraints_size)
+{
+    bool status;
+
+    if (cert == NULL || cert_size == 0 || basic_constraints_size == NULL) {
+        return false;
+    }
+
+    status = libspdm_x509_get_extension_data((uint8_t *)cert, cert_size,
+                                             (uint8_t *)m_libspdm_oid_basic_constraints,
+                                             sizeof(m_libspdm_oid_basic_constraints),
+                                             basic_constraints,
+                                             basic_constraints_size);
     return status;
 }
 
 /**
  * Return 0 if before <= after, 1 otherwise
  **/
-static intn internal_x509_check_time(const mbedtls_x509_time *before,
-                                     const mbedtls_x509_time *after)
+static int32_t libspdm_internal_x509_check_time(const mbedtls_x509_time *before,
+                                                const mbedtls_x509_time *after)
 {
     if (before->year > after->year)
         return (1);
@@ -1398,7 +1446,7 @@ static intn internal_x509_check_time(const mbedtls_x509_time *before,
     return (0);
 }
 
-static int32_t internal_atoi(char *p_start, char *p_end)
+static int32_t libspdm_internal_atoi(char *p_start, char *p_end)
 {
     char *p = p_start;
     int32_t k = 0;
@@ -1415,9 +1463,9 @@ static int32_t internal_atoi(char *p_start, char *p_end)
 /**
  * format a date_time object into DataTime buffer
  *
- * If date_time_str is NULL, then return FALSE.
- * If date_time_size is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If date_time_str is NULL, then return false.
+ * If date_time_size is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      date_time_str      date_time string like YYYYMMDDhhmmssZ
  *                                 Ref: https://www.w3.org/TR/NOTE-datetime
@@ -1435,8 +1483,8 @@ static int32_t internal_atoi(char *p_start, char *p_end)
  *                                 date_time_size parameter.
  * @retval RETURN_UNSUPPORTED       The operation is not supported.
  **/
-return_status x509_set_date_time(char *date_time_str, IN OUT void *date_time,
-                                 IN OUT uintn *date_time_size)
+bool libspdm_x509_set_date_time(char *date_time_str, void *date_time,
+                                size_t *date_time_size)
 {
     mbedtls_x509_time dt;
 
@@ -1446,22 +1494,22 @@ return_status x509_set_date_time(char *date_time_str, IN OUT void *date_time,
     int32_t hour;
     int32_t minute;
     int32_t second;
-    return_status status;
+    bool status;
     char *p;
 
     p = date_time_str;
 
-    year = internal_atoi(p, p + 4);
+    year = libspdm_internal_atoi(p, p + 4);
     p += 4;
-    month = internal_atoi(p, p + 2);
+    month = libspdm_internal_atoi(p, p + 2);
     p += 2;
-    day = internal_atoi(p, p + 2);
+    day = libspdm_internal_atoi(p, p + 2);
     p += 2;
-    hour = internal_atoi(p, p + 2);
+    hour = libspdm_internal_atoi(p, p + 2);
     p += 2;
-    minute = internal_atoi(p, p + 2);
+    minute = libspdm_internal_atoi(p, p + 2);
     p += 2;
-    second = internal_atoi(p, p + 2);
+    second = libspdm_internal_atoi(p, p + 2);
     p += 2;
     dt.year = (int)year;
     dt.mon = (int)month;
@@ -1472,14 +1520,14 @@ return_status x509_set_date_time(char *date_time_str, IN OUT void *date_time,
 
     if (*date_time_size < sizeof(mbedtls_x509_time)) {
         *date_time_size = sizeof(mbedtls_x509_time);
-        status = RETURN_BUFFER_TOO_SMALL;
+        status = false;
         goto cleanup;
     }
     if (date_time != NULL) {
-        copy_mem(date_time, &dt, sizeof(mbedtls_x509_time));
+        libspdm_copy_mem(date_time, *date_time_size, &dt, sizeof(mbedtls_x509_time));
     }
     *date_time_size = sizeof(mbedtls_x509_time);
-    status = RETURN_SUCCESS;
+    status = true;
 cleanup:
     return status;
 }
@@ -1500,17 +1548,17 @@ cleanup:
  * @retval  1      If date_time1 > date_time2
  * @retval  -1     If date_time1 < date_time2
  **/
-intn x509_compare_date_time(IN void *date_time1, IN void *date_time2)
+int32_t libspdm_x509_compare_date_time(const void *date_time1, const void *date_time2)
 {
     if (date_time1 == NULL || date_time2 == NULL) {
         return -2;
     }
-    if (const_compare_mem(date_time2, date_time1, sizeof(mbedtls_x509_time)) ==
+    if (libspdm_const_compare_mem(date_time2, date_time1, sizeof(mbedtls_x509_time)) ==
         0) {
         return 0;
     }
-    if (internal_x509_check_time((mbedtls_x509_time *)date_time1,
-                                 (mbedtls_x509_time *)date_time2) == 0) {
+    if (libspdm_internal_x509_check_time((mbedtls_x509_time *)date_time1,
+                                         (mbedtls_x509_time *)date_time2) == 0) {
         return -1;
     } else {
         return 1;

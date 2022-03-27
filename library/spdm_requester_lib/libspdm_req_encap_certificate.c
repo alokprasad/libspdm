@@ -25,32 +25,33 @@
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_encap_response_certificate(IN void *context,
-                                                  IN uintn request_size,
-                                                  IN void *request,
-                                                  IN OUT uintn *response_size,
-                                                  OUT void *response)
+return_status libspdm_get_encap_response_certificate(void *context,
+                                                     size_t request_size,
+                                                     void *request,
+                                                     size_t *response_size,
+                                                     void *response)
 {
     spdm_get_certificate_request_t *spdm_request;
     spdm_certificate_response_t *spdm_response;
     uint16_t offset;
     uint16_t length;
-    uintn remainder_length;
+    size_t remainder_length;
     uint8_t slot_id;
-    spdm_context_t *spdm_context;
+    libspdm_context_t *spdm_context;
     return_status status;
+    size_t response_capacity;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (spdm_request->header.spdm_version != spdm_get_connection_version(spdm_context)) {
+    if (spdm_request->header.spdm_version != libspdm_get_connection_version(spdm_context)) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_VERSION_MISMATCH,
             SPDM_GET_CERTIFICATE, response_size, response);
     }
 
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, TRUE,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_CERT_CAP, 0)) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_UNSUPPORTED_REQUEST,
@@ -91,7 +92,7 @@ return_status spdm_get_encap_response_certificate(IN void *context,
             response_size, response);
     }
 
-    if ((uintn)(offset + length) >
+    if ((size_t)(offset + length) >
         spdm_context->local_context
         .local_cert_chain_provision_size[slot_id]) {
         length = (uint16_t)(
@@ -103,12 +104,13 @@ return_status spdm_get_encap_response_certificate(IN void *context,
                        .local_cert_chain_provision_size[slot_id] -
                        (length + offset);
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
-    ASSERT(*response_size >= sizeof(spdm_certificate_response_t) + length);
+    LIBSPDM_ASSERT(*response_size >= sizeof(spdm_certificate_response_t) + length);
+    response_capacity = *response_size;
     *response_size = sizeof(spdm_certificate_response_t) + length;
-    zero_mem(response, *response_size);
+    libspdm_zero_mem(response, *response_size);
     spdm_response = response;
 
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -117,17 +119,17 @@ return_status spdm_get_encap_response_certificate(IN void *context,
     spdm_response->header.param2 = 0;
     spdm_response->portion_length = length;
     spdm_response->remainder_length = (uint16_t)remainder_length;
-    copy_mem(spdm_response + 1,
-             (uint8_t *)spdm_context->local_context
-             .local_cert_chain_provision[slot_id] +
-             offset,
-             length);
+    libspdm_copy_mem(spdm_response + 1,
+                     response_capacity - sizeof(spdm_certificate_response_t),
+                     (uint8_t *)spdm_context->local_context
+                     .local_cert_chain_provision[slot_id] + offset,
+                     length);
 
     /* Cache*/
 
     status = libspdm_append_message_mut_b(spdm_context, spdm_request,
                                           request_size);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_UNSPECIFIED, 0,
             response_size, response);
@@ -135,7 +137,7 @@ return_status spdm_get_encap_response_certificate(IN void *context,
 
     status = libspdm_append_message_mut_b(spdm_context, spdm_response,
                                           *response_size);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_UNSPECIFIED, 0,
             response_size, response);

@@ -9,51 +9,51 @@
 #include "spdm_unit_fuzzing.h"
 #include "toolchain_harness.h"
 
-uintn get_max_buffer_size(void)
+size_t libspdm_get_max_buffer_size(void)
 {
     return LIBSPDM_MAX_MESSAGE_BUFFER_SIZE;
 }
 
-void test_spdm_transport_pci_doe_decode_message(void **State)
+void libspdm_test_transport_pci_doe_decode_message(void **State)
 {
-    spdm_test_context_t *spdm_test_context;
-    spdm_context_t *spdm_context;
-    uintn transport_message_size;
-    uint8_t transport_message[LIBSPDM_MAX_MESSAGE_BUFFER_SIZE];
-    boolean is_app_message;
-    boolean is_requester;
+    libspdm_test_context_t *spdm_test_context;
+    libspdm_context_t *spdm_context;
+    size_t transport_message_size;
+    uint8_t *transport_message;
+    bool is_app_message;
+    bool is_requester;
 
     spdm_test_context = *State;
     spdm_context = spdm_test_context->spdm_context;
     is_requester = spdm_test_context->is_requester;
-    is_app_message = FALSE;
+    is_app_message = false;
 
-    transport_message_size = sizeof(transport_message);
+    transport_message_size = spdm_test_context->test_buffer_size;
 
     libspdm_transport_pci_doe_decode_message(spdm_context, NULL, &is_app_message, is_requester,
                                              spdm_test_context->test_buffer_size,
                                              spdm_test_context->test_buffer,
                                              &transport_message_size,
-                                             transport_message);
+                                             (void **)&transport_message);
 }
 
-spdm_test_context_t m_spdm_transport_pci_doe_test_context = {
-    SPDM_TEST_CONTEXT_SIGNATURE,
-    FALSE,
+libspdm_test_context_t m_libspdm_transport_pci_doe_test_context = {
+    LIBSPDM_TEST_CONTEXT_SIGNATURE,
+    false,
 };
 
-void run_test_harness(IN void *test_buffer, IN uintn test_buffer_size)
+void libspdm_run_test_harness(const void *test_buffer, size_t test_buffer_size)
 {
     void *State;
 
-    setup_spdm_test_context(&m_spdm_transport_pci_doe_test_context);
+    libspdm_setup_test_context(&m_libspdm_transport_pci_doe_test_context);
 
-    m_spdm_transport_pci_doe_test_context.test_buffer = test_buffer;
-    m_spdm_transport_pci_doe_test_context.test_buffer_size = test_buffer_size;
+    m_libspdm_transport_pci_doe_test_context.test_buffer = test_buffer;
+    m_libspdm_transport_pci_doe_test_context.test_buffer_size = test_buffer_size;
 
-    spdm_unit_test_group_setup(&State);
+    libspdm_unit_test_group_setup(&State);
 
-    test_spdm_transport_pci_doe_decode_message(&State);
+    libspdm_test_transport_pci_doe_decode_message(&State);
 
-    spdm_unit_test_group_teardown(&State);
+    libspdm_unit_test_group_teardown(&State);
 }

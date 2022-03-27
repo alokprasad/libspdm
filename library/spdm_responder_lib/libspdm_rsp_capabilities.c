@@ -17,22 +17,22 @@
  * @retval True                         The received SPDM version is valid.
  * @retval False                        The received SPDM version is invalid.
  **/
-boolean spdm_check_request_version_compability(IN spdm_context_t *spdm_context, IN uint8_t version)
+bool libspdm_check_request_version_compability(libspdm_context_t *spdm_context, uint8_t version)
 {
     uint8_t local_ver;
-    uintn index;
+    size_t index;
 
     for (index = 0;
          index < spdm_context->local_context.version.spdm_version_count;
          index++) {
-        local_ver = spdm_get_version_from_version_number(
+        local_ver = libspdm_get_version_from_version_number(
             spdm_context->local_context.version.spdm_version[index]);
         if (local_ver == version) {
             spdm_context->connection_info.version = version << SPDM_VERSION_NUMBER_SHIFT_BIT;
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 /**
@@ -46,8 +46,8 @@ boolean spdm_check_request_version_compability(IN spdm_context_t *spdm_context, 
  * @retval True                         The received Capabilities flag is valid.
  * @retval False                        The received Capabilities flag is invalid.
  **/
-boolean spdm_check_request_flag_compability(IN uint32_t capabilities_flag,
-                                            IN uint8_t version)
+bool libspdm_check_request_flag_compability(uint32_t capabilities_flag,
+                                            uint8_t version)
 {
     uint8_t cert_cap = (uint8_t)(capabilities_flag >> 1) & 0x01;
     /*uint8_t chal_cap = (uint8_t)(capabilities_flag>>2)&0x01;*/
@@ -67,42 +67,42 @@ boolean spdm_check_request_flag_compability(IN uint32_t capabilities_flag,
 
     switch (version) {
     case SPDM_MESSAGE_VERSION_10:
-        return TRUE;
+        return true;
 
     case SPDM_MESSAGE_VERSION_11:
     case SPDM_MESSAGE_VERSION_12:
     {
         /*meas_cap shall be set to 00b*/
         if (meas_cap != 0) {
-            return FALSE;
+            return false;
         }
         /*meas_fresh_cap shall be set to 0b*/
         if (meas_fresh_cap != 0) {
-            return FALSE;
+            return false;
         }
         /*Encrypt_cap set and psk_cap+key_ex_cap cleared*/
         if (encrypt_cap != 0 && (psk_cap == 0 && key_ex_cap == 0)) {
-            return FALSE;
+            return false;
         }
         /*MAC_cap set and psk_cap+key_ex_cap cleared*/
         if (mac_cap != 0 && (psk_cap == 0 && key_ex_cap == 0)) {
-            return FALSE;
+            return false;
         }
         /*Key_ex_cap set and encrypt_cap+mac_cap cleared*/
         if (key_ex_cap != 0 && (encrypt_cap == 0 && mac_cap == 0)) {
-            return FALSE;
+            return false;
         }
         /*PSK_cap set and encrypt_cap+mac_cap cleared*/
         if (psk_cap != 0 && (encrypt_cap == 0 && mac_cap == 0)) {
-            return FALSE;
+            return false;
         }
         /*Muth_auth_cap set and encap_cap cleared*/
         if (mut_auth_cap != 0 && encap_cap == 0) {
-            return FALSE;
+            return false;
         }
         /*Handshake_in_the_clear_cap set and key_ex_cap cleared*/
         if (handshake_in_the_clear_cap != 0 && key_ex_cap == 0) {
-            return FALSE;
+            return false;
         }
         /*Case "Handshake_in_the_clear_cap set and encrypt_cap+mac_cap cleared"
          * It will be verified by "Key_ex_cap set and encrypt_cap+mac_cap cleared" and
@@ -111,17 +111,17 @@ boolean spdm_check_request_flag_compability(IN uint32_t capabilities_flag,
 
         /*Pub_key_id_cap set and cert_cap set*/
         if (pub_key_id_cap != 0 && cert_cap != 0) {
-            return FALSE;
+            return false;
         }
         /*reserved values selected in flags*/
         if (psk_cap == 2 || psk_cap == 3) {
-            return FALSE;
+            return false;
         }
     }
-        return TRUE;
+        return true;
 
     default:
-        return TRUE;
+        return true;
     }
 }
 
@@ -142,23 +142,22 @@ boolean spdm_check_request_flag_compability(IN uint32_t capabilities_flag,
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_capabilities(IN void *context,
-                                             IN uintn request_size,
-                                             IN void *request,
-                                             IN OUT uintn *response_size,
-                                             OUT void *response)
+libspdm_return_t libspdm_get_response_capabilities(void *context,
+                                                   size_t request_size,
+                                                   const void *request,
+                                                   size_t *response_size,
+                                                   void *response)
 {
-    spdm_get_capabilities_request_t *spdm_request;
-    uintn spdm_request_size;
+    const spdm_get_capabilities_request_t *spdm_request;
     spdm_capabilities_response_t *spdm_response;
-    spdm_context_t *spdm_context;
-    return_status status;
+    libspdm_context_t *spdm_context;
+    libspdm_return_t status;
 
     spdm_context = context;
     spdm_request = request;
 
     if (spdm_context->response_state != LIBSPDM_RESPONSE_STATE_NORMAL) {
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context,
             spdm_request->header.request_response_code,
             response_size, response);
@@ -170,10 +169,10 @@ return_status spdm_get_response_capabilities(IN void *context,
                                                0, response_size, response);
     }
 
-    if (!spdm_check_request_version_compability(
+    if (!libspdm_check_request_version_compability(
             spdm_context, spdm_request->header.spdm_version)) {
         return libspdm_generate_error_response(spdm_context,
-                                               SPDM_ERROR_CODE_INVALID_REQUEST, 0,
+                                               SPDM_ERROR_CODE_VERSION_MISMATCH, 0,
                                                response_size, response);
     }
 
@@ -199,20 +198,19 @@ return_status spdm_get_response_capabilities(IN void *context,
         }
     }
 
-    if (!spdm_check_request_flag_compability(
+    if (!libspdm_check_request_flag_compability(
             spdm_request->flags, spdm_request->header.spdm_version)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_INVALID_REQUEST, 0,
                                                response_size, response);
     }
-    spdm_request_size = request_size;
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
-    ASSERT(*response_size >= sizeof(spdm_capabilities_response_t));
+    LIBSPDM_ASSERT(*response_size >= sizeof(spdm_capabilities_response_t));
     *response_size = sizeof(spdm_capabilities_response_t);
-    zero_mem(response, *response_size);
+    libspdm_zero_mem(response, *response_size);
     spdm_response = response;
 
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -237,8 +235,8 @@ return_status spdm_get_response_capabilities(IN void *context,
     /* Cache*/
 
     status = libspdm_append_message_a(spdm_context, spdm_request,
-                                      spdm_request_size);
-    if (RETURN_ERROR(status)) {
+                                      request_size);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
@@ -246,7 +244,7 @@ return_status spdm_get_response_capabilities(IN void *context,
     status = libspdm_append_message_a(spdm_context,
                                       spdm_response, *response_size);
 
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
@@ -269,8 +267,8 @@ return_status spdm_get_response_capabilities(IN void *context,
         spdm_context->connection_info.capability.data_transfer_size = 0;
         spdm_context->connection_info.capability.max_spdm_msg_size = 0;
     }
-    spdm_set_connection_state(spdm_context,
-                              LIBSPDM_CONNECTION_STATE_AFTER_CAPABILITIES);
+    libspdm_set_connection_state(spdm_context,
+                                 LIBSPDM_CONNECTION_STATE_AFTER_CAPABILITIES);
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }

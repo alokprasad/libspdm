@@ -6,29 +6,29 @@
 
 #include "spdm_unit_test.h"
 
-void dump_hex_str(IN uint8_t *buffer, IN uintn buffer_size)
+void libspdm_dump_hex_str(const uint8_t *buffer, size_t buffer_size)
 {
-    uintn index;
+    size_t index;
 
     for (index = 0; index < buffer_size; index++) {
         printf("%02x", buffer[index]);
     }
 }
 
-void dump_data(IN uint8_t *buffer, IN uintn buffer_size)
+void libspdm_dump_data(const uint8_t *buffer, size_t buffer_size)
 {
-    uintn index;
+    size_t index;
 
     for (index = 0; index < buffer_size; index++) {
         printf("%02x ", buffer[index]);
     }
 }
 
-void dump_hex(IN uint8_t *data, IN uintn size)
+void libspdm_dump_hex(const uint8_t *data, size_t size)
 {
-    uintn index;
-    uintn count;
-    uintn left;
+    size_t index;
+    size_t count;
+    size_t left;
 
 #define COLUME_SIZE (16 * 2)
 
@@ -36,27 +36,27 @@ void dump_hex(IN uint8_t *data, IN uintn size)
     left = size % COLUME_SIZE;
     for (index = 0; index < count; index++) {
         printf("%04x: ", (uint32_t)(index * COLUME_SIZE));
-        dump_data(data + index * COLUME_SIZE, COLUME_SIZE);
+        libspdm_dump_data(data + index * COLUME_SIZE, COLUME_SIZE);
         printf("\n");
     }
 
     if (left != 0) {
         printf("%04x: ", (uint32_t)(index * COLUME_SIZE));
-        dump_data(data + index * COLUME_SIZE, left);
+        libspdm_dump_data(data + index * COLUME_SIZE, left);
         printf("\n");
     }
 }
 
-boolean read_input_file(IN char *file_name, OUT void **file_data,
-                        OUT uintn *file_size)
+bool libspdm_read_input_file(const char *file_name, void **file_data,
+                             size_t *file_size)
 {
     FILE *fp_in;
-    uintn temp_result;
+    size_t temp_result;
 
     if ((fp_in = fopen(file_name, "rb")) == NULL) {
         printf("Unable to open file %s\n", file_name);
         *file_data = NULL;
-        return FALSE;
+        return false;
     }
 
     fseek(fp_in, 0, SEEK_END);
@@ -66,7 +66,7 @@ boolean read_input_file(IN char *file_name, OUT void **file_data,
     if (NULL == *file_data) {
         printf("No sufficient memory to allocate %s\n", file_name);
         fclose(fp_in);
-        return FALSE;
+        return false;
     }
 
     fseek(fp_in, 0, SEEK_SET);
@@ -75,31 +75,31 @@ boolean read_input_file(IN char *file_name, OUT void **file_data,
         printf("Read input file error %s", file_name);
         free((void *)*file_data);
         fclose(fp_in);
-        return FALSE;
+        return false;
     }
 
     fclose(fp_in);
 
-    return TRUE;
+    return true;
 }
 
-boolean write_output_file(IN char *file_name, IN void *file_data,
-                          IN uintn file_size)
+bool libspdm_write_output_file(const char *file_name, const void *file_data,
+                               size_t file_size)
 {
     FILE *fp_out;
 
     if ((fp_out = fopen(file_name, "w+b")) == NULL) {
         printf("Unable to open file %s\n", file_name);
-        return FALSE;
+        return false;
     }
 
     if ((fwrite(file_data, 1, file_size, fp_out)) != file_size) {
         printf("Write output file error %s\n", file_name);
         fclose(fp_out);
-        return FALSE;
+        return false;
     }
 
     fclose(fp_out);
 
-    return TRUE;
+    return true;
 }

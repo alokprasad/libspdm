@@ -12,7 +12,7 @@ typedef struct {
     uint8_t reserved;
     uint8_t version_number_entry_count;
     spdm_version_number_t version_number_entry[SPDM_MAX_VERSION_COUNT];
-} spdm_version_response_mine_t;
+} libspdm_version_response_mine_t;
 #pragma pack()
 
 /**
@@ -32,16 +32,15 @@ typedef struct {
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_version(IN void *context, IN uintn request_size,
-                                        IN void *request,
-                                        IN OUT uintn *response_size,
-                                        OUT void *response)
+libspdm_return_t libspdm_get_response_version(void *context, size_t request_size,
+                                              const void *request,
+                                              size_t *response_size,
+                                              void *response)
 {
-    spdm_get_version_request_t *spdm_request;
-    uintn spdm_request_size;
-    spdm_version_response_mine_t *spdm_response;
-    spdm_context_t *spdm_context;
-    return_status status;
+    const spdm_get_version_request_t *spdm_request;
+    libspdm_version_response_mine_t *spdm_response;
+    libspdm_context_t *spdm_context;
+    libspdm_return_t status;
 
     spdm_context = context;
     spdm_request = request;
@@ -58,8 +57,8 @@ return_status spdm_get_response_version(IN void *context, IN uintn request_size,
                                                response_size, response);
     }
 
-    spdm_set_connection_state(spdm_context,
-                              LIBSPDM_CONNECTION_STATE_NOT_STARTED);
+    libspdm_set_connection_state(spdm_context,
+                                 LIBSPDM_CONNECTION_STATE_NOT_STARTED);
 
     if ((spdm_context->response_state == LIBSPDM_RESPONSE_STATE_NEED_RESYNC) ||
         (spdm_context->response_state ==
@@ -68,15 +67,14 @@ return_status spdm_get_response_version(IN void *context, IN uintn request_size,
         spdm_context->response_state = LIBSPDM_RESPONSE_STATE_NORMAL;
     }
     if (spdm_context->response_state != LIBSPDM_RESPONSE_STATE_NORMAL) {
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context,
             spdm_request->header.request_response_code,
             response_size, response);
     }
-    spdm_request_size = request_size;
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
 
     /* Cache*/
@@ -85,21 +83,20 @@ return_status spdm_get_response_version(IN void *context, IN uintn request_size,
     libspdm_reset_message_b(spdm_context);
     libspdm_reset_message_c(spdm_context);
     status = libspdm_append_message_a(spdm_context, spdm_request,
-                                      spdm_request_size);
-    if (RETURN_ERROR(status)) {
+                                      request_size);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
     }
 
     libspdm_reset_context(spdm_context);
-
-    ASSERT(*response_size >= sizeof(spdm_version_response_mine_t));
+    LIBSPDM_ASSERT(*response_size >= sizeof(libspdm_version_response_mine_t));
     *response_size =
         sizeof(spdm_version_response_t) +
         spdm_context->local_context.version.spdm_version_count *
         sizeof(spdm_version_number_t);
-    zero_mem(response, *response_size);
+    libspdm_zero_mem(response, *response_size);
     spdm_response = response;
 
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -108,26 +105,26 @@ return_status spdm_get_response_version(IN void *context, IN uintn request_size,
     spdm_response->header.param2 = 0;
     spdm_response->version_number_entry_count =
         spdm_context->local_context.version.spdm_version_count;
-    copy_mem(
-        spdm_response->version_number_entry,
-        spdm_context->local_context.version.spdm_version,
-        sizeof(spdm_version_number_t) *
-        spdm_context->local_context.version.spdm_version_count);
+    libspdm_copy_mem(spdm_response->version_number_entry,
+                     sizeof(spdm_response->version_number_entry),
+                     spdm_context->local_context.version.spdm_version,
+                     sizeof(spdm_version_number_t) *
+                     spdm_context->local_context.version.spdm_version_count);
 
 
     /* Cache*/
 
     status = libspdm_append_message_a(spdm_context, spdm_response,
                                       *response_size);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         libspdm_reset_message_a(spdm_context);
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
     }
 
-    spdm_set_connection_state(spdm_context,
-                              LIBSPDM_CONNECTION_STATE_AFTER_VERSION);
+    libspdm_set_connection_state(spdm_context,
+                                 LIBSPDM_CONNECTION_STATE_AFTER_VERSION);
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }

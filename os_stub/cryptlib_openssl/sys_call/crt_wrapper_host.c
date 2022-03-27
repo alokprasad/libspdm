@@ -28,8 +28,8 @@ int strncasecmp(const char *s1, const char *s2, size_t n)
 {
     int val;
 
-    ASSERT(s1 != NULL);
-    ASSERT(s2 != NULL);
+    LIBSPDM_ASSERT(s1 != NULL);
+    LIBSPDM_ASSERT(s2 != NULL);
     if (s1 == NULL || s2 == NULL) {
         return -1;
     }
@@ -54,8 +54,8 @@ int strcasecmp(const char *s1, const char *s2)
 {
     int val;
 
-    ASSERT(s1 != NULL);
-    ASSERT(s2 != NULL);
+    LIBSPDM_ASSERT(s1 != NULL);
+    LIBSPDM_ASSERT(s2 != NULL);
     if (s1 == NULL || s2 == NULL) {
         return -1;
     }
@@ -107,4 +107,17 @@ gid_t getegid(void)
     return 0;
 }
 
+#ifdef __GNUC__
+/* Below is only required in GCC build.
+ * MSVC does not like it.*/
 int errno = 0;
+#endif
+
+int GetLastError()
+{
+    return 0;
+}
+
+void SetLastError(int e)
+{
+}

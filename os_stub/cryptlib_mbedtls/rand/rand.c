@@ -23,38 +23,38 @@
  * @param[in]  seed_size  size of seed value.
  *                      If seed is NULL, this parameter is ignored.
  *
- * @retval TRUE   Pseudorandom number generator has enough entropy for random generation.
- * @retval FALSE  Pseudorandom number generator does not have enough entropy for random generation.
+ * @retval true   Pseudorandom number generator has enough entropy for random generation.
+ * @retval false  Pseudorandom number generator does not have enough entropy for random generation.
  *
  **/
-boolean random_seed(IN const uint8_t *seed OPTIONAL, IN uintn seed_size)
+bool libspdm_random_seed(const uint8_t *seed, size_t seed_size)
 {
     /* TBD*/
-    return TRUE;
+    return true;
 }
 
 /**
  * Generates a pseudorandom byte stream of the specified size.
  *
- * If output is NULL, then return FALSE.
+ * If output is NULL, then return false.
  *
  * @param[out]  output  Pointer to buffer to receive random value.
  * @param[in]   size    size of random bytes to generate.
  *
- * @retval TRUE   Pseudorandom byte stream generated successfully.
- * @retval FALSE  Pseudorandom number generator fails to generate due to lack of entropy.
+ * @retval true   Pseudorandom byte stream generated successfully.
+ * @retval false  Pseudorandom number generator fails to generate due to lack of entropy.
  *
  **/
-boolean random_bytes(OUT uint8_t *output, IN uintn size)
+bool libspdm_random_bytes(uint8_t *output, size_t size)
 {
-    boolean ret;
+    bool ret;
     uint64_t temp_rand;
 
-    ret = FALSE;
+    ret = false;
 
     while (size > 0) {
         /* Use rnglib to get random number*/
-        ret = get_random_number_64(&temp_rand);
+        ret = libspdm_get_random_number_64(&temp_rand);
 
         if (!ret) {
             return ret;
@@ -64,7 +64,7 @@ boolean random_bytes(OUT uint8_t *output, IN uintn size)
             output += sizeof(uint64_t);
             size -= sizeof(temp_rand);
         } else {
-            copy_mem(output, &temp_rand, size);
+            libspdm_copy_mem(output, size, &temp_rand, size);
             size = 0;
         }
     }
@@ -72,9 +72,9 @@ boolean random_bytes(OUT uint8_t *output, IN uintn size)
     return ret;
 }
 
-int myrand(void *rng_state, unsigned char *output, size_t len)
+int libspdm_myrand(void *rng_state, unsigned char *output, size_t len)
 {
-    boolean result = random_bytes(output, len);
+    bool result = libspdm_random_bytes(output, len);
 
 
     /* The MbedTLS function f_rng, which myrand implements, is not

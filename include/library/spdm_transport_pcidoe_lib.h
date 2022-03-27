@@ -28,16 +28,20 @@
  * @param  is_requester                  Indicates if it is a requester message.
  * @param  message_size                  size in bytes of the message data buffer.
  * @param  message                      A pointer to a source buffer to store the message.
+ *                                      For normal message, it shall point to the acquired sender buffer.
+ *                                      For secured message, it shall point to the scratch buffer in spdm_context.
  * @param  transport_message_size         size in bytes of the transport message data buffer.
  * @param  transport_message             A pointer to a destination buffer to store the transport message.
+ *                                      On input, it shall be msg_buf_ptr from sender buffer.
+ *                                      On output, it will point to acquired sender buffer.
  *
  * @retval RETURN_SUCCESS               The message is encoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  **/
-return_status libspdm_transport_pci_doe_encode_message(
-    IN void *spdm_context, IN uint32_t *session_id, IN boolean is_app_message,
-    IN boolean is_requester, IN uintn message_size, IN void *message,
-    IN OUT uintn *transport_message_size, OUT void *transport_message);
+libspdm_return_t libspdm_transport_pci_doe_encode_message(
+    void *spdm_context, const uint32_t *session_id, bool is_app_message,
+    bool is_requester, size_t message_size, const void *message,
+    size_t *transport_message_size, void **transport_message);
 
 /**
  * Decode an SPDM or APP message from a transport layer message.
@@ -58,18 +62,36 @@ return_status libspdm_transport_pci_doe_encode_message(
  * @param  is_requester                  Indicates if it is a requester message.
  * @param  transport_message_size         size in bytes of the transport message data buffer.
  * @param  transport_message             A pointer to a source buffer to store the transport message.
+ *                                      For normal message or secured message, it shall point to acquired receiver buffer.
  * @param  message_size                  size in bytes of the message data buffer.
  * @param  message                      A pointer to a destination buffer to store the message.
+ *                                      On input, it shall be msg_buf_ptr from receiver buffer.
+ *                                      On output, for normal message, it will point to the original receiver buffer.
+ *                                      On output, for secured message, it will point to the scratch buffer in spdm_context.
  *
  * @retval RETURN_SUCCESS               The message is decoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  * @retval RETURN_UNSUPPORTED           The transport_message is unsupported.
  **/
-return_status libspdm_transport_pci_doe_decode_message(
-    IN void *spdm_context, OUT uint32_t **session_id,
-    OUT boolean *is_app_message, IN boolean is_requester,
-    IN uintn transport_message_size, IN void *transport_message,
-    IN OUT uintn *message_size, OUT void *message);
+libspdm_return_t libspdm_transport_pci_doe_decode_message(
+    void *spdm_context, uint32_t **session_id,
+    bool *is_app_message, bool is_requester,
+    size_t transport_message_size, const void *transport_message,
+    size_t *message_size, void **message);
+
+/**
+ * Return the maximum transport layer message header size.
+ *   Transport Message Header Size + sizeof(spdm_secured_message_cipher_header_t))
+ *
+ *   For MCTP, Transport Message Header Size = sizeof(mctp_message_header_t)
+ *   For PCI_DOE, Transport Message Header Size = sizeof(pci_doe_data_object_header_t)
+ *
+ * @param  spdm_context                  A pointer to the SPDM context.
+ *
+ * @return size of maximum transport layer message header size
+ **/
+uint32_t libspdm_transport_pci_doe_get_header_size(
+    void *spdm_context);
 
 /**
  * Get sequence number in an SPDM secure message.
@@ -84,8 +106,8 @@ return_status libspdm_transport_pci_doe_decode_message(
  *        It shall be no greater than 8.
  *        0 means no sequence number is required.
  **/
-uint8_t libspdm_pci_doe_get_sequence_number(IN uint64_t sequence_number,
-                                            IN OUT uint8_t *sequence_number_buffer);
+uint8_t libspdm_pci_doe_get_sequence_number(uint64_t sequence_number,
+                                            uint8_t *sequence_number_buffer);
 
 /**
  * Return max random number count in an SPDM secure message.

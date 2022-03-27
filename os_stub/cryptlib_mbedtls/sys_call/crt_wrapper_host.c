@@ -15,22 +15,17 @@
 
 int my_printf(const char *fmt, ...)
 {
-    ASSERT(FALSE);
+    LIBSPDM_ASSERT(false);
     return 0;
 }
-
-int (*mbedtls_printf)(const char *format, ...) = my_printf;
 
 int my_snprintf(char *str, size_t size, const char *format, ...)
 {
-    ASSERT(FALSE);
+    LIBSPDM_ASSERT(false);
     return 0;
 }
 
-int (*mbedtls_snprintf)(char *s, size_t n, const char *format,
-                        ...) = my_snprintf;
-
 void mbedtls_platform_zeroize(void *buf, size_t len)
 {
-    zero_mem(buf, len);
+    libspdm_zero_mem(buf, len);
 }

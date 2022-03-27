@@ -5,6 +5,7 @@
  **/
 
 #include "internal/libspdm_requester_lib.h"
+#include "library/spdm_transport_mctp_lib.h"
 
 /**
  * Send an SPDM or an APP request to a device.
@@ -18,40 +19,74 @@
  * @param  request                      A pointer to a destination buffer to store the request.
  *                                     The caller is responsible for having
  *                                     either implicit or explicit ownership of the buffer.
+ *                                      For normal message, requester pointer point to transport_message + transport header size
+ *                                      For secured message, requester pointer will point to the scratch buffer + transport header size in spdm_context.
  *
  * @retval RETURN_SUCCESS               The SPDM request is sent successfully.
  * @retval RETURN_DEVICE_ERROR          A device error occurs when the SPDM request is sent to the device.
  **/
-return_status libspdm_send_request(IN void *context, IN uint32_t *session_id,
-                                   IN boolean is_app_message,
-                                   IN uintn request_size, IN void *request)
+libspdm_return_t libspdm_send_request(void *context, const uint32_t *session_id,
+                                      bool is_app_message,
+                                      size_t request_size, const void *request)
 {
-    spdm_context_t *spdm_context;
-    return_status status;
-    uint8_t message[LIBSPDM_MAX_MESSAGE_BUFFER_SIZE];
-    uintn message_size;
+    libspdm_context_t *spdm_context;
+    libspdm_return_t status;
+    uint8_t *message;
+    size_t message_size;
+    uint64_t timeout;
+    uint8_t *scratch_buffer;
+    size_t scratch_buffer_size;
+    size_t transport_header_size;
+    uint8_t *sender_buffer;
+    size_t sender_buffer_size;
 
     spdm_context = context;
 
-    DEBUG((DEBUG_INFO, "spdm_send_spdm_request[%x] (0x%x): \n",
-           (session_id != NULL) ? *session_id : 0x0, request_size));
-    internal_dump_hex(request, request_size);
+    LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "libspdm_send_spdm_request[%x] (0x%x): \n",
+                   (session_id != NULL) ? *session_id : 0x0, request_size));
+    libspdm_internal_dump_hex(request, request_size);
 
-    message_size = sizeof(message);
+    transport_header_size = spdm_context->transport_get_header_size(spdm_context);
+    libspdm_get_sender_buffer (spdm_context, (void **)&sender_buffer, &sender_buffer_size);
+    message = sender_buffer;
+    message_size = sender_buffer_size;
+
+    if (session_id != NULL) {
+        /* For secure message, message is in sender buffer, we need copy it to scratch buffer.
+         * transport_message is always in sender buffer. */
+        libspdm_get_scratch_buffer (spdm_context, (void **)&scratch_buffer, &scratch_buffer_size);
+        libspdm_copy_mem (scratch_buffer + transport_header_size,
+                          scratch_buffer_size - transport_header_size,
+                          request, request_size);
+        request = scratch_buffer + transport_header_size;
+    }
+
+    /* backup it to last_spdm_request, because the caller wants to compare it with response */
+    if (((spdm_message_header_t *)request)->request_response_code != SPDM_RESPOND_IF_READY) {
+        libspdm_copy_mem (spdm_context->last_spdm_request,
+                          sizeof(spdm_context->last_spdm_request),
+                          request,
+                          request_size
+                          );
+        spdm_context->last_spdm_request_size = request_size;
+    }
+
     status = spdm_context->transport_encode_message(
-        spdm_context, session_id, is_app_message, TRUE, request_size,
-        request, &message_size, message);
-    if (RETURN_ERROR(status)) {
-        DEBUG((DEBUG_INFO, "transport_encode_message status - %p\n",
-               status));
+        spdm_context, session_id, is_app_message, true, request_size,
+        request, &message_size, (void **)&message);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "transport_encode_message status - %p\n",
+                       status));
         return status;
     }
 
+    timeout = spdm_context->local_context.capability.rtt;
+
     status = spdm_context->send_message(spdm_context, message_size, message,
-                                        0);
-    if (RETURN_ERROR(status)) {
-        DEBUG((DEBUG_INFO, "spdm_send_spdm_request[%x] status - %p\n",
-               (session_id != NULL) ? *session_id : 0x0, status));
+                                        timeout);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "libspdm_send_spdm_request[%x] status - %p\n",
+                       (session_id != NULL) ? *session_id : 0x0, status));
     }
 
     return status;
@@ -73,86 +108,96 @@ return_status libspdm_send_request(IN void *context, IN uint32_t *session_id,
  * @retval RETURN_SUCCESS               The SPDM response is received successfully.
  * @retval RETURN_DEVICE_ERROR          A device error occurs when the SPDM response is received from the device.
  **/
-return_status libspdm_receive_response(IN void *context, IN uint32_t *session_id,
-                                       IN boolean is_app_message,
-                                       IN OUT uintn *response_size,
-                                       OUT void *response)
+libspdm_return_t libspdm_receive_response(void *context, const uint32_t *session_id,
+                                          bool is_app_message,
+                                          size_t *response_size,
+                                          void **response)
 {
-    spdm_context_t *spdm_context;
-    return_status status;
-    uint8_t message[LIBSPDM_MAX_MESSAGE_BUFFER_SIZE];
-    uintn message_size;
+    libspdm_context_t *spdm_context;
+    libspdm_return_t status;
+    uint8_t *message;
+    size_t message_size;
     uint32_t *message_session_id;
-    boolean is_message_app_message;
+    bool is_message_app_message;
+    uint64_t timeout;
 
     spdm_context = context;
 
-    ASSERT(*response_size <= LIBSPDM_MAX_MESSAGE_BUFFER_SIZE);
+    LIBSPDM_ASSERT(*response_size <= LIBSPDM_MAX_MESSAGE_BUFFER_SIZE);
 
-    message_size = sizeof(message);
+    if (spdm_context->crypto_request) {
+        timeout = spdm_context->local_context.capability.rtt +
+                  (2 << spdm_context->local_context.capability.ct_exponent);
+    } else {
+        timeout = spdm_context->local_context.capability.rtt +
+                  spdm_context->local_context.capability.st1;
+    }
+
+    message = *response;
+    message_size = *response_size;
     status = spdm_context->receive_message(spdm_context, &message_size,
-                                           message, 0);
-    if (RETURN_ERROR(status)) {
-        DEBUG((DEBUG_INFO,
-               "spdm_receive_spdm_response[%x] status - %p\n",
-               (session_id != NULL) ? *session_id : 0x0, status));
+                                           (void **)&message, timeout);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_receive_spdm_response[%x] status - %p\n",
+                       (session_id != NULL) ? *session_id : 0x0, status));
         return status;
     }
 
     message_session_id = NULL;
-    is_message_app_message = FALSE;
+    is_message_app_message = false;
     status = spdm_context->transport_decode_message(
         spdm_context, &message_session_id, &is_message_app_message,
-        FALSE, message_size, message, response_size, response);
+        false, message_size, message, response_size, response);
 
     if (session_id != NULL) {
         if (message_session_id == NULL) {
-            DEBUG((DEBUG_INFO,
-                   "spdm_receive_spdm_response[%x] GetSessionId - NULL\n",
-                   (session_id != NULL) ? *session_id : 0x0));
+            LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                           "libspdm_receive_spdm_response[%x] GetSessionId - NULL\n",
+                           (session_id != NULL) ? *session_id : 0x0));
             goto error;
         }
         if (*message_session_id != *session_id) {
-            DEBUG((DEBUG_INFO,
-                   "spdm_receive_spdm_response[%x] GetSessionId - %x\n",
-                   (session_id != NULL) ? *session_id : 0x0,
-                   *message_session_id));
+            LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                           "libspdm_receive_spdm_response[%x] GetSessionId - %x\n",
+                           (session_id != NULL) ? *session_id : 0x0,
+                           *message_session_id));
             goto error;
         }
     } else {
         if (message_session_id != NULL) {
-            DEBUG((DEBUG_INFO,
-                   "spdm_receive_spdm_response[%x] GetSessionId - %x\n",
-                   (session_id != NULL) ? *session_id : 0x0,
-                   *message_session_id));
+            LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                           "libspdm_receive_spdm_response[%x] GetSessionId - %x\n",
+                           (session_id != NULL) ? *session_id : 0x0,
+                           *message_session_id));
             goto error;
         }
     }
 
     if ((is_app_message && !is_message_app_message) ||
         (!is_app_message && is_message_app_message)) {
-        DEBUG((DEBUG_INFO,
-               "spdm_receive_spdm_response[%x] app_message mismatch\n",
-               (session_id != NULL) ? *session_id : 0x0));
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_receive_spdm_response[%x] app_message mismatch\n",
+                       (session_id != NULL) ? *session_id : 0x0));
         goto error;
     }
 
-    DEBUG((DEBUG_INFO, "spdm_receive_spdm_response[%x] (0x%x): \n",
-           (session_id != NULL) ? *session_id : 0x0, *response_size));
-    if (RETURN_ERROR(status)) {
-        DEBUG((DEBUG_INFO,
-               "spdm_receive_spdm_response[%x] status - %p\n",
-               (session_id != NULL) ? *session_id : 0x0, status));
+    LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO, "libspdm_receive_spdm_response[%x] (0x%x): \n",
+                   (session_id != NULL) ? *session_id : 0x0, *response_size));
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_receive_spdm_response[%x] status - %p\n",
+                       (session_id != NULL) ? *session_id : 0x0, status));
     } else {
-        internal_dump_hex(response, *response_size);
+        libspdm_internal_dump_hex(*response, *response_size);
     }
     return status;
 
 error:
     if (spdm_context->last_spdm_error.error_code == SPDM_ERROR_CODE_DECRYPT_ERROR) {
-        return RETURN_SECURITY_VIOLATION;
+        return LIBSPDM_STATUS_CRYPTO_ERROR;
     } else {
-        return RETURN_DEVICE_ERROR;
+        return LIBSPDM_STATUS_RECEIVE_FAIL;
     }
 }
 
@@ -171,23 +216,28 @@ error:
  * @retval RETURN_SUCCESS               The SPDM request is sent successfully.
  * @retval RETURN_DEVICE_ERROR          A device error occurs when the SPDM request is sent to the device.
  **/
-return_status spdm_send_spdm_request(IN spdm_context_t *spdm_context,
-                                     IN uint32_t *session_id,
-                                     IN uintn request_size, IN void *request)
+libspdm_return_t libspdm_send_spdm_request(libspdm_context_t *spdm_context,
+                                           const uint32_t *session_id,
+                                           size_t request_size, const void *request)
 {
-    spdm_session_info_t *session_info;
+    libspdm_session_info_t *session_info;
     libspdm_session_state_t session_state;
 
+    if ((spdm_context->connection_info.capability.data_transfer_size != 0) &&
+        (request_size > spdm_context->connection_info.capability.data_transfer_size)) {
+        return LIBSPDM_STATUS_SEND_FAIL;
+    }
+
     if ((session_id != NULL) &&
-        spdm_is_capabilities_flag_supported(
-            spdm_context, TRUE,
+        libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_HANDSHAKE_IN_THE_CLEAR_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_HANDSHAKE_IN_THE_CLEAR_CAP)) {
         session_info = libspdm_get_session_info_via_session_id(
             spdm_context, *session_id);
-        ASSERT(session_info != NULL);
+        LIBSPDM_ASSERT(session_info != NULL);
         if (session_info == NULL) {
-            return RETURN_DEVICE_ERROR;
+            return LIBSPDM_STATUS_INVALID_STATE_LOCAL;
         }
         session_state = libspdm_secured_message_get_session_state(
             session_info->secured_message_context);
@@ -197,7 +247,7 @@ return_status spdm_send_spdm_request(IN spdm_context_t *spdm_context,
         }
     }
 
-    return libspdm_send_request(spdm_context, session_id, FALSE, request_size,
+    return libspdm_send_request(spdm_context, session_id, false, request_size,
                                 request);
 }
 
@@ -216,24 +266,24 @@ return_status spdm_send_spdm_request(IN spdm_context_t *spdm_context,
  * @retval RETURN_SUCCESS               The SPDM response is received successfully.
  * @retval RETURN_DEVICE_ERROR          A device error occurs when the SPDM response is received from the device.
  **/
-return_status spdm_receive_spdm_response(IN spdm_context_t *spdm_context,
-                                         IN uint32_t *session_id,
-                                         IN OUT uintn *response_size,
-                                         OUT void *response)
+libspdm_return_t libspdm_receive_spdm_response(libspdm_context_t *spdm_context,
+                                               const uint32_t *session_id,
+                                               size_t *response_size,
+                                               void **response)
 {
-    spdm_session_info_t *session_info;
+    libspdm_session_info_t *session_info;
     libspdm_session_state_t session_state;
 
     if ((session_id != NULL) &&
-        spdm_is_capabilities_flag_supported(
-            spdm_context, TRUE,
+        libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_HANDSHAKE_IN_THE_CLEAR_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_HANDSHAKE_IN_THE_CLEAR_CAP)) {
         session_info = libspdm_get_session_info_via_session_id(
             spdm_context, *session_id);
-        ASSERT(session_info != NULL);
+        LIBSPDM_ASSERT(session_info != NULL);
         if (session_info == NULL) {
-            return RETURN_DEVICE_ERROR;
+            return LIBSPDM_STATUS_INVALID_STATE_LOCAL;
         }
         session_state = libspdm_secured_message_get_session_state(
             session_info->secured_message_context);
@@ -243,6 +293,6 @@ return_status spdm_receive_spdm_response(IN spdm_context_t *spdm_context,
         }
     }
 
-    return libspdm_receive_response(spdm_context, session_id, FALSE,
+    return libspdm_receive_response(spdm_context, session_id, false,
                                     response_size, response);
 }

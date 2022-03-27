@@ -6,11 +6,11 @@
 
 #include "test_crypt.h"
 
-uintn ascii_str_len(IN const char *string)
+size_t libspdm_ascii_str_len(const char *string)
 {
-    uintn length;
+    size_t length;
 
-    ASSERT(string != NULL);
+    LIBSPDM_ASSERT(string != NULL);
     if (string == NULL) {
         return 0;
     }
@@ -21,127 +21,123 @@ uintn ascii_str_len(IN const char *string)
     return length;
 }
 
-void my_print(IN char *message)
+void libspdm_my_print(const char *message)
 {
-    debug_print(DEBUG_INFO, "%s", message);
+    libspdm_debug_print(LIBSPDM_DEBUG_INFO, "%s", message);
 }
 
 /**
  * entrypoint of Cryptographic Validation Utility.
- *
- * @retval RETURN_SUCCESS       The entry point is executed successfully.
- * @retval other             Some error occurs when executing this entry point.
- *
  **/
-return_status cryptest_main(void)
+void libspdm_cryptest_main(void)
 {
-    return_status status;
+    bool status;
 
-    my_print("\nCrypto Wrapper Cryptosystem Testing: \n");
-    my_print("-------------------------------------------- \n");
+    libspdm_my_print("\nCrypto Wrapper Cryptosystem Testing: \n");
+    libspdm_my_print("-------------------------------------------- \n");
 
-    random_seed(NULL, 0);
+    libspdm_random_seed(NULL, 0);
 
-    status = validate_crypt_digest();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_digest();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_hmac();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_hmac();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_hkdf();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_hkdf();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_aead_cipher();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_aead_cipher();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_rsa();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_rsa();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_rsa_2();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_rsa_2();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_x509("ecp256", sizeof("ecp256"));
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_x509("ecp256", sizeof("ecp256"));
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_x509("ecp384", sizeof("ecp384"));
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_x509("ecp384", sizeof("ecp384"));
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_x509("rsa2048", sizeof("rsa2048"));
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_x509("rsa2048", sizeof("rsa2048"));
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_x509("rsa3072", sizeof("rsa3072"));
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_x509("rsa3072", sizeof("rsa3072"));
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_dh();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_dh();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_ec();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_ec();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_ec_2();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_ec_2();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_ecd();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_ecd();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_ecd_2();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_ecd_2();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_ecx();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_ecx();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_sm2();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_sm2();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_sm2_2();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_sm2_2();
+    if (!status) {
+        return;
     }
 
-    status = validate_crypt_prng();
-    if (RETURN_ERROR(status)) {
-        return status;
+    status = libspdm_validate_crypt_prng();
+    if (!status) {
+        return;
     }
 
-    return RETURN_SUCCESS;
+    return;
 }
 
 int main(void)
 {
-    cryptest_main();
+    libspdm_cryptest_main();
     return 0;
 }

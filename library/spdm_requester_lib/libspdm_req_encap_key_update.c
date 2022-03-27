@@ -23,31 +23,31 @@
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_encap_response_key_update(IN void *context,
-                                                 IN uintn request_size,
-                                                 IN void *request,
-                                                 IN OUT uintn *response_size,
-                                                 OUT void *response)
+return_status libspdm_get_encap_response_key_update(void *context,
+                                                    size_t request_size,
+                                                    void *request,
+                                                    size_t *response_size,
+                                                    void *response)
 {
     uint32_t session_id;
     spdm_key_update_response_t *spdm_response;
     spdm_key_update_request_t *spdm_request;
-    spdm_context_t *spdm_context;
-    spdm_session_info_t *session_info;
+    libspdm_context_t *spdm_context;
+    libspdm_session_info_t *session_info;
     libspdm_session_state_t session_state;
-    return_status status;
+    bool result;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (spdm_request->header.spdm_version != spdm_get_connection_version(spdm_context)) {
+    if (spdm_request->header.spdm_version != libspdm_get_connection_version(spdm_context)) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_VERSION_MISMATCH,
             SPDM_KEY_UPDATE, response_size, response);
     }
 
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, TRUE,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
             SPDM_GET_CAPABILITIES_REQUEST_FLAGS_KEY_UPD_CAP,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_UPD_CAP)) {
         return libspdm_generate_encap_error_response(
@@ -82,44 +82,44 @@ return_status spdm_get_encap_response_key_update(IN void *context,
             response_size, response);
     }
 
-    status = RETURN_SUCCESS;
+    result = true;
     switch (spdm_request->header.param1) {
     case SPDM_KEY_UPDATE_OPERATIONS_TABLE_UPDATE_KEY:
-        DEBUG((DEBUG_INFO,
-               "libspdm_create_update_session_data_key[%x] Responder\n",
-               session_id));
-        status = libspdm_create_update_session_data_key(
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_create_update_session_data_key[%x] Responder\n",
+                       session_id));
+        result = libspdm_create_update_session_data_key(
             session_info->secured_message_context,
             LIBSPDM_KEY_UPDATE_ACTION_RESPONDER);
         break;
     case SPDM_KEY_UPDATE_OPERATIONS_TABLE_UPDATE_ALL_KEYS:
-        status = RETURN_UNSUPPORTED;
+        result = false;
         break;
     case SPDM_KEY_UPDATE_OPERATIONS_TABLE_VERIFY_NEW_KEY:
-        DEBUG((DEBUG_INFO,
-               "libspdm_activate_update_session_data_key[%x] Responder new\n",
-               session_id));
-        status = libspdm_activate_update_session_data_key(
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_INFO,
+                       "libspdm_activate_update_session_data_key[%x] Responder new\n",
+                       session_id));
+        result = libspdm_activate_update_session_data_key(
             session_info->secured_message_context,
-            LIBSPDM_KEY_UPDATE_ACTION_RESPONDER, TRUE);
+            LIBSPDM_KEY_UPDATE_ACTION_RESPONDER, true);
         break;
     default:
-        status = RETURN_UNSUPPORTED;
+        result = false;
         break;
     }
 
-    if (status != RETURN_SUCCESS) {
+    if (!result) {
         return libspdm_generate_encap_error_response(
             spdm_context, SPDM_ERROR_CODE_INVALID_REQUEST, 0,
             response_size, response);
     }
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, session_info,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, session_info,
+                                                  spdm_request->header.request_response_code);
 
-    ASSERT(*response_size >= sizeof(spdm_key_update_response_t));
+    LIBSPDM_ASSERT(*response_size >= sizeof(spdm_key_update_response_t));
     *response_size = sizeof(spdm_key_update_response_t);
-    zero_mem(response, *response_size);
+    libspdm_zero_mem(response, *response_size);
     spdm_response = response;
 
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;

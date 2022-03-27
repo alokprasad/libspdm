@@ -8,9 +8,9 @@
  * RSA Asymmetric Cipher Wrapper Implementation.
  *
  * This file implements following APIs which provide more capabilities for RSA:
- * 1) rsa_get_key
- * 2) rsa_generate_key
- * 3) rsa_check_key
+ * 1) libspdm_rsa_get_key
+ * 2) libspdm_rsa_generate_key
+ * 3) libspdm_rsa_check_key
  * 4) rsa_pkcs1_sign
  *
  * RFC 8017 - PKCS #1: RSA Cryptography Specifications version 2.2
@@ -32,12 +32,12 @@
  * represented in RSA PKCS#1).
  * If specified key component has not been set or has been cleared, then returned
  * bn_size is set to 0.
- * If the big_number buffer is too small to hold the contents of the key, FALSE
+ * If the big_number buffer is too small to hold the contents of the key, false
  * is returned and bn_size is set to the required buffer size to obtain the key.
  *
- * If rsa_context is NULL, then return FALSE.
- * If bn_size is NULL, then return FALSE.
- * If bn_size is large enough but big_number is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If bn_size is NULL, then return false.
+ * If bn_size is large enough but big_number is NULL, then return false.
  *
  * @param[in, out]  rsa_context  Pointer to RSA context being set.
  * @param[in]       key_tag      tag of RSA key component being set.
@@ -45,23 +45,23 @@
  * @param[in, out]  bn_size      On input, the size of big number buffer in bytes.
  *                             On output, the size of data returned in big number buffer in bytes.
  *
- * @retval  TRUE   RSA key component was retrieved successfully.
- * @retval  FALSE  Invalid RSA key component tag.
- * @retval  FALSE  bn_size is too small.
+ * @retval  true   RSA key component was retrieved successfully.
+ * @retval  false  Invalid RSA key component tag.
+ * @retval  false  bn_size is too small.
  *
  **/
-boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
-                    OUT uint8_t *big_number, IN OUT uintn *bn_size)
+bool libspdm_rsa_get_key(void *rsa_context, const libspdm_rsa_key_tag_t key_tag,
+                         uint8_t *big_number, size_t *bn_size)
 {
     RSA *rsa_key;
     BIGNUM *bn_key;
-    uintn size;
+    size_t size;
 
 
     /* Check input parameters.*/
 
     if (rsa_context == NULL || bn_size == NULL) {
-        return FALSE;
+        return false;
     }
 
     rsa_key = (RSA *)rsa_context;
@@ -73,42 +73,42 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
 
     /* RSA public Modulus (N)*/
 
-    case RSA_KEY_N:
+    case LIBSPDM_RSA_KEY_N:
         RSA_get0_key(rsa_key, (const BIGNUM **)&bn_key, NULL, NULL);
         break;
 
 
     /* RSA public Exponent (e)*/
 
-    case RSA_KEY_E:
+    case LIBSPDM_RSA_KEY_E:
         RSA_get0_key(rsa_key, NULL, (const BIGNUM **)&bn_key, NULL);
         break;
 
 
     /* RSA Private Exponent (d)*/
 
-    case RSA_KEY_D:
+    case LIBSPDM_RSA_KEY_D:
         RSA_get0_key(rsa_key, NULL, NULL, (const BIGNUM **)&bn_key);
         break;
 
 
     /* RSA Secret prime Factor of Modulus (p)*/
 
-    case RSA_KEY_P:
+    case LIBSPDM_RSA_KEY_P:
         RSA_get0_factors(rsa_key, (const BIGNUM **)&bn_key, NULL);
         break;
 
 
     /* RSA Secret prime Factor of Modules (q)*/
 
-    case RSA_KEY_Q:
+    case LIBSPDM_RSA_KEY_Q:
         RSA_get0_factors(rsa_key, NULL, (const BIGNUM **)&bn_key);
         break;
 
 
     /* p's CRT Exponent (== d mod (p - 1))*/
 
-    case RSA_KEY_DP:
+    case LIBSPDM_RSA_KEY_DP:
         RSA_get0_crt_params(rsa_key, (const BIGNUM **)&bn_key, NULL,
                             NULL);
         break;
@@ -116,7 +116,7 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
 
     /* q's CRT Exponent (== d mod (q - 1))*/
 
-    case RSA_KEY_DQ:
+    case LIBSPDM_RSA_KEY_DQ:
         RSA_get0_crt_params(rsa_key, NULL, (const BIGNUM **)&bn_key,
                             NULL);
         break;
@@ -124,17 +124,17 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
 
     /* The CRT Coefficient (== 1/q mod p)*/
 
-    case RSA_KEY_Q_INV:
+    case LIBSPDM_RSA_KEY_Q_INV:
         RSA_get0_crt_params(rsa_key, NULL, NULL,
                             (const BIGNUM **)&bn_key);
         break;
 
     default:
-        return FALSE;
+        return false;
     }
 
     if (bn_key == NULL) {
-        return FALSE;
+        return false;
     }
 
     *bn_size = size;
@@ -142,16 +142,16 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
 
     if (*bn_size < size) {
         *bn_size = size;
-        return FALSE;
+        return false;
     }
 
     if (big_number == NULL) {
         *bn_size = size;
-        return TRUE;
+        return true;
     }
     *bn_size = BN_bn2bin(bn_key, big_number);
 
-    return TRUE;
+    return true;
 }
 
 /**
@@ -162,40 +162,40 @@ boolean rsa_get_key(IN OUT void *rsa_context, IN rsa_key_tag_t key_tag,
  * If public_exponent is NULL, the default RSA public exponent (0x10001) will be used.
  *
  * Before this function can be invoked, pseudorandom number generator must be correctly
- * initialized by random_seed().
+ * initialized by libspdm_random_seed().
  *
- * If rsa_context is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
  *
  * @param[in, out]  rsa_context           Pointer to RSA context being set.
  * @param[in]       modulus_length        length of RSA modulus N in bits.
  * @param[in]       public_exponent       Pointer to RSA public exponent.
  * @param[in]       public_exponent_size   size of RSA public exponent buffer in bytes.
  *
- * @retval  TRUE   RSA key component was generated successfully.
- * @retval  FALSE  Invalid RSA key component tag.
+ * @retval  true   RSA key component was generated successfully.
+ * @retval  false  Invalid RSA key component tag.
  *
  **/
-boolean rsa_generate_key(IN OUT void *rsa_context, IN uintn modulus_length,
-                         IN const uint8_t *public_exponent,
-                         IN uintn public_exponent_size)
+bool libspdm_rsa_generate_key(void *rsa_context, size_t modulus_length,
+                              const uint8_t *public_exponent,
+                              size_t public_exponent_size)
 {
     BIGNUM *bn_e;
-    boolean ret_val;
+    bool ret_val;
 
 
     /* Check input parameters.*/
 
     if (rsa_context == NULL || modulus_length > INT_MAX ||
         public_exponent_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     bn_e = BN_new();
     if (bn_e == NULL) {
-        return FALSE;
+        return false;
     }
 
-    ret_val = FALSE;
+    ret_val = false;
 
     if (public_exponent == NULL) {
         if (BN_set_word(bn_e, 0x10001) == 0) {
@@ -210,7 +210,7 @@ boolean rsa_generate_key(IN OUT void *rsa_context, IN uintn modulus_length,
 
     if (RSA_generate_key_ex((RSA *)rsa_context, (uint32_t)modulus_length,
                             bn_e, NULL) == 1) {
-        ret_val = TRUE;
+        ret_val = true;
     }
 
 done:
@@ -229,23 +229,23 @@ done:
  * - Whether n = p * q
  * - Whether d*e = 1  mod lcm(p-1,q-1)
  *
- * If rsa_context is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
  *
  * @param[in]  rsa_context  Pointer to RSA context to check.
  *
- * @retval  TRUE   RSA key components are valid.
- * @retval  FALSE  RSA key components are not valid.
+ * @retval  true   RSA key components are valid.
+ * @retval  false  RSA key components are not valid.
  *
  **/
-boolean rsa_check_key(IN void *rsa_context)
+bool libspdm_rsa_check_key(void *rsa_context)
 {
-    uintn reason;
+    size_t reason;
 
 
     /* Check input parameters.*/
 
     if (rsa_context == NULL) {
-        return FALSE;
+        return false;
     }
 
     if (RSA_check_key((RSA *)rsa_context) != 1) {
@@ -254,11 +254,11 @@ boolean rsa_check_key(IN void *rsa_context)
             reason == RSA_R_Q_NOT_PRIME ||
             reason == RSA_R_N_DOES_NOT_EQUAL_P_Q ||
             reason == RSA_R_D_E_NOT_CONGRUENT_TO_1) {
-            return FALSE;
+            return false;
         }
     }
 
-    return TRUE;
+    return true;
 }
 
 /**
@@ -266,14 +266,14 @@ boolean rsa_check_key(IN void *rsa_context)
  *
  * This function carries out the RSA-SSA signature generation with EMSA-PKCS1-v1_5 encoding scheme defined in
  * RSA PKCS#1.
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
  * If hash_size need match the hash_nid. hash_nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
- * If sig_size is large enough but signature is NULL, then return FALSE.
- * If this interface is not supported, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
+ * If this interface is not supported, then return false.
  *
  * @param[in]      rsa_context   Pointer to RSA context for signature generation.
  * @param[in]      hash_nid      hash NID
@@ -283,26 +283,26 @@ boolean rsa_check_key(IN void *rsa_context)
  * @param[in, out] sig_size      On input, the size of signature buffer in bytes.
  *                             On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in PKCS1-v1_5.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
- * @retval  FALSE  This interface is not supported.
+ * @retval  true   signature successfully generated in PKCS1-v1_5.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
+ * @retval  false  This interface is not supported.
  *
  **/
-boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
-                                IN const uint8_t *message_hash,
-                                IN uintn hash_size, OUT uint8_t *signature,
-                                IN OUT uintn *sig_size)
+bool libspdm_rsa_pkcs1_sign_with_nid(void *rsa_context, size_t hash_nid,
+                                     const uint8_t *message_hash,
+                                     size_t hash_size, uint8_t *signature,
+                                     size_t *sig_size)
 {
     RSA *rsa;
-    uintn size;
+    size_t size;
     int32_t digest_type;
 
 
     /* Check input parameters.*/
 
     if (rsa_context == NULL || message_hash == NULL) {
-        return FALSE;
+        return false;
     }
 
     rsa = (RSA *)rsa_context;
@@ -310,63 +310,63 @@ boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
 
     if (*sig_size < size) {
         *sig_size = size;
-        return FALSE;
+        return false;
     }
 
     if (signature == NULL) {
-        return FALSE;
+        return false;
     }
 
     switch (hash_nid) {
-    case CRYPTO_NID_SHA256:
+    case LIBSPDM_CRYPTO_NID_SHA256:
         digest_type = NID_sha256;
-        if (hash_size != SHA256_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA256_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA384:
+    case LIBSPDM_CRYPTO_NID_SHA384:
         digest_type = NID_sha384;
-        if (hash_size != SHA384_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA384_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA512:
+    case LIBSPDM_CRYPTO_NID_SHA512:
         digest_type = NID_sha512;
-        if (hash_size != SHA512_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA512_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_256:
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
         digest_type = NID_sha3_256;
-        if (hash_size != SHA3_256_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_384:
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
         digest_type = NID_sha3_384;
-        if (hash_size != SHA3_384_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_512:
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
         digest_type = NID_sha3_512;
-        if (hash_size != SHA3_512_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
         }
         break;
 
     default:
-        return FALSE;
+        return false;
     }
 
-    return (boolean)RSA_sign(digest_type, message_hash, (uint32_t)hash_size,
-                             signature, (uint32_t *)sig_size,
-                             (RSA *)rsa_context);
+    return (bool)RSA_sign(digest_type, message_hash, (uint32_t)hash_size,
+                          signature, (uint32_t *)sig_size,
+                          (RSA *)rsa_context);
 }
 
 /**
@@ -377,13 +377,13 @@ boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
  *
  * The salt length is same as digest length.
  *
- * If the signature buffer is too small to hold the contents of signature, FALSE
+ * If the signature buffer is too small to hold the contents of signature, false
  * is returned and sig_size is set to the required buffer size to obtain the signature.
  *
- * If rsa_context is NULL, then return FALSE.
- * If message_hash is NULL, then return FALSE.
+ * If rsa_context is NULL, then return false.
+ * If message_hash is NULL, then return false.
  * If hash_size need match the hash_nid. nid could be SHA256, SHA384, SHA512, SHA3_256, SHA3_384, SHA3_512.
- * If sig_size is large enough but signature is NULL, then return FALSE.
+ * If sig_size is large enough but signature is NULL, then return false.
  *
  * @param[in]       rsa_context   Pointer to RSA context for signature generation.
  * @param[in]       hash_nid      hash NID
@@ -393,100 +393,100 @@ boolean rsa_pkcs1_sign_with_nid(IN void *rsa_context, IN uintn hash_nid,
  * @param[in, out]  sig_size      On input, the size of signature buffer in bytes.
  *                              On output, the size of data returned in signature buffer in bytes.
  *
- * @retval  TRUE   signature successfully generated in RSA-SSA PSS.
- * @retval  FALSE  signature generation failed.
- * @retval  FALSE  sig_size is too small.
+ * @retval  true   signature successfully generated in RSA-SSA PSS.
+ * @retval  false  signature generation failed.
+ * @retval  false  sig_size is too small.
  *
  **/
-boolean rsa_pss_sign(IN void *rsa_context, IN uintn hash_nid,
-                     IN const uint8_t *message_hash, IN uintn hash_size,
-                     OUT uint8_t *signature, IN OUT uintn *sig_size)
+bool libspdm_rsa_pss_sign(void *rsa_context, size_t hash_nid,
+                          const uint8_t *message_hash, size_t hash_size,
+                          uint8_t *signature, size_t *sig_size)
 {
     RSA *rsa;
-    boolean result;
+    bool result;
     int32_t size;
     const EVP_MD *evp_md;
     void *buffer;
 
     if (rsa_context == NULL || message_hash == NULL) {
-        return FALSE;
+        return false;
     }
 
     rsa = (RSA *)rsa_context;
     size = RSA_size(rsa);
 
-    if (*sig_size < (uintn)size) {
+    if (*sig_size < (size_t)size) {
         *sig_size = size;
-        return FALSE;
+        return false;
     }
     *sig_size = size;
 
     switch (hash_nid) {
-    case CRYPTO_NID_SHA256:
+    case LIBSPDM_CRYPTO_NID_SHA256:
         evp_md = EVP_sha256();
-        if (hash_size != SHA256_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA256_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA384:
+    case LIBSPDM_CRYPTO_NID_SHA384:
         evp_md = EVP_sha384();
-        if (hash_size != SHA384_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA384_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA512:
+    case LIBSPDM_CRYPTO_NID_SHA512:
         evp_md = EVP_sha512();
-        if (hash_size != SHA512_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA512_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_256:
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
         evp_md = EVP_sha3_256();
-        if (hash_size != SHA3_256_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_384:
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
         evp_md = EVP_sha3_384();
-        if (hash_size != SHA3_384_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
         }
         break;
 
-    case CRYPTO_NID_SHA3_512:
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
         evp_md = EVP_sha3_512();
-        if (hash_size != SHA3_512_DIGEST_SIZE) {
-            return FALSE;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
         }
         break;
 
     default:
-        return FALSE;
+        return false;
     }
 
     buffer = allocate_pool(size);
     if (buffer == NULL) {
-        return FALSE;
+        return false;
     }
 
-    result = (boolean)RSA_padding_add_PKCS1_PSS(
+    result = (bool)RSA_padding_add_PKCS1_PSS(
         rsa, buffer, message_hash, evp_md, RSA_PSS_SALTLEN_DIGEST);
     if (!result) {
         free_pool(buffer);
-        return FALSE;
+        return false;
     }
 
     size = RSA_private_encrypt(size, buffer, signature, rsa,
                                RSA_NO_PADDING);
     free_pool(buffer);
     if (size <= 0) {
-        return FALSE;
+        return false;
     } else {
-        ASSERT(*sig_size == (uintn)size);
-        return TRUE;
+        LIBSPDM_ASSERT(*sig_size == (size_t)size);
+        return true;
     }
 }

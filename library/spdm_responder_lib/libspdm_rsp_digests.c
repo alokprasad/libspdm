@@ -25,38 +25,37 @@
  * @retval RETURN_DEVICE_ERROR          A device error occurs when communicates with the device.
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
-return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
-                                        IN void *request,
-                                        IN OUT uintn *response_size,
-                                        OUT void *response)
+libspdm_return_t libspdm_get_response_digests(void *context, size_t request_size,
+                                              const void *request,
+                                              size_t *response_size,
+                                              void *response)
 {
-    spdm_get_digest_request_t *spdm_request;
-    uintn spdm_request_size;
+    const spdm_get_digest_request_t *spdm_request;
     spdm_digest_response_t *spdm_response;
-    uintn index;
-    boolean no_local_cert_chain;
+    size_t index;
+    bool no_local_cert_chain;
     uint32_t hash_size;
     uint8_t *digest;
-    spdm_context_t *spdm_context;
-    return_status status;
-    boolean result;
+    libspdm_context_t *spdm_context;
+    libspdm_return_t status;
+    bool result;
 
     spdm_context = context;
     spdm_request = request;
 
-    if (spdm_request->header.spdm_version != spdm_get_connection_version(spdm_context)) {
+    if (spdm_request->header.spdm_version != libspdm_get_connection_version(spdm_context)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_VERSION_MISMATCH, 0,
                                                response_size, response);
     }
     if (spdm_context->response_state != LIBSPDM_RESPONSE_STATE_NORMAL) {
-        return spdm_responder_handle_response_state(
+        return libspdm_responder_handle_response_state(
             spdm_context,
             spdm_request->header.request_response_code,
             response_size, response);
     }
-    if (!spdm_is_capabilities_flag_supported(
-            spdm_context, FALSE, 0,
+    if (!libspdm_is_capabilities_flag_supported(
+            spdm_context, false, 0,
             SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_CERT_CAP)) {
         return libspdm_generate_error_response(
             spdm_context, SPDM_ERROR_CODE_UNSUPPORTED_REQUEST,
@@ -75,16 +74,14 @@ return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
                                                response_size, response);
     }
 
-    spdm_reset_message_buffer_via_request_code(spdm_context, NULL,
-                                               spdm_request->header.request_response_code);
+    libspdm_reset_message_buffer_via_request_code(spdm_context, NULL,
+                                                  spdm_request->header.request_response_code);
 
-    spdm_request_size = request_size;
-
-    no_local_cert_chain = TRUE;
+    no_local_cert_chain = true;
     for (index = 0; index < SPDM_MAX_SLOT_COUNT; index++) {
         if (spdm_context->local_context
             .local_cert_chain_provision[index] != NULL) {
-            no_local_cert_chain = FALSE;
+            no_local_cert_chain = false;
         }
     }
     if (no_local_cert_chain) {
@@ -96,12 +93,12 @@ return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
     hash_size = libspdm_get_hash_size(
         spdm_context->connection_info.algorithm.base_hash_algo);
 
-    ASSERT(*response_size >=
-           sizeof(spdm_digest_response_t) +
-           hash_size * spdm_context->local_context.slot_count);
+    LIBSPDM_ASSERT(*response_size >=
+                   sizeof(spdm_digest_response_t) +
+                   hash_size * spdm_context->local_context.slot_count);
     *response_size = sizeof(spdm_digest_response_t) +
                      hash_size * spdm_context->local_context.slot_count;
-    zero_mem(response, *response_size);
+    libspdm_zero_mem(response, *response_size);
     spdm_response = response;
 
     spdm_response->header.spdm_version = spdm_request->header.spdm_version;
@@ -119,8 +116,8 @@ return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
                 0, response_size, response);
         }
         spdm_response->header.param2 |= (1 << index);
-        result = spdm_generate_cert_chain_hash(spdm_context, index,
-                                               &digest[hash_size * index]);
+        result = libspdm_generate_cert_chain_hash(spdm_context, index,
+                                                  &digest[hash_size * index]);
         if (!result) {
             return libspdm_generate_error_response(
                 spdm_context, SPDM_ERROR_CODE_UNSPECIFIED,
@@ -131,8 +128,8 @@ return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
     /* Cache*/
 
     status = libspdm_append_message_b(spdm_context, spdm_request,
-                                      spdm_request_size);
-    if (RETURN_ERROR(status)) {
+                                      request_size);
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
@@ -140,16 +137,16 @@ return_status spdm_get_response_digests(IN void *context, IN uintn request_size,
 
     status = libspdm_append_message_b(spdm_context, spdm_response,
                                       *response_size);
-    if (RETURN_ERROR(status)) {
+    if (LIBSPDM_STATUS_IS_ERROR(status)) {
         return libspdm_generate_error_response(spdm_context,
                                                SPDM_ERROR_CODE_UNSPECIFIED, 0,
                                                response_size, response);
     }
 
-    spdm_set_connection_state(spdm_context,
-                              LIBSPDM_CONNECTION_STATE_AFTER_DIGESTS);
+    libspdm_set_connection_state(spdm_context,
+                                 LIBSPDM_CONNECTION_STATE_AFTER_DIGESTS);
 
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 #endif /* LIBSPDM_ENABLE_CAPABILITY_CERT_CAP*/

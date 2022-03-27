@@ -27,11 +27,11 @@
  * @retval RETURN_SECURITY_VIOLATION    Any verification fails.
  **/
 return_status
-spdm_authentication(IN void *context, OUT uint8_t *slot_mask,
-                    OUT void *total_digest_buffer, IN uint8_t slot_id,
-                    IN OUT uintn *cert_chain_size, OUT void *cert_chain,
-                    IN uint8_t measurement_hash_type, OUT void *measurement_hash,
-                    OUT uint8_t *auth_slot_mask)
+spdm_authentication(void *context, uint8_t *slot_mask,
+                    void *total_digest_buffer, uint8_t slot_id,
+                    size_t *cert_chain_size, void *cert_chain,
+                    uint8_t measurement_hash_type, void *measurement_hash,
+                    uint8_t *auth_slot_mask)
 {
     return_status status;
 
@@ -67,20 +67,20 @@ spdm_authentication(IN void *context, OUT uint8_t *slot_mask,
  *
  * @param[in]  spdm_context            The SPDM context for the device.
  **/
-return_status do_authentication_via_spdm(IN void *spdm_context)
+return_status do_authentication_via_spdm(void *spdm_context)
 {
     return_status status;
     uint8_t slot_mask;
     uint8_t total_digest_buffer[LIBSPDM_MAX_HASH_SIZE * SPDM_MAX_SLOT_COUNT];
     uint8_t measurement_hash[LIBSPDM_MAX_HASH_SIZE];
-    uintn cert_chain_size;
+    size_t cert_chain_size;
     uint8_t cert_chain[LIBSPDM_MAX_CERT_CHAIN_SIZE];
     uint8_t auth_slot_mask;
 
-    zero_mem(total_digest_buffer, sizeof(total_digest_buffer));
+    libspdm_zero_mem(total_digest_buffer, sizeof(total_digest_buffer));
     cert_chain_size = sizeof(cert_chain);
-    zero_mem(cert_chain, sizeof(cert_chain));
-    zero_mem(measurement_hash, sizeof(measurement_hash));
+    libspdm_zero_mem(cert_chain, sizeof(cert_chain));
+    libspdm_zero_mem(measurement_hash, sizeof(measurement_hash));
     status = spdm_authentication(
         spdm_context, &slot_mask, &total_digest_buffer, 0,
         &cert_chain_size, cert_chain,

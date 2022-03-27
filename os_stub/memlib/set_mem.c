@@ -11,7 +11,7 @@
  *
  * This function fills length bytes of buffer with value, and returns buffer.
  *
- * If length is greater than (MAX_ADDRESS - buffer + 1), then ASSERT().
+ * If length is greater than (MAX_ADDRESS - buffer + 1), then LIBSPDM_ASSERT().
  *
  * @param  buffer    The memory to set.
  * @param  length    The number of bytes to set.
@@ -20,7 +20,7 @@
  * @return buffer.
  *
  **/
-void *set_mem(OUT void *buffer, IN uintn length, IN uint8_t value)
+void *libspdm_set_mem(void *buffer, size_t length, uint8_t value)
 {
     volatile uint8_t *pointer;
 

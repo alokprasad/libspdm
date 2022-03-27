@@ -18,9 +18,9 @@
 /**
  * Performs AEAD AES-GCM authenticated encryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -35,30 +35,30 @@
  * @param[out]  data_out     Pointer to a buffer that receives the encryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated encryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated encryption failed.
+ * @retval true   AEAD AES-GCM authenticated encryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated encryption failed.
  *
  **/
-boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             OUT uint8_t *tag_out, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size)
+bool libspdm_aead_aes_gcm_encrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  uint8_t *tag_out, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size)
 {
     EVP_CIPHER_CTX *ctx;
     const EVP_CIPHER *cipher;
-    uintn temp_out_size;
-    boolean ret_value;
+    size_t temp_out_size;
+    bool ret_value;
 
     if (data_in_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
     if (a_data_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
     if (iv_size != 12) {
-        return FALSE;
+        return false;
     }
     switch (key_size) {
     case 16:
@@ -71,60 +71,60 @@ boolean aead_aes_gcm_encrypt(IN const uint8_t *key, IN uintn key_size,
         cipher = EVP_aes_256_gcm();
         break;
     default:
-        return FALSE;
+        return false;
     }
     if ((tag_size != 12) && (tag_size != 13) && (tag_size != 14) &&
         (tag_size != 15) && (tag_size != 16)) {
-        return FALSE;
+        return false;
     }
     if (data_out_size != NULL) {
         if ((*data_out_size > INT_MAX) ||
             (*data_out_size < data_in_size)) {
-            return FALSE;
+            return false;
         }
     }
 
     ctx = EVP_CIPHER_CTX_new();
     if (ctx == NULL) {
-        return FALSE;
+        return false;
     }
 
-    ret_value = (boolean)EVP_EncryptInit_ex(ctx, cipher, NULL, NULL, NULL);
+    ret_value = (bool)EVP_EncryptInit_ex(ctx, cipher, NULL, NULL, NULL);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
-                                             (int32_t)iv_size, NULL);
+    ret_value = (bool)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+                                          (int32_t)iv_size, NULL);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv);
+    ret_value = (bool)EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_EncryptUpdate(
+    ret_value = (bool)EVP_EncryptUpdate(
         ctx, NULL, (int32_t *)&temp_out_size, a_data, (int32_t)a_data_size);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_EncryptUpdate(ctx, data_out,
-                                           (int32_t *)&temp_out_size, data_in,
-                                           (int32_t)data_in_size);
+    ret_value = (bool)EVP_EncryptUpdate(ctx, data_out,
+                                        (int32_t *)&temp_out_size, data_in,
+                                        (int32_t)data_in_size);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_EncryptFinal_ex(ctx, data_out,
-                                             (int32_t *)&temp_out_size);
+    ret_value = (bool)EVP_EncryptFinal_ex(ctx, data_out,
+                                          (int32_t *)&temp_out_size);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_CIPHER_CTX_ctrl(
+    ret_value = (bool)EVP_CIPHER_CTX_ctrl(
         ctx, EVP_CTRL_GCM_GET_TAG, (int32_t)tag_size, (void *)tag_out);
 
 done:
@@ -143,10 +143,10 @@ done:
 /**
  * Performs AEAD AES-GCM authenticated decryption on a data buffer and additional authenticated data (AAD).
  *
- * iv_size must be 12, otherwise FALSE is returned.
- * key_size must be 16, 24 or 32, otherwise FALSE is returned.
- * tag_size must be 12, 13, 14, 15, 16, otherwise FALSE is returned.
- * If additional authenticated data verification fails, FALSE is returned.
+ * iv_size must be 12, otherwise false is returned.
+ * key_size must be 16, 24 or 32, otherwise false is returned.
+ * tag_size must be 12, 13, 14, 15, 16, otherwise false is returned.
+ * If additional authenticated data verification fails, false is returned.
  *
  * @param[in]   key         Pointer to the encryption key.
  * @param[in]   key_size     size of the encryption key in bytes.
@@ -161,30 +161,30 @@ done:
  * @param[out]  data_out     Pointer to a buffer that receives the decryption output.
  * @param[out]  data_out_size size of the output data buffer in bytes.
  *
- * @retval TRUE   AEAD AES-GCM authenticated decryption succeeded.
- * @retval FALSE  AEAD AES-GCM authenticated decryption failed.
+ * @retval true   AEAD AES-GCM authenticated decryption succeeded.
+ * @retval false  AEAD AES-GCM authenticated decryption failed.
  *
  **/
-boolean aead_aes_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
-                             IN const uint8_t *iv, IN uintn iv_size,
-                             IN const uint8_t *a_data, IN uintn a_data_size,
-                             IN const uint8_t *data_in, IN uintn data_in_size,
-                             IN const uint8_t *tag, IN uintn tag_size,
-                             OUT uint8_t *data_out, OUT uintn *data_out_size)
+bool libspdm_aead_aes_gcm_decrypt(const uint8_t *key, size_t key_size,
+                                  const uint8_t *iv, size_t iv_size,
+                                  const uint8_t *a_data, size_t a_data_size,
+                                  const uint8_t *data_in, size_t data_in_size,
+                                  const uint8_t *tag, size_t tag_size,
+                                  uint8_t *data_out, size_t *data_out_size)
 {
     EVP_CIPHER_CTX *ctx;
     const EVP_CIPHER *cipher;
-    uintn temp_out_size;
-    boolean ret_value;
+    size_t temp_out_size;
+    bool ret_value;
 
     if (data_in_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
     if (a_data_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
     if (iv_size != 12) {
-        return FALSE;
+        return false;
     }
     switch (key_size) {
     case 16:
@@ -197,61 +197,61 @@ boolean aead_aes_gcm_decrypt(IN const uint8_t *key, IN uintn key_size,
         cipher = EVP_aes_256_gcm();
         break;
     default:
-        return FALSE;
+        return false;
     }
     if ((tag_size != 12) && (tag_size != 13) && (tag_size != 14) &&
         (tag_size != 15) && (tag_size != 16)) {
-        return FALSE;
+        return false;
     }
     if (data_out_size != NULL) {
         if ((*data_out_size > INT_MAX) ||
             (*data_out_size < data_in_size)) {
-            return FALSE;
+            return false;
         }
     }
 
     ctx = EVP_CIPHER_CTX_new();
     if (ctx == NULL) {
-        return FALSE;
+        return false;
     }
 
-    ret_value = (boolean)EVP_DecryptInit_ex(ctx, cipher, NULL, NULL, NULL);
+    ret_value = (bool)EVP_DecryptInit_ex(ctx, cipher, NULL, NULL, NULL);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
-                                             (int32_t)iv_size, NULL);
+    ret_value = (bool)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+                                          (int32_t)iv_size, NULL);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv);
+    ret_value = (bool)EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_DecryptUpdate(
+    ret_value = (bool)EVP_DecryptUpdate(
         ctx, NULL, (int32_t *)&temp_out_size, a_data, (int32_t)a_data_size);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_DecryptUpdate(ctx, data_out,
-                                           (int32_t *)&temp_out_size, data_in,
-                                           (int32_t)data_in_size);
+    ret_value = (bool)EVP_DecryptUpdate(ctx, data_out,
+                                        (int32_t *)&temp_out_size, data_in,
+                                        (int32_t)data_in_size);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG,
-                                             (int32_t)tag_size, (void *)tag);
+    ret_value = (bool)EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG,
+                                          (int32_t)tag_size, (void *)tag);
     if (!ret_value) {
         goto done;
     }
 
-    ret_value = (boolean)EVP_DecryptFinal_ex(ctx, data_out,
-                                             (int32_t *)&temp_out_size);
+    ret_value = (bool)EVP_DecryptFinal_ex(ctx, data_out,
+                                          (int32_t *)&temp_out_size);
 
 done:
     EVP_CIPHER_CTX_free(ctx);

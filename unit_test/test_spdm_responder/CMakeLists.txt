@@ -27,6 +27,10 @@ SET(src_test_spdm_responder
     heartbeat.c
     key_update.c
     end_session.c
+    encap_get_certificate.c
+    encap_get_digests.c
+    encap_key_update.c
+    encap_response.c
     ${LIBSPDM_DIR}/unit_test/spdm_unit_test_common/common.c
     ${LIBSPDM_DIR}/unit_test/spdm_unit_test_common/algo.c
     ${LIBSPDM_DIR}/unit_test/spdm_unit_test_common/support.c
@@ -46,6 +50,7 @@ SET(test_spdm_responder_LIBRARY
     spdm_device_secret_lib_sample
     spdm_transport_test_lib
     cmockalib
+    platform_lib
 )
 
 if((TOOLCHAIN STREQUAL "KLEE") OR (TOOLCHAIN STREQUAL "CBMC"))
@@ -64,6 +69,7 @@ if((TOOLCHAIN STREQUAL "KLEE") OR (TOOLCHAIN STREQUAL "CBMC"))
                    $<TARGET_OBJECTS:spdm_device_secret_lib_sample>
                    $<TARGET_OBJECTS:spdm_transport_test_lib>
                    $<TARGET_OBJECTS:cmockalib>
+                   $<TARGET_OBJECTS:platform_lib>
     )
 else()
     ADD_EXECUTABLE(test_spdm_responder ${src_test_spdm_responder})

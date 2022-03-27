@@ -21,10 +21,10 @@
  * @param nid cipher NID
  *
  * @return  Pointer to the Montgomery-Curve Context that has been initialized.
- *         If the allocations fails, ecx_new_by_nid() returns NULL.
+ *         If the allocations fails, libspdm_ecx_new_by_nid() returns NULL.
  *
  **/
-void *ecx_new_by_nid(IN uintn nid)
+void *libspdm_ecx_new_by_nid(size_t nid)
 {
     EVP_PKEY_CTX *pkey_ctx;
     EVP_PKEY *pkey;
@@ -32,10 +32,10 @@ void *ecx_new_by_nid(IN uintn nid)
     int32_t openssl_pkey_type;
 
     switch (nid) {
-    case CRYPTO_NID_CURVE_X25519:
+    case LIBSPDM_CRYPTO_NID_CURVE_X25519:
         openssl_pkey_type = NID_X25519;
         break;
-    case CRYPTO_NID_CURVE_X448:
+    case LIBSPDM_CRYPTO_NID_CURVE_X448:
         openssl_pkey_type = NID_X448;
         break;
     default:
@@ -68,7 +68,7 @@ void *ecx_new_by_nid(IN uintn nid)
  * @param[in]  ecx_context  Pointer to the Ecx context to be released.
  *
  **/
-void ecx_free(IN void *ecx_context)
+void libspdm_ecx_free(const void *ecx_context)
 {
     EVP_PKEY_free((EVP_PKEY *)ecx_context);
 }
@@ -79,35 +79,35 @@ void ecx_free(IN void *ecx_context)
  * This function generates random secret, and computes the public key, which is
  * returned via parameter public, public_size.
  * Ecx context is updated accordingly.
- * If the public buffer is too small to hold the public key, FALSE is returned and
+ * If the public buffer is too small to hold the public key, false is returned and
  * public_size is set to the required buffer size to obtain the public key.
  *
  * For X25519, the public_size is 32.
  * For X448, the public_size is 56.
  *
- * If ecx_context is NULL, then return FALSE.
- * If public_size is NULL, then return FALSE.
- * If public_size is large enough but public is NULL, then return FALSE.
+ * If ecx_context is NULL, then return false.
+ * If public_size is NULL, then return false.
+ * If public_size is large enough but public is NULL, then return false.
  *
  * @param[in, out]  ecx_context      Pointer to the Ecx context.
  * @param[out]      public         Pointer to the buffer to receive generated public key.
  * @param[in, out]  public_size     On input, the size of public buffer in bytes.
  *                                On output, the size of data returned in public buffer in bytes.
  *
- * @retval TRUE   Ecx public key generation succeeded.
- * @retval FALSE  Ecx public key generation failed.
- * @retval FALSE  public_size is not large enough.
+ * @retval true   Ecx public key generation succeeded.
+ * @retval false  Ecx public key generation failed.
+ * @retval false  public_size is not large enough.
  *
  **/
-boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
-                         IN OUT uintn *public_size)
+bool libspdm_ecx_generate_key(void *ecx_context, uint8_t *public,
+                              size_t *public_size)
 {
     EVP_PKEY *pkey;
     int32_t result;
     uint32_t final_pub_key_size;
 
     if (ecx_context == NULL || public == NULL || public_size == NULL) {
-        return FALSE;
+        return false;
     }
 
     pkey = (EVP_PKEY *)ecx_context;
@@ -119,20 +119,20 @@ boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
         final_pub_key_size = 56;
         break;
     default:
-        return FALSE;
+        return false;
     }
     if (*public_size < final_pub_key_size) {
         *public_size = final_pub_key_size;
-        return FALSE;
+        return false;
     }
     *public_size = final_pub_key_size;
-    zero_mem(public, *public_size);
+    libspdm_zero_mem(public, *public_size);
     result = EVP_PKEY_get_raw_public_key(pkey, public, public_size);
     if (result == 0) {
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 /**
@@ -141,11 +141,11 @@ boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
  * Given peer's public key, this function computes the exchanged common key,
  * based on its own context including value of curve parameter and random secret.
  *
- * If ecx_context is NULL, then return FALSE.
- * If peer_public is NULL, then return FALSE.
- * If peer_public_size is 0, then return FALSE.
- * If key is NULL, then return FALSE.
- * If key_size is not large enough, then return FALSE.
+ * If ecx_context is NULL, then return false.
+ * If peer_public is NULL, then return false.
+ * If peer_public_size is 0, then return false.
+ * If key is NULL, then return false.
+ * If key_size is not large enough, then return false.
  *
  * For X25519, the public_size is 32.
  * For X448, the public_size is 56.
@@ -157,14 +157,14 @@ boolean ecx_generate_key(IN OUT void *ecx_context, OUT uint8_t *public,
  * @param[in, out]  key_size            On input, the size of key buffer in bytes.
  *                                    On output, the size of data returned in key buffer in bytes.
  *
- * @retval TRUE   Ecx exchanged key generation succeeded.
- * @retval FALSE  Ecx exchanged key generation failed.
- * @retval FALSE  key_size is not large enough.
+ * @retval true   Ecx exchanged key generation succeeded.
+ * @retval false  Ecx exchanged key generation failed.
+ * @retval false  key_size is not large enough.
  *
  **/
-boolean ecx_compute_key(IN OUT void *ecx_context, IN const uint8_t *peer_public,
-                        IN uintn peer_public_size, OUT uint8_t *key,
-                        IN OUT uintn *key_size)
+bool libspdm_ecx_compute_key(void *ecx_context, const uint8_t *peer_public,
+                             size_t peer_public_size, uint8_t *key,
+                             size_t *key_size)
 {
     EVP_PKEY_CTX *pkey_ctx;
     EVP_PKEY *pkey;
@@ -174,7 +174,7 @@ boolean ecx_compute_key(IN OUT void *ecx_context, IN const uint8_t *peer_public,
     int32_t openssl_pkey_type;
 
     if (ecx_context == NULL || peer_public == NULL) {
-        return FALSE;
+        return false;
     }
 
     pkey = (EVP_PKEY *)ecx_context;
@@ -188,46 +188,46 @@ boolean ecx_compute_key(IN OUT void *ecx_context, IN const uint8_t *peer_public,
         final_key_size = 56;
         break;
     default:
-        return FALSE;
+        return false;
     }
     if (*key_size < final_key_size) {
         *key_size = final_key_size;
-        return FALSE;
+        return false;
     }
     *key_size = final_key_size;
-    zero_mem(key, *key_size);
+    libspdm_zero_mem(key, *key_size);
 
     /* Derive key*/
     pkey_ctx = EVP_PKEY_CTX_new(pkey, NULL);
     if (pkey_ctx == NULL) {
-        return FALSE;
+        return false;
     }
     result = EVP_PKEY_derive_init(pkey_ctx);
     if (result <= 0) {
         EVP_PKEY_CTX_free(pkey_ctx);
-        return FALSE;
+        return false;
     }
 
     peer_key = EVP_PKEY_new_raw_public_key(openssl_pkey_type, NULL,
                                            peer_public, peer_public_size);
     if (peer_key == NULL) {
         EVP_PKEY_CTX_free(pkey_ctx);
-        return FALSE;
+        return false;
     }
     result = EVP_PKEY_derive_set_peer(pkey_ctx, peer_key);
     if (result <= 0) {
         EVP_PKEY_free(peer_key);
         EVP_PKEY_CTX_free(pkey_ctx);
-        return FALSE;
+        return false;
     }
     EVP_PKEY_free(peer_key);
 
     result = EVP_PKEY_derive(pkey_ctx, key, key_size);
     if (result <= 0) {
         EVP_PKEY_CTX_free(pkey_ctx);
-        return FALSE;
+        return false;
     }
 
     EVP_PKEY_CTX_free(pkey_ctx);
-    return TRUE;
+    return true;
 }

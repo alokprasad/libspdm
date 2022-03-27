@@ -5,7 +5,7 @@
  **/
 
 /** @file
- * const_compare_mem() implementation.
+ * libspdm_const_compare_mem() implementation.
  **/
 
 #include "base.h"
@@ -18,10 +18,10 @@
  * value returned is the first mismatched byte in source_buffer subtracted from the first
  * mismatched byte in destination_buffer.
  *
- * If length > 0 and destination_buffer is NULL, then ASSERT().
- * If length > 0 and source_buffer is NULL, then ASSERT().
- * If length is greater than (MAX_ADDRESS - destination_buffer + 1), then ASSERT().
- * If length is greater than (MAX_ADDRESS - source_buffer + 1), then ASSERT().
+ * If length > 0 and destination_buffer is NULL, then LIBSPDM_ASSERT().
+ * If length > 0 and source_buffer is NULL, then LIBSPDM_ASSERT().
+ * If length is greater than (MAX_ADDRESS - destination_buffer + 1), then LIBSPDM_ASSERT().
+ * If length is greater than (MAX_ADDRESS - source_buffer + 1), then LIBSPDM_ASSERT().
  *
  * @param  destination_buffer A pointer to the destination buffer to compare.
  * @param  source_buffer      A pointer to the source buffer to compare.
@@ -31,8 +31,8 @@
  * @retval Non-zero          There is mismatched between source_buffer and destination_buffer.
  *
  **/
-intn const_compare_mem(IN const void *destination_buffer,
-                       IN const void *source_buffer, IN uintn length)
+int32_t libspdm_const_compare_mem(const void *destination_buffer,
+                                  const void *source_buffer, size_t length)
 {
     const volatile uint8_t *pointer_dst;
     const volatile uint8_t *pointer_src;

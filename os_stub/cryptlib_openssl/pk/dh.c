@@ -25,14 +25,14 @@
  *         If the allocations fails, dh_new() returns NULL.
  *
  **/
-void *dh_new_by_nid(IN uintn nid)
+void *libspdm_dh_new_by_nid(size_t nid)
 {
     switch (nid) {
-    case CRYPTO_NID_FFDHE2048:
+    case LIBSPDM_CRYPTO_NID_FFDHE2048:
         return DH_new_by_nid(NID_ffdhe2048);
-    case CRYPTO_NID_FFDHE3072:
+    case LIBSPDM_CRYPTO_NID_FFDHE3072:
         return DH_new_by_nid(NID_ffdhe3072);
-    case CRYPTO_NID_FFDHE4096:
+    case LIBSPDM_CRYPTO_NID_FFDHE4096:
         return DH_new_by_nid(NID_ffdhe4096);
     default:
         return NULL;
@@ -42,12 +42,12 @@ void *dh_new_by_nid(IN uintn nid)
 /**
  * Release the specified DH context.
  *
- * If dh_context is NULL, then return FALSE.
+ * If dh_context is NULL, then return false.
  *
  * @param[in]  dh_context  Pointer to the DH context to be released.
  *
  **/
-void dh_free(IN void *dh_context)
+void libspdm_dh_free(void *dh_context)
 {
 
     /* Free OpenSSL DH context*/
@@ -62,48 +62,48 @@ void dh_free(IN void *dh_context)
  * and sets DH context according to value of g and p.
  *
  * Before this function can be invoked, pseudorandom number generator must be correctly
- * initialized by random_seed().
+ * initialized by libspdm_random_seed().
  *
- * If dh_context is NULL, then return FALSE.
- * If prime is NULL, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If prime is NULL, then return false.
  *
  * @param[in, out]  dh_context    Pointer to the DH context.
  * @param[in]       generator    value of generator.
  * @param[in]       prime_length  length in bits of prime to be generated.
  * @param[out]      prime        Pointer to the buffer to receive the generated prime number.
  *
- * @retval TRUE   DH parameter generation succeeded.
- * @retval FALSE  value of generator is not supported.
- * @retval FALSE  PRNG fails to generate random prime number with prime_length.
+ * @retval true   DH parameter generation succeeded.
+ * @retval false  value of generator is not supported.
+ * @retval false  PRNG fails to generate random prime number with prime_length.
  *
  **/
-boolean dh_generate_parameter(IN OUT void *dh_context, IN uintn generator,
-                              IN uintn prime_length, OUT uint8_t *prime)
+bool libspdm_dh_generate_parameter(void *dh_context, size_t generator,
+                                   size_t prime_length, uint8_t *prime)
 {
-    boolean ret_val;
+    bool ret_val;
     BIGNUM *bn_p;
 
 
     /* Check input parameters.*/
 
     if (dh_context == NULL || prime == NULL || prime_length > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     if (generator != DH_GENERATOR_2 && generator != DH_GENERATOR_5) {
-        return FALSE;
+        return false;
     }
 
-    ret_val = (boolean)DH_generate_parameters_ex(
+    ret_val = (bool)DH_generate_parameters_ex(
         dh_context, (uint32_t)prime_length, (uint32_t)generator, NULL);
     if (!ret_val) {
-        return FALSE;
+        return false;
     }
 
     DH_get0_pqg(dh_context, (const BIGNUM **)&bn_p, NULL, NULL);
     BN_bn2bin(bn_p, prime);
 
-    return TRUE;
+    return true;
 }
 
 /**
@@ -112,23 +112,23 @@ boolean dh_generate_parameter(IN OUT void *dh_context, IN uintn generator,
  * Given generator g, and prime number p, this function and sets DH
  * context accordingly.
  *
- * If dh_context is NULL, then return FALSE.
- * If prime is NULL, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If prime is NULL, then return false.
  *
  * @param[in, out]  dh_context    Pointer to the DH context.
  * @param[in]       generator    value of generator.
  * @param[in]       prime_length  length in bits of prime to be generated.
  * @param[in]       prime        Pointer to the prime number.
  *
- * @retval TRUE   DH parameter setting succeeded.
- * @retval FALSE  value of generator is not supported.
- * @retval FALSE  value of generator is not suitable for the prime.
- * @retval FALSE  value of prime is not a prime number.
- * @retval FALSE  value of prime is not a safe prime number.
+ * @retval true   DH parameter setting succeeded.
+ * @retval false  value of generator is not supported.
+ * @retval false  value of generator is not suitable for the prime.
+ * @retval false  value of prime is not a prime number.
+ * @retval false  value of prime is not a safe prime number.
  *
  **/
-boolean dh_set_parameter(IN OUT void *dh_context, IN uintn generator,
-                         IN uintn prime_length, IN const uint8_t *prime)
+bool libspdm_dh_set_parameter(void *dh_context, size_t generator,
+                              size_t prime_length, const uint8_t *prime)
 {
     DH *dh;
     BIGNUM *bn_p;
@@ -138,11 +138,11 @@ boolean dh_set_parameter(IN OUT void *dh_context, IN uintn generator,
     /* Check input parameters.*/
 
     if (dh_context == NULL || prime == NULL || prime_length > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     if (generator != DH_GENERATOR_2 && generator != DH_GENERATOR_5) {
-        return FALSE;
+        return false;
     }
 
 
@@ -157,13 +157,13 @@ boolean dh_set_parameter(IN OUT void *dh_context, IN uintn generator,
         goto error;
     }
 
-    return TRUE;
+    return true;
 
 error:
     BN_free(bn_p);
     BN_free(bn_g);
 
-    return FALSE;
+    return false;
 }
 
 /**
@@ -171,12 +171,12 @@ error:
  *
  * This function generates random secret exponent, and computes the public key, which is
  * returned via parameter public_key and public_key_size. DH context is updated accordingly.
- * If the public_key buffer is too small to hold the public key, FALSE is returned and
+ * If the public_key buffer is too small to hold the public key, false is returned and
  * public_key_size is set to the required buffer size to obtain the public key.
  *
- * If dh_context is NULL, then return FALSE.
- * If public_key_size is NULL, then return FALSE.
- * If public_key_size is large enough but public_key is NULL, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If public_key_size is NULL, then return false.
+ * If public_key_size is large enough but public_key is NULL, then return false.
  *
  * For FFDHE2048, the public_size is 256.
  * For FFDHE3072, the public_size is 384.
@@ -187,29 +187,29 @@ error:
  * @param[in, out]  public_key_size  On input, the size of public_key buffer in bytes.
  *                                On output, the size of data returned in public_key buffer in bytes.
  *
- * @retval TRUE   DH public key generation succeeded.
- * @retval FALSE  DH public key generation failed.
- * @retval FALSE  public_key_size is not large enough.
+ * @retval true   DH public key generation succeeded.
+ * @retval false  DH public key generation failed.
+ * @retval false  public_key_size is not large enough.
  *
  **/
-boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
-                        IN OUT uintn *public_key_size)
+bool libspdm_dh_generate_key(void *dh_context, uint8_t *public_key,
+                             size_t *public_key_size)
 {
-    boolean ret_val;
+    bool ret_val;
     DH *dh;
     BIGNUM *dh_pub_key;
-    intn size;
-    uintn final_pub_key_size;
+    int size;
+    size_t final_pub_key_size;
 
 
     /* Check input parameters.*/
 
     if (dh_context == NULL || public_key_size == NULL) {
-        return FALSE;
+        return false;
     }
 
     if (public_key == NULL && *public_key_size != 0) {
-        return FALSE;
+        return false;
     }
 
     dh = (DH *)dh_context;
@@ -224,26 +224,26 @@ boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
         final_pub_key_size = 512;
         break;
     default:
-        return FALSE;
+        return false;
     }
 
     if (*public_key_size < final_pub_key_size) {
         *public_key_size = final_pub_key_size;
-        return FALSE;
+        return false;
     }
     *public_key_size = final_pub_key_size;
 
-    ret_val = (boolean)DH_generate_key(dh_context);
+    ret_val = (bool)DH_generate_key(dh_context);
     if (ret_val) {
         DH_get0_key(dh, (const BIGNUM **)&dh_pub_key, NULL);
         size = BN_num_bytes(dh_pub_key);
         if (size <= 0) {
-            return FALSE;
+            return false;
         }
-        ASSERT((uintn)size <= final_pub_key_size);
+        LIBSPDM_ASSERT((size_t)size <= final_pub_key_size);
 
         if (public_key != NULL) {
-            zero_mem(public_key, *public_key_size);
+            libspdm_zero_mem(public_key, *public_key_size);
             BN_bn2bin(dh_pub_key,
                       &public_key[0 + final_pub_key_size - size]);
         }
@@ -258,11 +258,11 @@ boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
  * Given peer's public key, this function computes the exchanged common key, based on its own
  * context including value of prime modulus and random secret exponent.
  *
- * If dh_context is NULL, then return FALSE.
- * If peer_public_key is NULL, then return FALSE.
- * If key_size is NULL, then return FALSE.
- * If key is NULL, then return FALSE.
- * If key_size is not large enough, then return FALSE.
+ * If dh_context is NULL, then return false.
+ * If peer_public_key is NULL, then return false.
+ * If key_size is NULL, then return false.
+ * If key is NULL, then return false.
+ * If key_size is not large enough, then return false.
  *
  * For FFDHE2048, the peer_public_size and key_size is 256.
  * For FFDHE3072, the peer_public_size and key_size is 384.
@@ -275,35 +275,35 @@ boolean dh_generate_key(IN OUT void *dh_context, OUT uint8_t *public_key,
  * @param[in, out]  key_size            On input, the size of key buffer in bytes.
  *                                    On output, the size of data returned in key buffer in bytes.
  *
- * @retval TRUE   DH exchanged key generation succeeded.
- * @retval FALSE  DH exchanged key generation failed.
- * @retval FALSE  key_size is not large enough.
+ * @retval true   DH exchanged key generation succeeded.
+ * @retval false  DH exchanged key generation failed.
+ * @retval false  key_size is not large enough.
  *
  **/
-boolean dh_compute_key(IN OUT void *dh_context, IN const uint8_t *peer_public_key,
-                       IN uintn peer_public_key_size, OUT uint8_t *key,
-                       IN OUT uintn *key_size)
+bool libspdm_dh_compute_key(void *dh_context, const uint8_t *peer_public_key,
+                            size_t peer_public_key_size, uint8_t *key,
+                            size_t *key_size)
 {
     BIGNUM *bn;
-    intn size;
+    int size;
     DH *dh;
-    uintn final_key_size;
+    size_t final_key_size;
 
 
     /* Check input parameters.*/
 
     if (dh_context == NULL || peer_public_key == NULL || key_size == NULL ||
         key == NULL) {
-        return FALSE;
+        return false;
     }
 
     if (peer_public_key_size > INT_MAX) {
-        return FALSE;
+        return false;
     }
 
     bn = BN_bin2bn(peer_public_key, (uint32_t)peer_public_key_size, NULL);
     if (bn == NULL) {
-        return FALSE;
+        return false;
     }
 
     dh = (DH *)dh_context;
@@ -319,23 +319,23 @@ boolean dh_compute_key(IN OUT void *dh_context, IN const uint8_t *peer_public_ke
         break;
     default:
         BN_free(bn);
-        return FALSE;
+        return false;
     }
     if (*key_size < final_key_size) {
         *key_size = final_key_size;
         BN_free(bn);
-        return FALSE;
+        return false;
     }
 
     size = DH_compute_key_padded(key, bn, dh_context);
     BN_free(bn);
     if (size < 0) {
-        return FALSE;
+        return false;
     }
-    if ((uintn)size != final_key_size) {
-        return FALSE;
+    if ((size_t)size != final_key_size) {
+        return false;
     }
 
     *key_size = size;
-    return TRUE;
+    return true;
 }

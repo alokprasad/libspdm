@@ -24,11 +24,11 @@
  *        It shall be no greater than 8.
  *        0 means no sequence number is required.
  **/
-uint8_t libspdm_mctp_get_sequence_number(IN uint64_t sequence_number,
-                                         IN OUT uint8_t *sequence_number_buffer)
+uint8_t libspdm_mctp_get_sequence_number(uint64_t sequence_number,
+                                         uint8_t *sequence_number_buffer)
 {
-    copy_mem(sequence_number_buffer, &sequence_number,
-             MCTP_SEQUENCE_NUMBER_COUNT);
+    libspdm_copy_mem(sequence_number_buffer, MCTP_SEQUENCE_NUMBER_COUNT,
+                     &sequence_number, MCTP_SEQUENCE_NUMBER_COUNT);
     return MCTP_SEQUENCE_NUMBER_COUNT;
 }
 
@@ -59,47 +59,36 @@ uint32_t libspdm_mctp_get_max_random_number_count(void)
  * @retval RETURN_SUCCESS               The message is encoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  **/
-return_status mctp_encode_message(IN uint32_t *session_id, IN uintn message_size,
-                                  IN void *message,
-                                  IN OUT uintn *transport_message_size,
-                                  OUT void *transport_message)
+libspdm_return_t libspdm_mctp_encode_message(const uint32_t *session_id, size_t message_size,
+                                             const void *message,
+                                             size_t *transport_message_size,
+                                             void **transport_message)
 {
-    uintn aligned_message_size;
-    uintn alignment;
+    size_t aligned_message_size;
+    size_t alignment;
     mctp_message_header_t *mctp_message_header;
 
     alignment = MCTP_ALIGNMENT;
     aligned_message_size =
         (message_size + (alignment - 1)) & ~(alignment - 1);
 
-    ASSERT(*transport_message_size >=
-           aligned_message_size + sizeof(mctp_message_header_t));
-    if (*transport_message_size <
-        aligned_message_size + sizeof(mctp_message_header_t)) {
-        *transport_message_size =
-            aligned_message_size + sizeof(mctp_message_header_t);
-        return RETURN_BUFFER_TOO_SMALL;
-    }
     *transport_message_size =
         aligned_message_size + sizeof(mctp_message_header_t);
-    mctp_message_header = transport_message;
+    *transport_message = (uint8_t *)message - sizeof(mctp_message_header_t);
+    mctp_message_header = *transport_message;
     if (session_id != NULL) {
         mctp_message_header->message_type =
             MCTP_MESSAGE_TYPE_SECURED_MCTP;
-        ASSERT(*session_id == *(uint32_t *)(message));
+        LIBSPDM_ASSERT(*session_id == *(uint32_t *)(message));
         if (*session_id != *(uint32_t *)(message)) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_INVALID_MSG_FIELD;
         }
     } else {
         mctp_message_header->message_type = MCTP_MESSAGE_TYPE_SPDM;
     }
-    copy_mem((uint8_t *)transport_message + sizeof(mctp_message_header_t),
-             message, message_size);
-    zero_mem((uint8_t *)transport_message + sizeof(mctp_message_header_t) +
-             message_size,
-             *transport_message_size - sizeof(mctp_message_header_t) -
-             message_size);
-    return RETURN_SUCCESS;
+    libspdm_zero_mem((uint8_t *)message + message_size,
+                     aligned_message_size - message_size);
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 /**
@@ -112,35 +101,36 @@ return_status mctp_encode_message(IN uint32_t *session_id, IN uintn message_size
  * @param  transport_message             A pointer to a source buffer to store the transport message.
  * @param  message_size                  size in bytes of the message data buffer.
  * @param  message                      A pointer to a destination buffer to store the message.
+ *
  * @retval RETURN_SUCCESS               The message is encoded successfully.
  * @retval RETURN_INVALID_PARAMETER     The message is NULL or the message_size is zero.
  **/
-return_status mctp_decode_message(OUT uint32_t **session_id,
-                                  IN uintn transport_message_size,
-                                  IN void *transport_message,
-                                  IN OUT uintn *message_size, OUT void *message)
+libspdm_return_t libspdm_mctp_decode_message(uint32_t **session_id,
+                                             size_t transport_message_size,
+                                             const void *transport_message,
+                                             size_t *message_size, void **message)
 {
-    uintn alignment;
-    mctp_message_header_t *mctp_message_header;
+    size_t alignment;
+    const mctp_message_header_t *mctp_message_header;
 
     alignment = MCTP_ALIGNMENT;
 
-    ASSERT(transport_message_size > sizeof(mctp_message_header_t));
+    LIBSPDM_ASSERT(transport_message_size > sizeof(mctp_message_header_t));
     if (transport_message_size <= sizeof(mctp_message_header_t)) {
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_INVALID_MSG_SIZE;
     }
 
     mctp_message_header = transport_message;
 
     switch (mctp_message_header->message_type) {
     case MCTP_MESSAGE_TYPE_SECURED_MCTP:
-        ASSERT(session_id != NULL);
+        LIBSPDM_ASSERT(session_id != NULL);
         if (session_id == NULL) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_INVALID_MSG_FIELD;
         }
         if (transport_message_size <=
             sizeof(mctp_message_header_t) + sizeof(uint32_t)) {
-            return RETURN_UNSUPPORTED;
+            return LIBSPDM_STATUS_INVALID_MSG_SIZE;
         }
         *session_id = (uint32_t *)((uint8_t *)transport_message +
                                    sizeof(mctp_message_header_t));
@@ -151,36 +141,30 @@ return_status mctp_decode_message(OUT uint32_t **session_id,
         }
         break;
     default:
-        return RETURN_UNSUPPORTED;
+        return LIBSPDM_STATUS_UNSUPPORTED_CAP;
     }
 
-    ASSERT(((transport_message_size - sizeof(mctp_message_header_t)) &
-            (alignment - 1)) == 0);
+    LIBSPDM_ASSERT(((transport_message_size - sizeof(mctp_message_header_t)) &
+                    (alignment - 1)) == 0);
 
-    if (*message_size <
-        transport_message_size - sizeof(mctp_message_header_t)) {
-
-        /* Handle special case for the side effect of alignment
-         * Caller may allocate a good enough buffer without considering alignment.
-         * Here we will not copy all the message and ignore the the last padding bytes.*/
-
-        if (*message_size + alignment - 1 >=
-            transport_message_size - sizeof(mctp_message_header_t)) {
-            copy_mem(message,
-                     (uint8_t *)transport_message +
-                     sizeof(mctp_message_header_t),
-                     *message_size);
-            return RETURN_SUCCESS;
-        }
-        ASSERT(*message_size >=
-               transport_message_size - sizeof(mctp_message_header_t));
-        *message_size =
-            transport_message_size - sizeof(mctp_message_header_t);
-        return RETURN_BUFFER_TOO_SMALL;
-    }
     *message_size = transport_message_size - sizeof(mctp_message_header_t);
-    copy_mem(message,
-             (uint8_t *)transport_message + sizeof(mctp_message_header_t),
-             *message_size);
-    return RETURN_SUCCESS;
+    *message = (uint8_t *)transport_message + sizeof(mctp_message_header_t);
+    return LIBSPDM_STATUS_SUCCESS;
+}
+
+/**
+ * Return the maximum transport layer message header size.
+ *   Transport Message Header Size + sizeof(spdm_secured_message_cipher_header_t))
+ *
+ *   For MCTP, Transport Message Header Size = sizeof(mctp_message_header_t)
+ *   For PCI_DOE, Transport Message Header Size = sizeof(pci_doe_data_object_header_t)
+ *
+ * @param  spdm_context                  A pointer to the SPDM context.
+ *
+ * @return size of maximum transport layer message header size
+ **/
+uint32_t libspdm_transport_mctp_get_header_size(
+    void *spdm_context)
+{
+    return sizeof(mctp_message_header_t) + sizeof(spdm_secured_message_cipher_header_t);
 }

@@ -82,6 +82,7 @@ test_spdm_requester_encap_digests
 test_spdm_requester_encap_certificate
 test_spdm_requester_encap_challenge_auth
 test_spdm_requester_encap_key_update
+test_spdm_requester_encap_request
 test_spdm_requester_get_version
 test_spdm_requester_get_capabilities
 test_spdm_requester_negotiate_algorithms
@@ -116,6 +117,7 @@ test_spdm_responder_heartbeat_ack
 test_spdm_responder_key_update
 test_spdm_responder_end_session
 test_spdm_responder_if_ready
+test_x509_certificate_check
 )
 object_parameters=()
 cp -r $fuzzing_seeds ./
@@ -139,9 +141,25 @@ done
 if [[ $2 = "ON" ]]; then
     for ((i=0;i<${#cmds[*]};i++))
     do
-        LLVM_PROFILE_FILE="${cmds[$i]}.profraw" ./${cmds[$i]} ./seeds/${cmds[$i]}/*
+        LLVM_PROFILE_FILE="${cmds[$i]}.profraw" ./${cmds[$i]} ./seeds/${cmds[$i]}/* -timeout=30
     done
     llvm-profdata merge -o coverage.prof *.profraw
     llvm-cov export -format lcov -instr-profile coverage.prof ${object_parameters[*]} > coverage.info
     genhtml coverage.info --output-directory $fuzzing_out/coverage_log
 fi
+
+function walk_dir(){
+    for file in `ls $1`
+    do
+        libfuzzer_banner=$file
+        leak=`find $1"/"$file -name '*leak*' |wc -l`
+        timeout=`find $1"/"$file -name '*timeout*' |wc -l`
+        crash=`find $1"/"$file -name '*crash*' |wc -l`
+        echo $libfuzzer_banner,$leak,$timeout,$crash >> $fuzzing_out"/SummaryList.csv"
+    done
+}
+echo libfuzzer_banner,leak,timeout,crash > $fuzzing_out"/SummaryList.csv"
+walk_dir $fuzzing_out
+
+sed -i '/SummaryList.csv/d' $fuzzing_out"/SummaryList.csv"
+sed -i '/coverage_log/d' $fuzzing_out"/SummaryList.csv"

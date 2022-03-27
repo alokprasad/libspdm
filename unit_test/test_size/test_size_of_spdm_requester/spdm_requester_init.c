@@ -6,21 +6,21 @@
 
 #include "spdm_requester.h"
 
-return_status SpdmRequesterSendMessage(IN void *spdm_context,
-                                       IN uintn message_size, IN void *message,
-                                       IN uint64_t timeout)
+libspdm_return_t libspdm_requester_send_message(const void *spdm_context,
+                                                size_t message_size, const void *message,
+                                                uint64_t timeout)
 {
     /* Dummy*/
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
-return_status SpdmRequesterReceiveMessage(IN void *spdm_context,
-                                          IN OUT uintn *message_size,
-                                          IN OUT void *message,
-                                          IN uint64_t timeout)
+libspdm_return_t libspdm_requester_receive_message(const void *spdm_context,
+                                                   size_t *message_size,
+                                                   void *message,
+                                                   uint64_t timeout)
 {
     /* Dummy*/
-    return RETURN_SUCCESS;
+    return LIBSPDM_STATUS_SUCCESS;
 }
 
 void *spdm_client_init(void)
@@ -31,23 +31,24 @@ void *spdm_client_init(void)
     uint8_t data8;
     uint16_t data16;
     uint32_t data32;
-    boolean has_rsp_pub_cert;
+    bool has_rsp_pub_cert;
 
     spdm_context = (void *)allocate_pool(libspdm_get_context_size());
     if (spdm_context == NULL) {
         return NULL;
     }
     libspdm_init_context(spdm_context);
-    libspdm_register_device_io_func(spdm_context, SpdmRequesterSendMessage,
-                                    SpdmRequesterReceiveMessage);
+    libspdm_register_device_io_func(spdm_context, libspdm_requester_send_message,
+                                    libspdm_requester_receive_message);
     libspdm_register_transport_layer_func(spdm_context,
                                           libspdm_transport_mctp_encode_message,
-                                          libspdm_transport_mctp_decode_message);
+                                          libspdm_transport_mctp_decode_message,
+                                          libspdm_transport_mctp_get_header_size);
 
-    has_rsp_pub_cert = FALSE;
+    has_rsp_pub_cert = false;
 
     data8 = 0;
-    zero_mem(&parameter, sizeof(parameter));
+    libspdm_zero_mem(&parameter, sizeof(parameter));
     parameter.location = LIBSPDM_DATA_LOCATION_LOCAL;
     libspdm_set_data(spdm_context, LIBSPDM_DATA_CAPABILITY_CT_EXPONENT,
                      &parameter, &data8, sizeof(data8));
@@ -89,9 +90,9 @@ void *spdm_client_init(void)
     libspdm_set_data(spdm_context, LIBSPDM_DATA_KEY_SCHEDULE, &parameter, &data16,
                      sizeof(data16));
 
-    status = libspdm_init_connection(spdm_context, FALSE);
+    status = libspdm_init_connection(spdm_context, false);
     if (RETURN_ERROR(status)) {
-        DEBUG((DEBUG_ERROR, "libspdm_init_connection - %r\n", status));
+        LIBSPDM_DEBUG((LIBSPDM_DEBUG_ERROR, "libspdm_init_connection - %r\n", status));
         free_pool(spdm_context);
         return NULL;
     }

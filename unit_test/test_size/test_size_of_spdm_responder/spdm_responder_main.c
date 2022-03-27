@@ -16,16 +16,16 @@
 void spdm_dispatch(void)
 {
     void *spdm_context;
-    return_status status;
+    libspdm_return_t status;
 
     spdm_context = spdm_server_init();
     if (spdm_context == NULL) {
         return;
     }
 
-    while (TRUE) {
+    while (true) {
         status = libspdm_responder_dispatch_message(spdm_context);
-        if (status != RETURN_UNSUPPORTED) {
+        if (status != LIBSPDM_STATUS_UNSUPPORTED_CAP) {
             continue;
         }
     }
