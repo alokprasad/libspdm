@@ -67,7 +67,7 @@ libspdm_return_t libspdm_requester_get_version_test_send_message(
     }
         return LIBSPDM_STATUS_SUCCESS;
     default:
-        return RETURN_DEVICE_ERROR;
+        return LIBSPDM_STATUS_SEND_FAIL;
     }
 }
 
@@ -80,7 +80,7 @@ libspdm_return_t libspdm_requester_get_version_test_receive_message(
     spdm_test_context = libspdm_get_test_context();
     switch (spdm_test_context->case_id) {
     case 0x1:
-        return LIBSPDM_STATUS_SUCCESS;
+        return LIBSPDM_STATUS_RECEIVE_FAIL;
 
     case 0x2: {
         libspdm_version_response_mine_t *spdm_response;
@@ -475,7 +475,7 @@ libspdm_return_t libspdm_requester_get_version_test_receive_message(
         return LIBSPDM_STATUS_SUCCESS;
 
     default:
-        return RETURN_DEVICE_ERROR;
+        return LIBSPDM_STATUS_RECEIVE_FAIL;
     }
 }
 
@@ -624,7 +624,7 @@ void libspdm_test_requester_get_version_case8(void **state)
     spdm_test_context->case_id = 0x8;
 
     status = libspdm_get_version(spdm_context, NULL, NULL);
-    assert_int_equal(status, LIBSPDM_STATUS_ERROR_PEER);
+    assert_int_equal(status, LIBSPDM_STATUS_NOT_READY_PEER);
 }
 
 /**
@@ -786,7 +786,7 @@ void libspdm_test_requester_get_version_case15(void **state)
  **/
 void libspdm_test_requester_get_version_case16(void **state)
 {
-    return_status status;
+    libspdm_return_t status;
     libspdm_test_context_t *spdm_test_context;
     libspdm_context_t *spdm_context;
 
