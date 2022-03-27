@@ -32,7 +32,7 @@ static uint8_t m_local_certificate_chain[LIBSPDM_MAX_MESSAGE_BUFFER_SIZE];
  **/
 void test_spdm_requester_challenge_auth_case1(void **state)
 {
-    return_status status;
+    libspdm_return_t status;
     libspdm_test_context_t *spdm_test_context;
     libspdm_context_t *spdm_context;
     size_t response_size;
@@ -67,7 +67,7 @@ void test_spdm_requester_challenge_auth_case1(void **state)
                                                m_spdm_get_digests_request1_size,
                                                &m_spdm_get_digests_request1,
                                                &response_size, response);
-    assert_int_equal(status, RETURN_SUCCESS);
+    assert_int_equal(status, LIBSPDM_STATUS_SUCCESS);
     assert_int_equal(
         response_size,
         sizeof(spdm_digest_response_t) +
@@ -88,7 +88,7 @@ void test_spdm_requester_challenge_auth_case1(void **state)
  **/
 void test_spdm_requester_challenge_auth_case2(void **state)
 {
-    return_status status;
+    libspdm_return_t status;
     libspdm_test_context_t *spdm_test_context;
     libspdm_context_t *spdm_context;
     size_t response_size;
@@ -119,7 +119,7 @@ void test_spdm_requester_challenge_auth_case2(void **state)
                                                m_spdm_get_digests_request2_size,
                                                &m_spdm_get_digests_request2,
                                                &response_size, response);
-    assert_int_equal(status, RETURN_SUCCESS);
+    assert_int_equal(status, LIBSPDM_STATUS_SUCCESS);
     assert_int_equal(response_size, sizeof(spdm_error_response_t));
     spdm_response = (void *)response;
     assert_int_equal(spdm_response->header.request_response_code,
@@ -135,7 +135,7 @@ void test_spdm_requester_challenge_auth_case2(void **state)
  **/
 void test_spdm_requester_challenge_auth_case3(void **state)
 {
-    return_status status;
+    libspdm_return_t status;
     libspdm_test_context_t *spdm_test_context;
     libspdm_context_t *spdm_context;
     size_t response_size;
@@ -171,7 +171,7 @@ void test_spdm_requester_challenge_auth_case3(void **state)
                                                m_spdm_get_digests_request1_size,
                                                &m_spdm_get_digests_request1,
                                                &response_size, response);
-    assert_int_equal(status, RETURN_SUCCESS);
+    assert_int_equal(status, LIBSPDM_STATUS_SUCCESS);
 
 #if LIBSPDM_RECORD_TRANSCRIPT_DATA_SUPPORT
     assert_int_equal(
@@ -199,7 +199,7 @@ void test_spdm_requester_challenge_auth_case4(void **state)
 #if LIBSPDM_RECORD_TRANSCRIPT_DATA_SUPPORT
     size_t response_size;
     uint8_t response[LIBSPDM_MAX_MESSAGE_BUFFER_SIZE];
-    return_status status;
+    libspdm_return_t status;
     spdm_digest_response_t *spdm_response;
 #endif
 
@@ -231,7 +231,7 @@ void test_spdm_requester_challenge_auth_case4(void **state)
                                                m_spdm_get_digests_request1_size,
                                                &m_spdm_get_digests_request1,
                                                &response_size, response);
-    assert_int_equal(status, RETURN_SUCCESS);
+    assert_int_equal(status, LIBSPDM_STATUS_SUCCESS);
     assert_int_equal(
         response_size,
         sizeof(spdm_digest_response_t) +
