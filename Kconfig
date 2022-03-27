@@ -1,0 +1,199 @@
+config MAX_VERSION_COUNT
+	int "Number of version reponse that requester will handle (1-5)"
+	range 1 5
+	default "5"
+
+config PSK_CONTEXT_LENGTH
+	int "Number of PSK Length (64) same has max hash size"
+	range 64 64
+	default "64"
+
+config PSK_MAX_HINT_LENGTH
+	int "max hint lenght"
+	range 16 16
+	default "16"
+
+config MAX_ROOT_CERT_SUPPORT
+	int "max root certification support"
+	range 10 10
+	default "10"
+
+config MAX_MEASUREMENT_BLOCK_COUNT
+	int "max measurement block count"
+	range 8 8 
+	default "8"
+
+config MAX_SESSION_COUNT
+	int "max session count"
+	range 4 4
+	default "4"
+
+config MAX_CERT_CHAIN_SIZE
+	hex "LIBSPDM_MAX_CERT_CHAIN_SIZE 0x1000"
+	range 0x1000 0x1000
+	default "0x1000"
+ 
+config MAX_MEASUREMENT_RECORD_SIZE
+	hex "LIBSPDM_MAX_MEASUREMENT_RECORD_SIZE 0x1000"
+	range 0x1000 0x1000
+	default "0x1000"	
+
+config  MAX_CERT_CHAIN_BLOCK_LEN
+	int "LIBSPDM_MAX_CERT_CHAIN_BLOCK_LEN (1024)"
+	range 1024 1024
+	default "1024"
+
+config  MAX_MESSAGE_BUFFER_SIZE
+	hex "LIBSPDM_MAX_MESSAGE_BUFFER_SIZE 0x1200"
+	range  0x1200 0x1200
+	default "0x1200"
+
+config  MAX_MESSAGE_SMALL_BUFFER_SIZE
+	hex "MAX_MESSAGE_SMALL_BUFFER_SIZE 0x100"
+	range 0x100 0x100
+	default "0x100"
+
+config MAX_MESSAGE_MEDIUM_BUFFER_SIZE
+	hex  "MAX_MESSAGE_MEDIUM_BUFFER_SIZE 0x300"
+	range 0x300 0x300
+	default "0x300"
+
+config MAX_REQUEST_RETRY_TIMES
+	int "MAX_REQUEST_RETRY_TIMES 3"
+	range 1 3
+	default "3"
+
+config MAX_SESSION_STATE_CALLBACK_NUM
+	int "MAX_SESSION_STATE_CALLBACK_NUM 4"
+	range 1 4
+	default "4"
+
+config RECORD_TRANSCRIPT_DATA_SUPPORT
+	bool "RECORD_TRANSCRIPT_DATA_SUPPORT 0"
+	default n
+
+config  MAX_CONNECTION_STATE_CALLBACK_NUM
+	int "LIBSPDM_MAX_CONNECTION_STATE_CALLBACK_NUM 4"
+	range 4 4
+	default "4"
+
+#/* Crypto Configuation
+# * In each category, at least one should be selected.
+# * NOTE: Not all combination can be supported. E.g. Don't mix NIST algo with SMx.*/
+
+config RSA_SSA_SUPPORT
+	bool "LIBSPDM_RSA_SSA_SUPPORT 1"
+	default y
+
+config RSA_PSS_SUPPORT
+	bool "LIBSPDM_RSA_PSS_SUPPORT 1"
+	default y
+
+config ECDSA_SUPPORT
+	bool "LIBSPDM_ECDSA_SUPPORT 1"
+	default y
+
+config SM2_DSA_SUPPORT
+	bool "LIBSPDM_SM2_DSA_SUPPORT 1"
+	default y
+
+config EDDSA_ED25519_SUPPORT
+	bool "LIBSPDM_EDDSA_ED25519_SUPPORT 1"
+	default y
+
+config EDDSA_ED448_SUPPORT
+	bool "LIBSPDM_EDDSA_ED448_SUPPORT 1"
+	default y
+
+config FFDHE_SUPPORT
+	bool "LIBSPDM_FFDHE_SUPPORT 1"
+	default y
+
+config ECDHE_SUPPORT
+	bool "LIBSPDM_ECDHE_SUPPORT 1"
+	default y
+
+config SM2_KEY_EXCHANGE_SUPPORT
+	bool "SM2_KEY_EXCHANGE_SUPPORT 1"
+	default y
+
+config AEAD_GCM_SUPPORT
+	bool "LIBSPDM_AEAD_GCM_SUPPORT 1"
+	default y
+
+config AEAD_CHACHA20_POLY1305_SUPPORT
+	bool "AEAD_CHACHA20_POLY1305_SUPPORT 1"
+	default y
+
+config AEAD_SM4_SUPPORT
+	bool "AEAD_SM4_SUPPORT 1"
+	default y
+
+config SHA256_SUPPORT
+	bool "SHA256_SUPPORT 1"
+	default y
+
+config SHA384_SUPPORT
+	bool "SHA384_SUPPORT 1"
+	default y
+
+config SHA512_SUPPORT
+	bool "SHA512_SUPPORT 1"
+	default y
+
+config SHA3_256_SUPPORT
+	bool "SHA3_256_SUPPORT 1"
+	default y
+
+config SHA3_384_SUPPORT
+	bool "SHA3_384_SUPPORT 1"
+	default y
+
+config SHA3_512_SUPPORT
+	bool "SHA3_512_SUPPORT 1"
+	default y
+
+config SM3_256_SUPPORT
+	bool "SM3_256_SUPPORT 1"
+	default y
+
+
+#/* Code space optimization for Optional request/response messages.*/
+#
+#/* Consumers of libspdm may wish to not fully implement all of the optional
+# * SPDM request/response messages. Therefore we have provided these
+# * SPDM_ENABLE_CAPABILITY_***_CAP compile time switches as an optimization
+# * disable the code (#if 0) related to said optional capability, thereby
+# * reducing the code space used in the image.*/
+#
+#/* A single switch may enable/disable a single capability or group of related
+# * capabilities.*/
+#
+#/* LIBSPDM_ENABLE_CAPABILITY_CERT_CAP - Enable/Disable single CERT capability.
+# * LIBSPDM_ENABLE_CAPABILITY_CHAL_CAP - Enable/Disable single CHAL capability.
+# * SPDM_ENABLE_CAPABILTIY_MEAS_CAP - Enable/Disables multiple MEAS capabilities:
+# *                                  (MEAS_CAP_NO_SIG, MEAS_CAP_SIG, MEAS_FRESH_CAP)*/
+#
+#/* LIBSPDM_ENABLE_CAPABILITY_KEY_EX_CAP - Enable/Disable single Key Exchange capability.
+# * LIBSPDM_ENABLE_CAPABILITY_PSK_EX_CAP - Enable/Disable PSK_EX and PSK_FINISH.*/
+
+config ENABLE_CAPABILITY_CERT_CAP
+	bool "ENABLE_CAPABILITY_CERT_CAP 1"
+	default y
+
+config ENABLE_CAPABILITY_CHAL_CAP
+	bool "ENABLE_CAPABILITY_CHAL_CAP 1"
+	default y
+
+config ENABLE_CAPABILITY_MEAS_CAP
+	bool "ENABLE_CAPABILITY_MEAS_CAP 1"
+	default y
+
+config ENABLE_CAPABILITY_KEY_EX_CAP
+	bool "ENABLE_CAPABILITY_KEY_EX_CAP 1"
+	default y
+
+config ENABLE_CAPABILITY_PSK_EX_CAP
+	bool "ENABLE_CAPABILITY_PSK_EX_CAP 1"
+	default y
+
