@@ -1771,25 +1771,52 @@ libspdm_return_t libspdm_append_message_f(void *context, void *session_info,
             LIBSPDM_ASSERT (spdm_session_info->session_transcript.digest_context_th != NULL);
             spdm_session_info->session_transcript.digest_context_th_backup = libspdm_hash_new (
                 spdm_context->connection_info.algorithm.base_hash_algo);
-            libspdm_hash_duplicate (spdm_context->connection_info.algorithm.base_hash_algo,
-                                    spdm_session_info->session_transcript.digest_context_th,
-                                    spdm_session_info->session_transcript.digest_context_th_backup);
+            if (spdm_session_info->session_transcript.digest_context_th_backup == NULL) {
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
+            result = libspdm_hash_duplicate (spdm_context->connection_info.algorithm.base_hash_algo,
+                                             spdm_session_info->session_transcript.digest_context_th,
+                                             spdm_session_info->session_transcript.digest_context_th_backup);
+            if (!result) {
+                libspdm_hash_free (spdm_context->connection_info.algorithm.base_hash_algo,
+                                   spdm_session_info->session_transcript.digest_context_th_backup);
+                spdm_session_info->session_transcript.digest_context_th_backup = NULL;
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
 
             LIBSPDM_ASSERT (spdm_session_info->session_transcript.hmac_rsp_context_th != NULL);
             spdm_session_info->session_transcript.hmac_rsp_context_th_backup =
                 libspdm_hmac_new_with_response_finished_key (
                     secured_message_context);
-            libspdm_hmac_duplicate_with_response_finished_key (secured_message_context,
-                                                               spdm_session_info->session_transcript.hmac_rsp_context_th,
-                                                               spdm_session_info->session_transcript.hmac_rsp_context_th_backup);
+            if (spdm_session_info->session_transcript.hmac_rsp_context_th_backup == NULL) {
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
+            result = libspdm_hmac_duplicate_with_response_finished_key (secured_message_context,
+                                                                        spdm_session_info->session_transcript.hmac_rsp_context_th,
+                                                                        spdm_session_info->session_transcript.hmac_rsp_context_th_backup);
+            if (!result) {
+                libspdm_hmac_free_with_response_finished_key (secured_message_context,
+                                                              spdm_session_info->session_transcript.hmac_rsp_context_th_backup);
+                spdm_session_info->session_transcript.hmac_rsp_context_th_backup = NULL;
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
 
             LIBSPDM_ASSERT (spdm_session_info->session_transcript.hmac_req_context_th != NULL);
             spdm_session_info->session_transcript.hmac_req_context_th_backup =
                 libspdm_hmac_new_with_request_finished_key (
                     secured_message_context);
-            libspdm_hmac_duplicate_with_request_finished_key (secured_message_context,
-                                                              spdm_session_info->session_transcript.hmac_req_context_th,
-                                                              spdm_session_info->session_transcript.hmac_req_context_th_backup);
+            if (spdm_session_info->session_transcript.hmac_req_context_th_backup == NULL) {
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
+            result = libspdm_hmac_duplicate_with_request_finished_key (secured_message_context,
+                                                                       spdm_session_info->session_transcript.hmac_req_context_th,
+                                                                       spdm_session_info->session_transcript.hmac_req_context_th_backup);
+            if (!result) {
+                libspdm_hmac_free_with_request_finished_key (secured_message_context,
+                                                             spdm_session_info->session_transcript.hmac_req_context_th_backup);
+                spdm_session_info->session_transcript.hmac_req_context_th_backup = NULL;
+                return LIBSPDM_STATUS_CRYPTO_ERROR;
+            }
         }
 
 
@@ -1798,44 +1825,80 @@ libspdm_return_t libspdm_append_message_f(void *context, void *session_info,
         LIBSPDM_ASSERT (spdm_session_info->session_transcript.digest_context_th != NULL);
         if (!spdm_session_info->session_transcript.message_f_initialized) {
             if (!spdm_session_info->use_psk && spdm_session_info->mut_auth_requested) {
-                libspdm_hash_update (spdm_context->connection_info.algorithm.base_hash_algo,
-                                     spdm_session_info->session_transcript.digest_context_th,
-                                     mut_cert_chain_buffer_hash, hash_size);
+                result = libspdm_hash_update (
+                    spdm_context->connection_info.algorithm.base_hash_algo,
+                    spdm_session_info->session_transcript.digest_context_th,
+                    mut_cert_chain_buffer_hash, hash_size);
+                if (!result) {
+                    libspdm_hash_free (spdm_context->connection_info.algorithm.base_hash_algo,
+                                       spdm_session_info->session_transcript.digest_context_th);
+                    spdm_session_info->session_transcript.digest_context_th = NULL;
+                    return LIBSPDM_STATUS_CRYPTO_ERROR;
+                }
             }
         }
-        libspdm_hash_update (spdm_context->connection_info.algorithm.base_hash_algo,
-                             spdm_session_info->session_transcript.digest_context_th, message,
-                             message_size);
-
+        result = libspdm_hash_update (spdm_context->connection_info.algorithm.base_hash_algo,
+                                      spdm_session_info->session_transcript.digest_context_th,
+                                      message,
+                                      message_size);
+        if (!result) {
+            libspdm_hash_free (spdm_context->connection_info.algorithm.base_hash_algo,
+                               spdm_session_info->session_transcript.digest_context_th);
+            spdm_session_info->session_transcript.digest_context_th = NULL;
+            return LIBSPDM_STATUS_CRYPTO_ERROR;
+        }
 
         /* prepare hmac_rsp_context_th*/
 
         LIBSPDM_ASSERT (spdm_session_info->session_transcript.hmac_rsp_context_th != NULL);
         if (!spdm_session_info->session_transcript.message_f_initialized) {
             if (!spdm_session_info->use_psk && spdm_session_info->mut_auth_requested) {
-                libspdm_hmac_update_with_response_finished_key (secured_message_context,
-                                                                spdm_session_info->session_transcript.hmac_rsp_context_th, mut_cert_chain_buffer_hash,
-                                                                hash_size);
+                result = libspdm_hmac_update_with_response_finished_key (secured_message_context,
+                                                                         spdm_session_info->session_transcript.hmac_rsp_context_th, mut_cert_chain_buffer_hash,
+                                                                         hash_size);
+                if (!result) {
+                    libspdm_hmac_free_with_response_finished_key (secured_message_context,
+                                                                  spdm_session_info->session_transcript.hmac_rsp_context_th_backup);
+                    spdm_session_info->session_transcript.hmac_rsp_context_th_backup = NULL;
+                    return LIBSPDM_STATUS_CRYPTO_ERROR;
+                }
             }
         }
-        libspdm_hmac_update_with_response_finished_key (secured_message_context,
-                                                        spdm_session_info->session_transcript.hmac_rsp_context_th, message,
-                                                        message_size);
-
+        result = libspdm_hmac_update_with_response_finished_key (secured_message_context,
+                                                                 spdm_session_info->session_transcript.hmac_rsp_context_th, message,
+                                                                 message_size);
+        if (!result) {
+            libspdm_hmac_free_with_response_finished_key (secured_message_context,
+                                                          spdm_session_info->session_transcript.hmac_rsp_context_th_backup);
+            spdm_session_info->session_transcript.hmac_rsp_context_th_backup = NULL;
+            return LIBSPDM_STATUS_CRYPTO_ERROR;
+        }
 
         /* prepare hmac_req_context_th*/
 
         LIBSPDM_ASSERT (spdm_session_info->session_transcript.hmac_req_context_th != NULL);
         if (!spdm_session_info->session_transcript.message_f_initialized) {
             if (!spdm_session_info->use_psk && spdm_session_info->mut_auth_requested) {
-                libspdm_hmac_update_with_request_finished_key (secured_message_context,
-                                                               spdm_session_info->session_transcript.hmac_req_context_th, mut_cert_chain_buffer_hash,
-                                                               hash_size);
+                result = libspdm_hmac_update_with_request_finished_key (secured_message_context,
+                                                                        spdm_session_info->session_transcript.hmac_req_context_th, mut_cert_chain_buffer_hash,
+                                                                        hash_size);
+                if (!result) {
+                    libspdm_hmac_free_with_request_finished_key (secured_message_context,
+                                                                 spdm_session_info->session_transcript.hmac_req_context_th_backup);
+                    spdm_session_info->session_transcript.hmac_req_context_th_backup = NULL;
+                    return LIBSPDM_STATUS_CRYPTO_ERROR;
+                }
             }
         }
-        libspdm_hmac_update_with_request_finished_key (secured_message_context,
-                                                       spdm_session_info->session_transcript.hmac_req_context_th, message,
-                                                       message_size);
+        result = libspdm_hmac_update_with_request_finished_key (secured_message_context,
+                                                                spdm_session_info->session_transcript.hmac_req_context_th, message,
+                                                                message_size);
+        if (!result) {
+            libspdm_hmac_free_with_request_finished_key (secured_message_context,
+                                                         spdm_session_info->session_transcript.hmac_req_context_th_backup);
+            spdm_session_info->session_transcript.hmac_req_context_th_backup = NULL;
+            return LIBSPDM_STATUS_CRYPTO_ERROR;
+        }
 
         spdm_session_info->session_transcript.message_f_initialized = true;
         return LIBSPDM_STATUS_SUCCESS;
@@ -2006,7 +2069,7 @@ void libspdm_register_transport_layer_func(
 size_t libspdm_get_sizeof_required_scratch_buffer (
     void *context)
 {
-    return LIBSPDM_MAX_MESSAGE_BUFFER_SIZE;
+    return LIBSPDM_SCRATCH_BUFFER_SIZE;
 }
 
 /**
@@ -2027,7 +2090,7 @@ void libspdm_set_scratch_buffer (
     libspdm_context_t *spdm_context;
 
     spdm_context = context;
-    LIBSPDM_ASSERT (scratch_buffer_size >= LIBSPDM_MAX_MESSAGE_BUFFER_SIZE);
+    LIBSPDM_ASSERT (scratch_buffer_size >= LIBSPDM_SCRATCH_BUFFER_SIZE);
     spdm_context->scratch_buffer = scratch_buffer;
     spdm_context->scratch_buffer_size = scratch_buffer_size;
 }
@@ -2049,7 +2112,7 @@ void libspdm_get_scratch_buffer (
 
     spdm_context = context;
     LIBSPDM_ASSERT (spdm_context->scratch_buffer != NULL);
-    LIBSPDM_ASSERT (spdm_context->scratch_buffer_size >= LIBSPDM_MAX_MESSAGE_BUFFER_SIZE);
+    LIBSPDM_ASSERT (spdm_context->scratch_buffer_size >= LIBSPDM_SCRATCH_BUFFER_SIZE);
     *scratch_buffer = spdm_context->scratch_buffer;
     *scratch_buffer_size = spdm_context->scratch_buffer_size;
 }
@@ -2269,8 +2332,8 @@ libspdm_return_t libspdm_init_context(void *context)
         sizeof(spdm_context->encap_context.certificate_chain_buffer.buffer);
 
     /* From the config.h, need different value for CHUNK - TBD*/
-    spdm_context->local_context.capability.data_transfer_size = LIBSPDM_MAX_MESSAGE_BUFFER_SIZE;
-    spdm_context->local_context.capability.max_spdm_msg_size = LIBSPDM_MAX_MESSAGE_BUFFER_SIZE;
+    spdm_context->local_context.capability.data_transfer_size = LIBSPDM_DATA_TRANSFER_SIZE;
+    spdm_context->local_context.capability.max_spdm_msg_size = LIBSPDM_MAX_SPDM_MSG_SIZE;
 
 #if !LIBSPDM_RECORD_TRANSCRIPT_DATA_SUPPORT
     spdm_context->connection_info.peer_used_cert_chain_buffer_hash_size = 0;

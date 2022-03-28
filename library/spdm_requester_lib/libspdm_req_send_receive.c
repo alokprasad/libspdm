@@ -123,8 +123,6 @@ libspdm_return_t libspdm_receive_response(void *context, const uint32_t *session
 
     spdm_context = context;
 
-    LIBSPDM_ASSERT(*response_size <= LIBSPDM_MAX_MESSAGE_BUFFER_SIZE);
-
     if (spdm_context->crypto_request) {
         timeout = spdm_context->local_context.capability.rtt +
                   (2 << spdm_context->local_context.capability.ct_exponent);
@@ -195,7 +193,7 @@ libspdm_return_t libspdm_receive_response(void *context, const uint32_t *session
 
 error:
     if (spdm_context->last_spdm_error.error_code == SPDM_ERROR_CODE_DECRYPT_ERROR) {
-        return LIBSPDM_STATUS_CRYPTO_ERROR;
+        return LIBSPDM_STATUS_SESSION_MSG_ERROR;
     } else {
         return LIBSPDM_STATUS_RECEIVE_FAIL;
     }
